@@ -10,5 +10,8 @@ module.exports = {
         extend: {},
     },
     plugins: [],
+    corePlugins: {
+        preflight: false, // 添加这一行
+    },
 }
 

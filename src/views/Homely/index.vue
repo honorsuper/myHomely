@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { WaterFall } from '@/components'
+import { Header } from './components'
 import { menuData } from './constants.tsx'
-
-
-
-
-
 </script>
 
 <template>
   <div class="out-wrap flex flex-col">
-    <div class="header">头部区域</div>
+    <Header />
     <WaterFall :data="menuData" />
   </div>
 </template>
@@ -20,14 +16,6 @@ import { menuData } from './constants.tsx'
 .out-wrap {
   width: 100vw;
   min-height: 100vh;
-}
-
-.header {
-  height: 64px;
-  box-shadow: 0 8px 24px -2px rgba(0, 0, 0, 0.05);
-  padding: 0 58px;
-  background: #ffffff;
-  margin-bottom: 30px;
 }
 
 .content {

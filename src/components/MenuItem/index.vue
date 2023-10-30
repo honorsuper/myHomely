@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useElementHover } from '@vueuse/core'
-import {DownSquareOutlined} from "@ant-design/icons-vue"
+import {Dropdown} from "ant-design-vue"
+import { DownSquareOutlined } from '@ant-design/icons-vue'
 
 const target = ref()
 const isHovered = useElementHover(target)
+const open = ref(false)
 
 defineProps<{
   info: {
@@ -25,7 +27,18 @@ defineProps<{
   <div class="waterfall-item rounded absolute" :key="info.mainTitle">
     <div class="title box-border flex justify-between items-center font-medium" ref="target">
       标题{{ info.mainTitle }}
-      <div class="cursor-pointer flex items-center" v-if="isHovered"><DownSquareOutlined /></div>
+      <div class="cursor-pointer flex items-center" v-if="isHovered || open">
+        <a-dropdown v-model:open="open" >
+          <DownSquareOutlined />
+          <template #overlay>
+            <a-menu>
+              <a-menu-item key="3">修改</a-menu-item>
+              <a-menu-item key="4">重命名</a-menu-item>
+              <a-menu-item key="5">删除</a-menu-item>
+            </a-menu>
+          </template>
+        </a-dropdown>
+      </div>
     </div>
     <div class="menu-item-content flex-col flex gap-y-1.5 cursor-pointer">
       <div class="item" v-for="item in info.content" :key="item.title">{{ item.title }}</div>
