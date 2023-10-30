@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useFocus } from '@vueuse/core'
+import { ref } from 'vue'
+import { useElementHover } from '@vueuse/core'
+import {DownSquareOutlined} from "@ant-design/icons-vue"
 
 const target = ref()
-const { focused } = useFocus(target)
+const isHovered = useElementHover(target)
 
-const props = defineProps<{
+defineProps<{
   info: {
+    _style?: {
+      left?: number
+      top?: number
+    }
     mainTitle: string
     content: {
       title: string
@@ -17,10 +22,10 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="box rounded">
-    <div class="title box-border" ref="target">
-      {{ info.mainTitle }}
-      <div v-if="focused">111</div>
+  <div class="waterfall-item rounded absolute" :key="info.mainTitle">
+    <div class="title box-border flex justify-between items-center font-medium" ref="target">
+      标题{{ info.mainTitle }}
+      <div class="cursor-pointer flex items-center" v-if="isHovered"><DownSquareOutlined /></div>
     </div>
     <div class="menu-item-content flex-col flex gap-y-1.5 cursor-pointer">
       <div class="item" v-for="item in info.content" :key="item.title">{{ item.title }}</div>
@@ -28,16 +33,18 @@ const props = defineProps<{
   </div>
 </template>
 <style scoped lang="less">
-.box {
-  background: #ffffff;
-  width: 150px;
+.waterfall-item {
+  float: left;
+  color: #fff;
+  background: #fff;
 }
 
 .title {
   height: 40px;
   padding: 10px;
-  color: red;
-  //background: #f5f5f5;
+  background: #f5f5f5;
+  color: rgba(0, 0, 0, 0.88);
+  font-weight: 500;
 }
 
 .item {
