@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import {onMounted, ref, computed} from 'vue'
-import {MenuItem} from "@/components";
-import {getMinHeightColumn, getMinHeight, getMaxHeight} from './utils'
+import { onMounted, ref, computed } from 'vue'
+import { MenuItem } from '@/components'
+import { getMinHeightColumn, getMinHeight, getMaxHeight } from './utils'
 
 const props = withDefaults(
-    defineProps<{
-      data: {
-        _style?: {
-          left?: number
-          top?: number
-        }
-        mainTitle: string
-        content: {
-          title: string
-          url: string
-        }[]
+  defineProps<{
+    data: {
+      _style?: {
+        left?: number
+        top?: number
+      }
+      mainTitle: string
+      content: {
+        title: string
+        url: string
       }[]
-      // 列数
-      column?: number
-      // 列间距
-      columnSpacing?: number
-      // 行间距
-      rowSpacing?: number
-    }>(),
-    {
-      column: 6,
-      columnSpacing: 30,
-      rowSpacing: 30
-    }
+    }[]
+    // 列数
+    column?: number
+    // 列间距
+    columnSpacing?: number
+    // 行间距
+    rowSpacing?: number
+  }>(),
+  {
+    column: 6,
+    columnSpacing: 30,
+    rowSpacing: 30
+  }
 )
 // 容器实例
 const containerTarget = ref<HTMLElement | null>(null)
@@ -47,12 +47,12 @@ const isHovered = ref(false)
  * 计算容器宽度
  */
 const useContainerWidth = () => {
-  const {paddingLeft, paddingRight} = getComputedStyle(containerTarget.value as HTMLElement, null)
+  const { paddingLeft, paddingRight } = getComputedStyle(containerTarget.value as HTMLElement, null)
   // 容器左边距
   containerLeft.value = parseFloat(paddingLeft)
   // 容器宽度
   containerWidth.value =
-      containerTarget.value!.offsetWidth - parseFloat(paddingLeft) - parseFloat(paddingRight)
+    containerTarget.value!.offsetWidth - parseFloat(paddingLeft) - parseFloat(paddingRight)
 }
 
 /**
@@ -164,45 +164,25 @@ onMounted(() => {
 </script>
 <template>
   <div
-      ref="containerTarget"
-      class="relative waterfall-wrap"
-      :style="{
+    ref="containerTarget"
+    class="relative waterfall-wrap"
+    :style="{
       height: containerHeight + 'px' // 因为当前为 relative 布局，所以需要主动指定高度
     }"
   >
-    <MenuItem v-for="info in data" :info="info" :key="info.mainTitle" :style="{
+    <MenuItem
+      v-for="info in data"
+      :info="info"
+      :key="info.mainTitle"
+      :style="{
         width: columnWidth + 'px',
-     left: info._style?.left + 'px',
-      top: info._style?.top + 'px'
-    }"/>
-    <!--    <div-->
-    <!--      class="waterfall-item rounded absolute"-->
-    <!--      v-for="info in data"-->
-    <!--      :key="info.mainTitle"-->
-    <!--      :style="{-->
-    <!--        width: columnWidth + 'px',-->
-    <!--        left: info._style?.left + 'px',-->
-    <!--        top: info._style?.top + 'px'-->
-    <!--      }"-->
-    <!--    >-->
-    <!--      <div-->
-    <!--        class="title box-border flex justify-between font-medium"-->
-    <!--        @mouseenter="onMouseenter"-->
-    <!--        @mouseleave="onMouseLeave"-->
-    <!--      >-->
-    <!--        标题{{ info.mainTitle }}-->
-
-    <!--        <div :style="{ color: 'red' }">{{ isHovered ? 'Thank you!' : 'Hover me' }}</div>-->
-    <!--      </div>-->
-    <!--      <div class="menu-item-content flex-col flex gap-y-1.5 cursor-pointer">-->
-    <!--        <div class="item" v-for="item in info.content" :key="item.title">{{ item.title }}</div>-->
-    <!--      </div>-->
-    <!--    </div>-->
+        left: info._style?.left + 'px',
+        top: info._style?.top + 'px'
+      }"
+    />
   </div>
 </template>
 <style scoped lang="less">
-
-
 .waterfall-wrap {
   padding-left: 150px;
   padding-right: 150px;

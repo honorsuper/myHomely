@@ -17,7 +17,9 @@ defineProps<{
     mainTitle: string
     content: {
       title: string
-      url: string
+      url: string,
+      bgColor?:string,
+      color?:string
     }[]
   }
 }>()
@@ -40,8 +42,11 @@ defineProps<{
         </a-dropdown>
       </div>
     </div>
-    <div class="menu-item-content flex-col flex gap-y-1.5 cursor-pointer">
-      <div class="item" v-for="item in info.content" :key="item.title">{{ item.title }}</div>
+    <div class="menu-item-content flex-col flex gap-y-2 cursor-pointer">
+      <div class="item flex justify-center" v-for="item in info.content" :key="item.title" :style="{
+        background:item.bgColor,
+        color:item.color
+      }">{{ item.title }}</div>
     </div>
   </div>
 </template>
@@ -61,9 +66,8 @@ defineProps<{
 }
 
 .item {
-  padding: 6px 12px;
+  padding: 8px 12px;
   font-size: 14px;
-  background: red;
   border-radius: 4px;
 }
 

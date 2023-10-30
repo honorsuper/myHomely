@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { WaterFall } from '@/components'
-import { Header } from './components'
+import { Header,AddCol } from './components'
 import { menuData } from './constants.tsx'
 </script>
 
@@ -9,6 +9,7 @@ import { menuData } from './constants.tsx'
   <div class="out-wrap flex flex-col">
     <Header />
     <WaterFall :data="menuData" />
+    <AddCol/>
   </div>
 </template>
 
