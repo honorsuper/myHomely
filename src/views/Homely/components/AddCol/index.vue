@@ -117,10 +117,8 @@ const handleMoveUp = (index: number, isTop = false) => {
     dynamicValidateForm.list.unshift(currentInfo[0])
   } else {
     const preIndex = index - 1
-    const preInfo = cloneDeep(dynamicValidateForm.list[preIndex])
-    const currentInfo = cloneDeep(dynamicValidateForm.list[index])
-    dynamicValidateForm.list[preIndex] = currentInfo
-    dynamicValidateForm.list[index] = preInfo
+    dynamicValidateForm.list[preIndex] = cloneDeep(dynamicValidateForm.list[index])
+    dynamicValidateForm.list[index] = cloneDeep(dynamicValidateForm.list[preIndex])
   }
 }
 
@@ -135,10 +133,8 @@ const handleMoveDown = (index: number, isBottom = false) => {
     dynamicValidateForm.list.push(currentInfo[0])
   } else {
     const nextIndex = index + 1
-    const nextInfo = cloneDeep(dynamicValidateForm.list[nextIndex])
-    const currentInfo = cloneDeep(dynamicValidateForm.list[index])
-    dynamicValidateForm.list[nextIndex] = currentInfo
-    dynamicValidateForm.list[index] = nextInfo
+    dynamicValidateForm.list[nextIndex] = cloneDeep(dynamicValidateForm.list[index])
+    dynamicValidateForm.list[index] = cloneDeep(dynamicValidateForm.list[nextIndex])
   }
 }
 
@@ -153,6 +149,7 @@ const handleDel = (index: number) => {
 /**
  * 上移
  * @param index 当前操作索引
+ * @param subIndex 子模块的索引
  * @param isTop 是否移动到最顶部
  */
 const handleSubMoveUp = (index: number, subIndex: number, isTop = false) => {
@@ -161,16 +158,19 @@ const handleSubMoveUp = (index: number, subIndex: number, isTop = false) => {
     dynamicValidateForm.list[index].groupList.unshift(currentInfo[0])
   } else {
     const preIndex = subIndex - 1
-    const preInfo = cloneDeep(dynamicValidateForm.list[index].groupList[preIndex])
-    const currentInfo = cloneDeep(dynamicValidateForm.list[index].groupList[subIndex])
-    dynamicValidateForm.list[index].groupList[preIndex] = currentInfo
-    dynamicValidateForm.list[index].groupList[subIndex] = preInfo
+    dynamicValidateForm.list[index].groupList[preIndex] = cloneDeep(
+      dynamicValidateForm.list[index].groupList[subIndex],
+    )
+    dynamicValidateForm.list[index].groupList[subIndex] = cloneDeep(
+      dynamicValidateForm.list[index].groupList[preIndex],
+    )
   }
 }
 
 /**
  * 下移
  * @param index 当前操作索引
+ * @param subIndex 子模块的索引
  * @param isBottom 是否移动到最底部
  */
 const handleSubMoveDown = (index: number, subIndex: number, isBottom = false) => {
@@ -179,16 +179,19 @@ const handleSubMoveDown = (index: number, subIndex: number, isBottom = false) =>
     dynamicValidateForm.list[index].groupList.push(currentInfo[0])
   } else {
     const nextIndex = subIndex + 1
-    const nextInfo = cloneDeep(dynamicValidateForm.list[index].groupList[nextIndex])
-    const currentInfo = cloneDeep(dynamicValidateForm.list[index].groupList[subIndex])
-    dynamicValidateForm.list[index].groupList[nextIndex] = currentInfo
-    dynamicValidateForm.list[index].groupList[subIndex] = nextInfo
+    dynamicValidateForm.list[index].groupList[nextIndex] = cloneDeep(
+      dynamicValidateForm.list[index].groupList[subIndex],
+    )
+    dynamicValidateForm.list[index].groupList[subIndex] = cloneDeep(
+      dynamicValidateForm.list[index].groupList[nextIndex],
+    )
   }
 }
 
 /**
  * 删除
  * @param index 当前操作索引
+ * @param subIndex 子模块的索引
  */
 const handleSubDel = (index: number, subIndex: number) => {
   dynamicValidateForm.list[index].groupList.splice(subIndex, 1)
