@@ -4,6 +4,7 @@ import type { FormInstance } from 'ant-design-vue'
 // @ts-ignore
 import { v4 } from 'uuid'
 import { DownSquareOutlined } from '@ant-design/icons-vue'
+import { cloneDeep } from 'lodash-es'
 
 // 弹窗展示
 const open = ref(false)
@@ -13,8 +14,18 @@ const formRef = ref<FormInstance>()
 const dynamicValidateForm = reactive<{
   list: any[]
   mainTitle: string
+  id: number | null
 }>({
-  list: [],
+  id: null,
+  list: [
+    {
+      id: v4(),
+      title: '',
+      url: '',
+      isGroup: 0,
+      groupTitle: '',
+    },
+  ],
   mainTitle: '',
 })
 
@@ -23,11 +34,12 @@ const dynamicValidateForm = reactive<{
  */
 const handleAddLink = () => {
   dynamicValidateForm.list.push({
+    id: v4(),
     title: '',
     url: '',
-    id: v4(),
     isGroup: 0,
     groupTitle: '',
+    groupList: [],
   })
 }
 
@@ -46,7 +58,7 @@ const handleAddGroup = () => {
 }
 
 /**
- * 添加自连接
+ * 添加子连接
  * @param index 父级索引
  */
 const handleAddSub = (index: number) => {
@@ -63,6 +75,11 @@ const handleAddSub = (index: number) => {
 const handleSubmit = () => {
   formRef.value?.validate().then((values) => {
     console.log('values', values)
+    if (dynamicValidateForm.id) {
+      console.log('编辑')
+    } else {
+      console.log('新增')
+    }
   })
 }
 
@@ -80,37 +97,102 @@ const handleCancel = () => {
  */
 const handleOpenModal = (info?: any) => {
   if (info) {
+    dynamicValidateForm.id = info?.id
     dynamicValidateForm.mainTitle = info?.mainTitle
-    dynamicValidateForm.list = info?.list
+    dynamicValidateForm.list = cloneDeep(info?.list)
   }
-
   open.value = true
 }
 
 /**
- * 移动到最顶部
- */
-const handleMoveToTop = () => {}
-
-/**
- * 移动到最底部
- */
-const handleMoveToBottom = () => {}
-
-/**
  * 上移
+ * @param index 当前操作索引
+ * @param isTop 是否移动到最顶部
  */
-const handleMoveUp = () => {}
+const handleMoveUp = (index: number, isTop = false) => {
+  console.log('index', index, isTop)
+  if (isTop) {
+    const currentInfo = dynamicValidateForm.list.splice(index, 1)
+    console.log('currentInfo', currentInfo, dynamicValidateForm.list)
+    dynamicValidateForm.list.unshift(currentInfo[0])
+  } else {
+    const preIndex = index - 1
+    const preInfo = cloneDeep(dynamicValidateForm.list[preIndex])
+    const currentInfo = cloneDeep(dynamicValidateForm.list[index])
+    dynamicValidateForm.list[preIndex] = currentInfo
+    dynamicValidateForm.list[index] = preInfo
+  }
+}
 
 /**
  * 下移
+ * @param index 当前操作索引
+ * @param isBottom 是否移动到最底部
  */
-const handleMoveDown = () => {}
+const handleMoveDown = (index: number, isBottom = false) => {
+  if (isBottom) {
+    const currentInfo = dynamicValidateForm.list.splice(index, 1)
+    dynamicValidateForm.list.push(currentInfo[0])
+  } else {
+    const nextIndex = index + 1
+    const nextInfo = cloneDeep(dynamicValidateForm.list[nextIndex])
+    const currentInfo = cloneDeep(dynamicValidateForm.list[index])
+    dynamicValidateForm.list[nextIndex] = currentInfo
+    dynamicValidateForm.list[index] = nextInfo
+  }
+}
 
 /**
  * 删除
+ * @param index 当前操作索引
  */
-const handleDel = () => {}
+const handleDel = (index: number) => {
+  dynamicValidateForm.list.splice(index, 1)
+}
+
+/**
+ * 上移
+ * @param index 当前操作索引
+ * @param isTop 是否移动到最顶部
+ */
+const handleSubMoveUp = (index: number, subIndex: number, isTop = false) => {
+  if (isTop) {
+    const currentInfo = dynamicValidateForm.list[index].groupList.splice(subIndex)
+    dynamicValidateForm.list[index].groupList.unshift(currentInfo[0])
+  } else {
+    const preIndex = subIndex - 1
+    const preInfo = cloneDeep(dynamicValidateForm.list[index].groupList[preIndex])
+    const currentInfo = cloneDeep(dynamicValidateForm.list[index].groupList[subIndex])
+    dynamicValidateForm.list[index].groupList[preIndex] = currentInfo
+    dynamicValidateForm.list[index].groupList[subIndex] = preInfo
+  }
+}
+
+/**
+ * 下移
+ * @param index 当前操作索引
+ * @param isBottom 是否移动到最底部
+ */
+const handleSubMoveDown = (index: number, subIndex: number, isBottom = false) => {
+  if (isBottom) {
+    const currentInfo = dynamicValidateForm.list[index].groupList.splice(subIndex, 1)
+    dynamicValidateForm.list[index].groupList.push(currentInfo[0])
+  } else {
+    const nextIndex = subIndex + 1
+    const nextInfo = cloneDeep(dynamicValidateForm.list[index].groupList[nextIndex])
+    const currentInfo = cloneDeep(dynamicValidateForm.list[index].groupList[subIndex])
+    dynamicValidateForm.list[index].groupList[nextIndex] = currentInfo
+    dynamicValidateForm.list[index].groupList[subIndex] = nextInfo
+  }
+}
+
+/**
+ * 删除
+ * @param index 当前操作索引
+ */
+const handleSubDel = (index: number, subIndex: number) => {
+  dynamicValidateForm.list[index].groupList.splice(subIndex, 1)
+}
 
 /**
  * 转为菜单
@@ -159,14 +241,29 @@ defineExpose({
                 <DownSquareOutlined />
                 <template #overlay>
                   <a-menu>
-                    <a-menu-item key="0" @click="handleMoveToTop"> 移动到顶部</a-menu-item>
-                    <a-menu-item key="1">上移</a-menu-item>
-                    <a-menu-item key="2">下移</a-menu-item>
-                    <a-menu-item key="3"> 移动到底部</a-menu-item>
+                    <a-menu-item key="0" @click="handleMoveUp(index, true)" v-if="index > 0">
+                      移动到顶部
+                    </a-menu-item>
+                    <a-menu-item key="1" @click="handleMoveUp(index)" v-if="index > 0"
+                      >上移
+                    </a-menu-item>
+                    <a-menu-item
+                      key="2"
+                      @click="handleMoveDown(index)"
+                      v-if="index < dynamicValidateForm.list.length - 1"
+                      >下移
+                    </a-menu-item>
+                    <a-menu-item
+                      key="3"
+                      @click="handleMoveDown(index, true)"
+                      v-if="index < dynamicValidateForm.list.length - 1"
+                    >
+                      移动到底部
+                    </a-menu-item>
                     <a-menu-divider />
                     <a-menu-item key="4" @click="convertToMenu"> 转为菜单</a-menu-item>
                     <a-menu-divider />
-                    <a-menu-item key="5"> 删除</a-menu-item>
+                    <a-menu-item key="5" @click="handleDel(index)"> 删除</a-menu-item>
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -213,24 +310,78 @@ defineExpose({
                   <DownSquareOutlined />
                   <template #overlay>
                     <a-menu>
-                      <a-menu-item key="0" @click="handleMoveToTop"> 移动到顶部</a-menu-item>
-                      <a-menu-item key="1">上移</a-menu-item>
-                      <a-menu-item key="2">下移</a-menu-item>
-                      <a-menu-item key="3"> 移动到底部</a-menu-item>
+                      <a-menu-item
+                        key="0"
+                        @click="handleSubMoveUp(index, innerIndex, true)"
+                        v-if="innerIndex > 0"
+                      >
+                        移动到顶部
+                      </a-menu-item>
+                      <a-menu-item
+                        key="1"
+                        v-if="innerIndex > 0"
+                        @click="handleSubMoveUp(index, innerIndex)"
+                        >上移
+                      </a-menu-item>
+                      <a-menu-item
+                        key="2"
+                        v-if="innerIndex < dynamicValidateForm.list[index].groupList.length - 1"
+                        @click="handleSubMoveDown(index, innerIndex)"
+                        >下移
+                      </a-menu-item>
+                      <a-menu-item
+                        key="3"
+                        v-if="innerIndex < dynamicValidateForm.list[index].groupList.length - 1"
+                        @click="handleSubMoveDown(index, innerIndex, true)"
+                      >
+                        移动到底部
+                      </a-menu-item>
                       <a-menu-divider />
-                      <a-menu-item key="5"> 删除</a-menu-item>
+                      <a-menu-item key="5" @click="handleSubDel(index, innerIndex)">
+                        删除
+                      </a-menu-item>
                     </a-menu>
                   </template>
                 </a-dropdown>
               </div>
             </div>
-            <a-button
-              key="submit"
-              type="primary"
-              @click="() => handleAddSub(index)"
-              :style="{ marginBottom: '10px' }"
-              >新增链接
-            </a-button>
+            <div class="flex justify-between items-center">
+              <a-button
+                key="submit"
+                type="primary"
+                @click="() => handleAddSub(index)"
+                :style="{ marginBottom: '10px' }"
+                >新增链接
+              </a-button>
+              <a-dropdown>
+                <DownSquareOutlined />
+                <template #overlay>
+                  <a-menu>
+                    <a-menu-item key="0" @click="handleMoveUp(index, true)" v-if="index > 0">
+                      移动到顶部
+                    </a-menu-item>
+                    <a-menu-item key="1" @click="handleMoveUp(index)" v-if="index > 0"
+                      >上移
+                    </a-menu-item>
+                    <a-menu-item
+                      key="2"
+                      @click="handleMoveDown(index)"
+                      v-if="index < dynamicValidateForm.list.length - 1"
+                      >下移
+                    </a-menu-item>
+                    <a-menu-item
+                      key="3"
+                      @click="handleMoveDown(index, true)"
+                      v-if="index < dynamicValidateForm.list.length - 1"
+                    >
+                      移动到底部
+                    </a-menu-item>
+                    <a-menu-divider />
+                    <a-menu-item key="5" @click="handleDel(index)"> 删除</a-menu-item>
+                  </a-menu>
+                </template>
+              </a-dropdown>
+            </div>
           </template>
         </div>
       </a-form>

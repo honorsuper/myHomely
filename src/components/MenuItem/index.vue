@@ -46,7 +46,7 @@ const renameRef = ref<InstanceType<typeof Rename> | null>(null)
  */
 const handleOpenModal = () => {
   open.value = false
-  addColRef.value?.handleOpenModal(props.info)
+  addColRef.value?.handleOpenModal(props?.info)
 }
 
 /**

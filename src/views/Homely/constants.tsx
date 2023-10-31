@@ -31,31 +31,36 @@ export const colorList = [
 
 export const menuData = [
   {
-    id:1,
+    id: 1,
     mainTitle: '1',
-    list: ['nine', 'ten'].map((item, index) => ({
+    list: ['nine', 'ten', 'three'].map((item, index) => ({
       title: item,
       url: 'https://www.baidu.com/',
       id: item,
       isGroup: 1,
-      groupTitle: `分组${index + 1}`,
+      groupTitle: `分组${index + 1}${item}`,
       groupList: [
         {
           subTitle: '组内1',
-          subUrl: 'https://www.baidu.com/',
+          subUrl: 'https://www.baidu.com/1',
           id: 1,
         },
         {
           subTitle: '组内2',
-          subUrl: 'https://www.baidu.com/',
+          subUrl: 'https://www.baidu.com/2',
           id: 2,
+        },
+        {
+          subTitle: '组内3',
+          subUrl: 'https://www.baidu.com/3',
+          id: 3,
         },
       ],
       ...colorList[0],
     })),
   },
   {
-    id:2,
+    id: 2,
     mainTitle: '2',
     list: ['eight', 'nine', 'ten'].map((item) => ({
       title: item,
@@ -65,7 +70,7 @@ export const menuData = [
     })),
   },
   {
-    id:3,
+    id: 3,
     mainTitle: '3',
     list: ['three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'].map((item) => ({
       title: item,
@@ -75,7 +80,7 @@ export const menuData = [
     })),
   },
   {
-    id:4,
+    id: 4,
     mainTitle: '4',
     list: ['four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'].map((item) => ({
       title: item,
@@ -84,7 +89,7 @@ export const menuData = [
     })),
   },
   {
-    id:5,
+    id: 5,
     mainTitle: '5',
     list: ['seven', 'eight', 'nine', 'ten'].map((item) => ({
       title: item,
@@ -94,7 +99,7 @@ export const menuData = [
     })),
   },
   {
-    id:6,
+    id: 6,
     mainTitle: '6',
     list: ['six', 'seven', 'eight', 'nine', 'ten'].map((item) => ({
       title: item,
@@ -104,7 +109,7 @@ export const menuData = [
     })),
   },
   {
-    id:7,
+    id: 7,
     mainTitle: '7',
     list: ['six', 'seven', 'eight', 'nine', 'ten'].map((item) => ({
       title: item,
@@ -114,7 +119,7 @@ export const menuData = [
     })),
   },
   {
-    id:8,
+    id: 8,
     mainTitle: '8',
     list: ['six', 'seven', 'eight', 'nine', 'ten'].map((item) => ({
       title: item,
@@ -124,7 +129,7 @@ export const menuData = [
     })),
   },
   {
-    id:9,
+    id: 9,
     mainTitle: '9',
     list: ['nine'].map((item) => ({
       title: item,
@@ -134,7 +139,7 @@ export const menuData = [
     })),
   },
   {
-    id:10,
+    id: 10,
     mainTitle: '10',
     list: ['six', 'seven', 'eight', 'nine', 'ten'].map((item) => ({
       title: item,
@@ -144,7 +149,7 @@ export const menuData = [
     })),
   },
   {
-    id:11,
+    id: 11,
     mainTitle: '11',
     list: ['five', 'six', 'seven', 'eight', 'nine', 'ten'].map((item) => ({
       title: item,
@@ -154,7 +159,7 @@ export const menuData = [
     })),
   },
   {
-    id:12,
+    id: 12,
     mainTitle: '12',
     list: ['four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'].map((item) => ({
       title: item,
@@ -164,7 +169,7 @@ export const menuData = [
     })),
   },
   {
-    id:13,
+    id: 13,
     mainTitle: '13',
     list: ['seven', 'eight', 'nine', 'ten'].map((item) => ({
       title: item,
