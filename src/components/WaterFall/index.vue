@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
+import { Sortable } from 'sortablejs-vue3'
 import { MenuItem } from '@/components'
 import { getMinHeightColumn, getMinHeight, getMaxHeight } from './utils'
 
@@ -161,6 +162,10 @@ const useColumnHeightObj = () => {
   }
 }
 
+const onOrderChange = (event: any) => {
+  console.log('触发了没', event.oldIndex, event.newIndex)
+}
+
 onMounted(() => {
   useColumnWidth()
   useColumnHeightObj()
@@ -178,16 +183,37 @@ onMounted(() => {
       height: containerHeight + 'px', // 因为当前为 relative 布局，所以需要主动指定高度
     }"
   >
-    <MenuItem
-      v-for="info in data"
-      :info="info"
-      :key="info.mainTitle"
-      :style="{
-        width: columnWidth + 'px',
-        left: info._style?.left + 'px',
-        top: info._style?.top + 'px',
+    <!--    <MenuItem-->
+    <!--      v-for="info in data"-->
+    <!--      :info="info"-->
+    <!--      :key="info.mainTitle"-->
+    <!--      :style="{-->
+    <!--        width: columnWidth + 'px',-->
+    <!--        left: info._style?.left + 'px',-->
+    <!--        top: info._style?.top + 'px',-->
+    <!--      }"-->
+    <!--    />-->
+    <Sortable
+      :list="data"
+      item-key="uid"
+      tag="div"
+      @end="onOrderChange"
+      :options="{
+        handle: '.my-handle',
       }"
-    />
+    >
+      <template #item="{ element }">
+        <MenuItem
+          :info="element"
+          :key="element.mainTitle"
+          :style="{
+            width: columnWidth + 'px',
+            left: element._style?.left + 'px',
+            top: element._style?.top + 'px',
+          }"
+        />
+      </template>
+    </Sortable>
   </div>
 </template>
 <style scoped lang="less">
