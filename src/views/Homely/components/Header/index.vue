@@ -1,12 +1,23 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { AddCol } from '../'
 
+const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
+
+/**
+ * 打开弹窗
+ */
+const handleOpenModal = () => {
+  addColRef?.value?.handleOpenModal?.()
+}
 </script>
 <template>
   <div class="header-wrap flex items-center justify-between">
     <div class="title">头部区域</div>
-    <div >
-      <a-button type="primary">新增列</a-button>
+    <div>
+      <a-button type="primary" @click="handleOpenModal">新增列</a-button>
     </div>
+    <AddCol ref="addColRef" />
   </div>
 </template>
 <style scoped lang="less">
@@ -16,6 +27,5 @@
   padding: 0 58px;
   background: #ffffff;
   margin-bottom: 30px;
-  //color:#000000;
 }
 </style>

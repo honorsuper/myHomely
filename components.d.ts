@@ -23,6 +23,7 @@ declare module 'vue' {
     MenuItem: typeof import('./src/components/MenuItem/index.vue')['default']
     MinusCircleOutlined: typeof import('@ant-design/icons-vue')['MinusCircleOutlined']
     PlusOutlined: typeof import('@ant-design/icons-vue')['PlusOutlined']
+    Rename: typeof import('./src/components/MenuItem/Rename.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     WaterFall: typeof import('./src/components/WaterFall/index.vue')['default']
