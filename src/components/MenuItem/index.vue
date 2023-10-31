@@ -10,8 +10,9 @@ import {
 import { AddCol } from '../../views/Homely/components'
 import Rename from './Rename.vue'
 
-defineProps<{
+const props = defineProps<{
   info: {
+    id: number
     _style?: {
       left?: number
       top?: number
@@ -26,8 +27,8 @@ defineProps<{
       bgColor: string
       color: string
       groupList?: {
-        title: string
-        url: string
+        subTitle: string
+        subUrl: string
         id: number | string
       }[]
     }[]
@@ -45,7 +46,7 @@ const renameRef = ref<InstanceType<typeof Rename> | null>(null)
  */
 const handleOpenModal = () => {
   open.value = false
-  addColRef.value?.handleOpenModal()
+  addColRef.value?.handleOpenModal(props.info)
 }
 
 /**
@@ -53,7 +54,10 @@ const handleOpenModal = () => {
  */
 const handelOpenRename = () => {
   open.value = false
-  renameRef.value?.handleOpenRename?.()
+  renameRef.value?.handleOpenRename?.({
+    id: props.info.id,
+    mainTitle: props.info.mainTitle,
+  })
 }
 // 删除
 const handleDel = () => {
@@ -131,8 +135,8 @@ const jumpToUrl = (url: string) => {
           <template #overlay>
             <a-menu>
               <a-menu-item v-for="innerItem in item.groupList" :key="innerItem.id">
-                <a target="_self" rel="noopener noreferrer" :href="innerItem.url">
-                  {{ innerItem.title }}
+                <a target="_self" rel="noopener noreferrer" :href="innerItem.subUrl">
+                  {{ innerItem.subTitle }}
                 </a>
               </a-menu-item>
             </a-menu>
@@ -163,8 +167,6 @@ const jumpToUrl = (url: string) => {
   padding: 8px 12px;
   font-size: 16px;
   border-radius: 4px;
-  //width: 100%;
-  //height: 100%;
 }
 
 .menu-item-content {

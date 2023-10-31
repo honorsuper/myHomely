@@ -2,16 +2,25 @@
 import { reactive, ref } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
 
+// 弹窗显示状态
 const open = ref(false)
-
 // 表单
 const formRef = ref<FormInstance>()
-
+// 当前模块id
+const currentId = ref<number | null>(null)
+// 表单数据
 const formState = reactive({
   mainTitle: '',
 })
 
-const handleOpenRename = () => {
+/**
+ * 打开重命名弹窗
+ * @param id 当前模块id
+ * @param mainTitle 当前模块标题
+ */
+const handleOpenRename = ({ id, mainTitle }: { id: number; mainTitle: string }) => {
+  currentId.value = id
+  formState.mainTitle = mainTitle
   open.value = true
 }
 
@@ -34,6 +43,7 @@ const handleSubmit = () => {
  */
 const handleCancel = () => {
   formState.mainTitle = ''
+  currentId.value = null
   open.value = false
 }
 defineExpose({

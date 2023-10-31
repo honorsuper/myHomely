@@ -78,7 +78,12 @@ const handleCancel = () => {
 /**
  * 打开弹窗
  */
-const handleOpenModal = () => {
+const handleOpenModal = (info?: any) => {
+  if (info) {
+    dynamicValidateForm.mainTitle = info?.mainTitle
+    dynamicValidateForm.list = info?.list
+  }
+
   open.value = true
 }
 
@@ -101,11 +106,6 @@ const handleMoveUp = () => {}
  * 下移
  */
 const handleMoveDown = () => {}
-
-/**
- * 删除确认
- */
-const delConfirm = () => {}
 
 /**
  * 删除

@@ -10,6 +10,7 @@ const props = withDefaults(
         left?: number
         top?: number
       }
+      id: number
       mainTitle: string
       list: {
         title: string
@@ -20,8 +21,8 @@ const props = withDefaults(
         bgColor: string
         color: string
         groupList?: {
-          title: string
-          url: string
+          subTitle: string
+          subUrl: string
           id: number | string
         }[]
       }[]
