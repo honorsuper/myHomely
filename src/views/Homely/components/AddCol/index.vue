@@ -199,8 +199,25 @@ const handleSubDel = (index: number, subIndex: number) => {
 
 /**
  * 转为菜单
+ * @param index 当前操作索引
  */
-const convertToMenu = () => {}
+const convertToMenu = (index: number) => {
+  const { title, url, id } = dynamicValidateForm.list[index]
+  dynamicValidateForm.list[index] = {
+    title: '',
+    url: '',
+    id: v4(),
+    isGroup: 1,
+    groupTitle: '',
+    groupList: [
+      {
+        subTitle: title,
+        subUrl: url,
+        id,
+      },
+    ],
+  }
+}
 
 defineExpose({
   handleOpenModal,
@@ -264,7 +281,7 @@ defineExpose({
                       移动到底部
                     </a-menu-item>
                     <a-menu-divider />
-                    <a-menu-item key="4" @click="convertToMenu"> 转为菜单</a-menu-item>
+                    <a-menu-item key="4" @click="convertToMenu(index)"> 转为菜单</a-menu-item>
                     <a-menu-divider />
                     <a-menu-item key="5" @click="handleDel(index)"> 删除</a-menu-item>
                   </a-menu>
