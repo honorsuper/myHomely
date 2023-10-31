@@ -11,9 +11,19 @@ const props = withDefaults(
         top?: number
       }
       mainTitle: string
-      content: {
+      list: {
         title: string
         url: string
+        id: number | string
+        isGroup?: number
+        groupTitle?: string
+        bgColor: string
+        color: string
+        groupList?: {
+          title: string
+          url: string
+          id: number | string
+        }[]
       }[]
     }[]
     // 列数
@@ -26,8 +36,8 @@ const props = withDefaults(
   {
     column: 6,
     columnSpacing: 30,
-    rowSpacing: 30
-  }
+    rowSpacing: 30,
+  },
 )
 // 容器实例
 const containerTarget = ref<HTMLElement | null>(null)
@@ -41,7 +51,6 @@ const containerLeft = ref(0)
 const columnHeightObj = ref<Record<string, number>>({})
 // 容器的总高度
 const containerHeight = ref(0)
-const isHovered = ref(false)
 
 /**
  * 计算容器宽度
@@ -95,6 +104,7 @@ let itemHeights: number[] = []
 const increasingHeight = (index: number) => {
   // 最小高度所在的列
   const minHeightColumn = getMinHeightColumn(columnHeightObj.value)
+
   // 该列高度自增
   columnHeightObj.value[minHeightColumn] += itemHeights[index] + props.rowSpacing
 }
@@ -106,11 +116,13 @@ const useItemHeight = () => {
   itemHeights = []
   // 拿到所有元素
   let itemElements = [...document.getElementsByClassName('waterfall-item')] as HTMLElement[]
+
   // 计算 item 高度
   itemElements.forEach((el) => {
     // 依据传入数据计算出的 img 高度
     itemHeights.push(el.offsetHeight)
   })
+  console.log('itemHeights', itemHeights)
   // 渲染位置
   useItemLocation()
 }
@@ -148,18 +160,13 @@ const useColumnHeightObj = () => {
   }
 }
 
-const onMouseenter = () => {
-  isHovered.value = true
-}
-
-const onMouseLeave = () => {
-  isHovered.value = false
-}
-
 onMounted(() => {
   useColumnWidth()
   useColumnHeightObj()
-  useItemHeight()
+
+  setTimeout(() => {
+    useItemHeight()
+  })
 })
 </script>
 <template>
@@ -167,7 +174,7 @@ onMounted(() => {
     ref="containerTarget"
     class="relative waterfall-wrap"
     :style="{
-      height: containerHeight + 'px' // 因为当前为 relative 布局，所以需要主动指定高度
+      height: containerHeight + 'px', // 因为当前为 relative 布局，所以需要主动指定高度
     }"
   >
     <MenuItem
@@ -177,7 +184,7 @@ onMounted(() => {
       :style="{
         width: columnWidth + 'px',
         left: info._style?.left + 'px',
-        top: info._style?.top + 'px'
+        top: info._style?.top + 'px',
       }"
     />
   </div>

@@ -2,7 +2,11 @@
 import { ref, createVNode } from 'vue'
 import { useElementHover } from '@vueuse/core'
 import { Modal } from 'ant-design-vue'
-import { DownSquareOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue'
+import {
+  DownSquareOutlined,
+  ExclamationCircleOutlined,
+  CaretDownOutlined,
+} from '@ant-design/icons-vue'
 import { AddCol } from '../../views/Homely/components'
 import Rename from './Rename.vue'
 
@@ -13,11 +17,19 @@ defineProps<{
       top?: number
     }
     mainTitle: string
-    content: {
+    list: {
       title: string
       url: string
-      bgColor?: string
-      color?: string
+      id: number | string
+      isGroup?: number
+      groupTitle?: string
+      bgColor: string
+      color: string
+      groupList?: {
+        title: string
+        url: string
+        id: number | string
+      }[]
     }[]
   }
 }>()
@@ -61,6 +73,14 @@ const delConfirm = () => {
     onOk: handleDel,
   })
 }
+
+/**
+ * 页面跳转
+ * @param url 跳转路径
+ */
+const jumpToUrl = (url: string) => {
+  location.href = url
+}
 </script>
 
 <template>
@@ -81,16 +101,43 @@ const delConfirm = () => {
       </div>
     </div>
     <div class="menu-item-content flex-col flex gap-y-2 cursor-pointer">
-      <div
-        class="item flex justify-center"
-        v-for="item in info.content"
-        :key="item.title"
-        :style="{
-          background: item.bgColor,
-          color: item.color,
-        }"
-      >
-        {{ item.title }}
+      <div v-for="item in info.list" :key="item.id">
+        <div
+          :style="{
+            background: item.bgColor,
+            color: item.color,
+          }"
+          class="item flex justify-center"
+          @click="jumpToUrl(item.url)"
+          v-if="!item?.isGroup"
+        >
+          {{ item.title }}
+        </div>
+
+        <a-dropdown v-else>
+          <div
+            class="item flex justify-center"
+            :style="{
+              background: item.bgColor,
+              color: item.color,
+            }"
+          >
+            {{ item.groupTitle }}
+            <div class="flex items-center">
+              <CaretDownOutlined />
+            </div>
+          </div>
+
+          <template #overlay>
+            <a-menu>
+              <a-menu-item v-for="innerItem in item.groupList" :key="innerItem.id">
+                <a target="_self" rel="noopener noreferrer" :href="innerItem.url">
+                  {{ innerItem.title }}
+                </a>
+              </a-menu-item>
+            </a-menu>
+          </template>
+        </a-dropdown>
       </div>
     </div>
     <AddCol ref="addColRef" />
@@ -114,8 +161,10 @@ const delConfirm = () => {
 
 .item {
   padding: 8px 12px;
-  font-size: 14px;
+  font-size: 16px;
   border-radius: 4px;
+  //width: 100%;
+  //height: 100%;
 }
 
 .menu-item-content {

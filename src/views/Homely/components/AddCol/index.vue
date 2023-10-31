@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
-import { v4 as uuidv4 } from 'uuid'
+// @ts-ignore
+import { v4 } from 'uuid'
+import { DownSquareOutlined } from '@ant-design/icons-vue'
 
 // 弹窗展示
 const open = ref(false)
 // 表单
 const formRef = ref<FormInstance>()
 
-const dynamicValidateForm = reactive({
+const dynamicValidateForm = reactive<{
+  list: any[]
+  mainTitle: string
+}>({
   list: [],
   mainTitle: '',
 })
@@ -20,7 +25,7 @@ const handleAddLink = () => {
   dynamicValidateForm.list.push({
     title: '',
     url: '',
-    id: uuidv4(),
+    id: v4(),
     isGroup: 0,
     groupTitle: '',
   })
@@ -33,7 +38,7 @@ const handleAddGroup = () => {
   dynamicValidateForm.list.push({
     title: '',
     url: '',
-    id: uuidv4(),
+    id: v4(),
     isGroup: 1,
     groupTitle: '',
     groupList: [],
@@ -48,7 +53,7 @@ const handleAddSub = (index: number) => {
   dynamicValidateForm.list[index].groupList.push({
     subTitle: '',
     subUrl: '',
-    id: uuidv4(),
+    id: v4(),
   })
 }
 
@@ -76,6 +81,41 @@ const handleCancel = () => {
 const handleOpenModal = () => {
   open.value = true
 }
+
+/**
+ * 移动到最顶部
+ */
+const handleMoveToTop = () => {}
+
+/**
+ * 移动到最底部
+ */
+const handleMoveToBottom = () => {}
+
+/**
+ * 上移
+ */
+const handleMoveUp = () => {}
+
+/**
+ * 下移
+ */
+const handleMoveDown = () => {}
+
+/**
+ * 删除确认
+ */
+const delConfirm = () => {}
+
+/**
+ * 删除
+ */
+const handleDel = () => {}
+
+/**
+ * 转为菜单
+ */
+const convertToMenu = () => {}
 
 defineExpose({
   handleOpenModal,
@@ -114,6 +154,23 @@ defineExpose({
             >
               <a-input v-model:value="user.url" placeholder="请输入链接" />
             </a-form-item>
+            <div class="flex justify-end cursor-pointer editIcon">
+              <a-dropdown>
+                <DownSquareOutlined />
+                <template #overlay>
+                  <a-menu>
+                    <a-menu-item key="0" @click="handleMoveToTop"> 移动到顶部</a-menu-item>
+                    <a-menu-item key="1">上移</a-menu-item>
+                    <a-menu-item key="2">下移</a-menu-item>
+                    <a-menu-item key="3"> 移动到底部</a-menu-item>
+                    <a-menu-divider />
+                    <a-menu-item key="4" @click="convertToMenu"> 转为菜单</a-menu-item>
+                    <a-menu-divider />
+                    <a-menu-item key="5"> 删除</a-menu-item>
+                  </a-menu>
+                </template>
+              </a-dropdown>
+            </div>
           </template>
           <template v-else>
             <a-form-item
@@ -151,6 +208,21 @@ defineExpose({
               >
                 <a-input v-model:value="innerUser.subUrl" placeholder="请输入链接" />
               </a-form-item>
+              <div class="flex justify-end cursor-pointer editIcon">
+                <a-dropdown>
+                  <DownSquareOutlined />
+                  <template #overlay>
+                    <a-menu>
+                      <a-menu-item key="0" @click="handleMoveToTop"> 移动到顶部</a-menu-item>
+                      <a-menu-item key="1">上移</a-menu-item>
+                      <a-menu-item key="2">下移</a-menu-item>
+                      <a-menu-item key="3"> 移动到底部</a-menu-item>
+                      <a-menu-divider />
+                      <a-menu-item key="5"> 删除</a-menu-item>
+                    </a-menu>
+                  </template>
+                </a-dropdown>
+              </div>
             </div>
             <a-button
               key="submit"
@@ -178,21 +250,5 @@ defineExpose({
   </a-modal>
 </template>
 <style scoped lang="less">
-.dynamic-wrap {
-  background: whitesmoke;
-  margin-bottom: 20px;
-  padding: 20px 10px 1px 10px;
-}
-
-.inner-dynamic-wrap {
-  background: antiquewhite;
-  margin-bottom: 20px;
-  padding: 20px 10px 1px 10px;
-}
-
-.inner-form {
-  max-height: 500px;
-  min-height: 80px;
-  overflow-y: auto;
-}
+@import './index.less';
 </style>
