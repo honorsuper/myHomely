@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { message } from 'ant-design-vue'
+import { useRouter } from 'vue-router'
 import { login } from '@/utils/request'
 
 interface FormState {
@@ -12,6 +13,9 @@ const formState = reactive<FormState>({
   username: '',
   password: '',
 })
+
+const router = useRouter()
+
 const onFinish = async (values: any) => {
   const res = await login(values.username, values.password)
   const { data } = res.data
@@ -21,6 +25,12 @@ const onFinish = async (values: any) => {
     localStorage.setItem('access_token', data.accessToken)
     localStorage.setItem('refresh_token', data.refreshToken)
     localStorage.setItem('user_info', JSON.stringify(data.userInfo))
+
+    setTimeout(() => {
+      router.push({
+        name: 'home',
+      })
+    }, 500)
   } else {
     message.error(data || '系统繁忙，请稍后再试')
   }
@@ -78,6 +88,7 @@ const onFinishFailed = (errorInfo: any) => {
   min-height: 100vh;
   background-color: #ffffff;
 }
+
 .form-wrap {
   width: 400px;
 }
