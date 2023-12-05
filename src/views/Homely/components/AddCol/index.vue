@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, inject } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
 // @ts-ignore
 import { v4 } from 'uuid'
 import { DownSquareOutlined } from '@ant-design/icons-vue'
 import { cloneDeep } from 'lodash-es'
+import { editMenu, getMenuInfo } from '@/utils/request'
+import { message } from 'ant-design-vue'
 
 // 弹窗展示
 const open = ref(false)
@@ -20,6 +22,7 @@ const dynamicValidateForm = reactive<{
   list: [
     {
       id: v4(),
+      index: 0,
       title: '',
       url: '',
       isGroup: 0,
@@ -29,12 +32,15 @@ const dynamicValidateForm = reactive<{
   mainTitle: '',
 })
 
+const homelyInfo = inject<any>('homely')
+
 /**
  * 新增链接
  */
 const handleAddLink = () => {
   dynamicValidateForm.list.push({
     id: v4(),
+    index: dynamicValidateForm.list.length,
     title: '',
     url: '',
     isGroup: 0,
@@ -73,12 +79,34 @@ const handleAddSub = (index: number) => {
  * 提交
  */
 const handleSubmit = () => {
-  formRef.value?.validate().then((values) => {
-    console.log('values', values)
-    if (dynamicValidateForm.id) {
-      console.log('编辑')
+  formRef.value?.validate().then(async (values) => {
+    if (dynamicValidateForm.id || dynamicValidateForm.id === 0) {
+      console.log('编辑', values)
+
+      const menuList = dynamicValidateForm.list.map((item, index) => {
+        return {
+          ...item,
+          ...values[index],
+          isGroup: 0,
+          bgColor: '#cccccc',
+          color: '#000000',
+        }
+      })
+
+      const res = await editMenu({
+        id: dynamicValidateForm.id,
+        list: menuList,
+      })
+
+      if (res.status === 201 || res.status === 200) {
+        message.success('修改成功')
+        handleCancel()
+        homelyInfo?.handleGetMenuInfo?.()
+      } else {
+        message.error(res?.data || '系统繁忙，请稍后再试')
+      }
     } else {
-      console.log('新增')
+      console.log('新增', values)
     }
   })
 }
@@ -96,6 +124,7 @@ const handleCancel = () => {
  * 打开弹窗
  */
 const handleOpenModal = (info?: any) => {
+  console.log('info', info)
   if (info) {
     dynamicValidateForm.id = info?.id
     dynamicValidateForm.mainTitle = info?.mainTitle

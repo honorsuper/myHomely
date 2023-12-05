@@ -85,9 +85,6 @@ const delConfirm = () => {
 const jumpToUrl = (url: string) => {
   location.href = url
 }
-
-
-
 </script>
 
 <template>
@@ -96,7 +93,7 @@ const jumpToUrl = (url: string) => {
       class="title box-border flex justify-between items-center font-medium my-handle"
       ref="target"
     >
-      标题{{ info.mainTitle }}
+      {{ info.mainTitle }}
       <div class="cursor-pointer flex items-center" v-if="isHovered || open">
         <a-dropdown v-model:open="open">
           <DownSquareOutlined />

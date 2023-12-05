@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import { Sortable } from 'sortablejs-vue3'
 import { MenuItem } from '@/components'
 import { getMinHeightColumn, getMinHeight, getMaxHeight } from './utils'
@@ -124,7 +124,6 @@ const useItemHeight = () => {
     // 依据传入数据计算出的 img 高度
     itemHeights.push(el.offsetHeight)
   })
-  console.log('itemHeights', itemHeights)
   // 渲染位置
   useItemLocation()
 }
@@ -166,13 +165,16 @@ const onOrderChange = (event: any) => {
   console.log('触发了没', event.oldIndex, event.newIndex)
 }
 
+watch(
+  () => props.data,
+  () => {
+    setTimeout(useItemHeight)
+  },
+)
+
 onMounted(() => {
   useColumnWidth()
   useColumnHeightObj()
-
-  setTimeout(() => {
-    useItemHeight()
-  })
 })
 </script>
 <template>
