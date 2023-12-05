@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, createVNode } from 'vue'
 import { useElementHover } from '@vueuse/core'
-import { Modal } from 'ant-design-vue'
+import { message, Modal } from 'ant-design-vue'
 import {
   DownSquareOutlined,
   ExclamationCircleOutlined,
@@ -9,6 +9,7 @@ import {
 } from '@ant-design/icons-vue'
 import { AddCol } from '../../views/Homely/components'
 import Rename from './Rename.vue'
+import { addMenu, deleteColumn } from '@/utils/request'
 
 const props = defineProps<{
   info: {
@@ -60,13 +61,21 @@ const handelOpenRename = () => {
   })
 }
 // 删除
-const handleDel = () => {
-  console.log('删除')
+const handleDel = async (id: number | string) => {
+  const res = await deleteColumn({
+    id,
+  })
+
+  if (res.status === 201 || res.status === 200) {
+    message.success('删除成功')
+  } else {
+    message.error(res?.data || '系统繁忙，请稍后再试')
+  }
 }
 /**
  * 确认删除
  */
-const delConfirm = () => {
+const delConfirm = (id: number | string) => {
   open.value = false
   Modal.confirm({
     title: '确认操作',
@@ -74,7 +83,7 @@ const delConfirm = () => {
     content: '是否确认删除该组数据',
     okText: '确认',
     cancelText: '取消',
-    onOk: handleDel,
+    onOk: () => handleDel(id),
   })
 }
 
@@ -101,7 +110,7 @@ const jumpToUrl = (url: string) => {
             <a-menu>
               <a-menu-item key="3" @click="handleOpenModal">修改</a-menu-item>
               <a-menu-item key="4" @click="handelOpenRename">重命名</a-menu-item>
-              <a-menu-item key="5" @click="delConfirm">删除</a-menu-item>
+              <a-menu-item key="5" @click="() => delConfirm(info.id)">删除</a-menu-item>
             </a-menu>
           </template>
         </a-dropdown>

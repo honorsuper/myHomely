@@ -1,6 +1,5 @@
 import axios, { type AxiosRequestConfig } from 'axios'
 
-
 const axiosInstance = axios.create({
   baseURL: '/api/',
   timeout: 3000,
@@ -112,6 +111,21 @@ export async function getMenuInfo() {
 }
 
 // 修改菜单
-export async function editMenu(data:any){
-  return await axiosInstance.post('/menu/edit-column',data)
+export async function editMenu(data: any) {
+  return await axiosInstance.post('/menu/edit-column', data)
+}
+
+// 新增菜单
+export async function addMenu(data: any) {
+  return await axiosInstance.post('/menu/add-column', data)
+}
+
+// 重命名
+export async function menuRename(data: any) {
+  return await axiosInstance.post('/menu/rename', data)
+}
+
+// 删除列
+export async function deleteColumn(data: any) {
+  return await axiosInstance.post('/menu/del-column', data)
 }

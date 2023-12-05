@@ -5,7 +5,7 @@ import type { FormInstance } from 'ant-design-vue'
 import { v4 } from 'uuid'
 import { DownSquareOutlined } from '@ant-design/icons-vue'
 import { cloneDeep } from 'lodash-es'
-import { editMenu, getMenuInfo } from '@/utils/request'
+import { addMenu, editMenu, getMenuInfo } from '@/utils/request'
 import { message } from 'ant-design-vue'
 
 // 弹窗展示
@@ -27,6 +27,8 @@ const dynamicValidateForm = reactive<{
       url: '',
       isGroup: 0,
       groupTitle: '',
+      bgColor: '#cccccc',
+      color: '#000000',
     },
   ],
   mainTitle: '',
@@ -38,6 +40,7 @@ const homelyInfo = inject<any>('homely')
  * 新增链接
  */
 const handleAddLink = () => {
+  console.log('新增111')
   dynamicValidateForm.list.push({
     id: v4(),
     index: dynamicValidateForm.list.length,
@@ -46,6 +49,8 @@ const handleAddLink = () => {
     isGroup: 0,
     groupTitle: '',
     groupList: [],
+    bgColor: '#cccccc',
+    color: '#000000',
   })
 }
 
@@ -60,6 +65,8 @@ const handleAddGroup = () => {
     isGroup: 1,
     groupTitle: '',
     groupList: [],
+    bgColor: '#cccccc',
+    color: '#000000',
   })
 }
 
@@ -81,21 +88,17 @@ const handleAddSub = (index: number) => {
 const handleSubmit = () => {
   formRef.value?.validate().then(async (values) => {
     if (dynamicValidateForm.id || dynamicValidateForm.id === 0) {
-      console.log('编辑', values)
-
       const menuList = dynamicValidateForm.list.map((item, index) => {
         return {
           ...item,
           ...values[index],
-          isGroup: 0,
-          bgColor: '#cccccc',
-          color: '#000000',
         }
       })
 
       const res = await editMenu({
         id: dynamicValidateForm.id,
         list: menuList,
+        mainTitle: dynamicValidateForm.mainTitle,
       })
 
       if (res.status === 201 || res.status === 200) {
@@ -107,6 +110,24 @@ const handleSubmit = () => {
       }
     } else {
       console.log('新增', values)
+      const menuList = dynamicValidateForm.list.map((item, index) => {
+        return {
+          ...item,
+          ...values[index],
+        }
+      })
+      const res = await addMenu({
+        list: menuList,
+        mainTitle: dynamicValidateForm.mainTitle,
+      })
+
+      if (res.status === 201 || res.status === 200) {
+        message.success('修改成功')
+        handleCancel()
+        homelyInfo?.handleGetMenuInfo?.()
+      } else {
+        message.error(res?.data || '系统繁忙，请稍后再试')
+      }
     }
   })
 }
@@ -139,15 +160,15 @@ const handleOpenModal = (info?: any) => {
  * @param isTop 是否移动到最顶部
  */
 const handleMoveUp = (index: number, isTop = false) => {
-  console.log('index', index, isTop)
   if (isTop) {
     const currentInfo = dynamicValidateForm.list.splice(index, 1)
     console.log('currentInfo', currentInfo, dynamicValidateForm.list)
     dynamicValidateForm.list.unshift(currentInfo[0])
   } else {
     const preIndex = index - 1
-    dynamicValidateForm.list[preIndex] = cloneDeep(dynamicValidateForm.list[index])
-    dynamicValidateForm.list[index] = cloneDeep(dynamicValidateForm.list[preIndex])
+    const cloneList = cloneDeep(dynamicValidateForm.list)
+    dynamicValidateForm.list[preIndex] = cloneList[index]
+    dynamicValidateForm.list[index] = cloneList[preIndex]
   }
 }
 
@@ -157,13 +178,15 @@ const handleMoveUp = (index: number, isTop = false) => {
  * @param isBottom 是否移动到最底部
  */
 const handleMoveDown = (index: number, isBottom = false) => {
+  console.log('index', index)
   if (isBottom) {
     const currentInfo = dynamicValidateForm.list.splice(index, 1)
     dynamicValidateForm.list.push(currentInfo[0])
   } else {
     const nextIndex = index + 1
-    dynamicValidateForm.list[nextIndex] = cloneDeep(dynamicValidateForm.list[index])
-    dynamicValidateForm.list[index] = cloneDeep(dynamicValidateForm.list[nextIndex])
+    const cloneList = cloneDeep(dynamicValidateForm.list)
+    dynamicValidateForm.list[nextIndex] = cloneList[index]
+    dynamicValidateForm.list[index] = cloneList[nextIndex]
   }
 }
 
@@ -187,12 +210,9 @@ const handleSubMoveUp = (index: number, subIndex: number, isTop = false) => {
     dynamicValidateForm.list[index].groupList.unshift(currentInfo[0])
   } else {
     const preIndex = subIndex - 1
-    dynamicValidateForm.list[index].groupList[preIndex] = cloneDeep(
-      dynamicValidateForm.list[index].groupList[subIndex],
-    )
-    dynamicValidateForm.list[index].groupList[subIndex] = cloneDeep(
-      dynamicValidateForm.list[index].groupList[preIndex],
-    )
+    const cloneList = cloneDeep(dynamicValidateForm.list)
+    dynamicValidateForm.list[index].groupList[preIndex] = cloneList[index].groupList[subIndex]
+    dynamicValidateForm.list[index].groupList[subIndex] = cloneList[index].groupList[preIndex]
   }
 }
 
@@ -203,17 +223,17 @@ const handleSubMoveUp = (index: number, subIndex: number, isTop = false) => {
  * @param isBottom 是否移动到最底部
  */
 const handleSubMoveDown = (index: number, subIndex: number, isBottom = false) => {
+  console.log('isBottom', isBottom)
   if (isBottom) {
     const currentInfo = dynamicValidateForm.list[index].groupList.splice(subIndex, 1)
     dynamicValidateForm.list[index].groupList.push(currentInfo[0])
   } else {
+    console.log('subIndex', subIndex)
+    console.log('index', index)
     const nextIndex = subIndex + 1
-    dynamicValidateForm.list[index].groupList[nextIndex] = cloneDeep(
-      dynamicValidateForm.list[index].groupList[subIndex],
-    )
-    dynamicValidateForm.list[index].groupList[subIndex] = cloneDeep(
-      dynamicValidateForm.list[index].groupList[nextIndex],
-    )
+    const cloneList = cloneDeep(dynamicValidateForm.list)
+    dynamicValidateForm.list[index].groupList[nextIndex] = cloneList[index].groupList[subIndex]
+    dynamicValidateForm.list[index].groupList[subIndex] = cloneList[index].groupList[nextIndex]
   }
 }
 

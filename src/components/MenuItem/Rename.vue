@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
+import { getMenuInfo, menuRename } from '@/utils/request'
+import { message } from 'ant-design-vue'
 
 // 弹窗显示状态
 const open = ref(false)
@@ -30,8 +32,18 @@ const handleOpenRename = ({ id, mainTitle }: { id: number; mainTitle: string }) 
 const handleSubmit = () => {
   formRef.value
     ?.validate()
-    .then((values) => {
-      console.log('values', values)
+    .then(async (values) => {
+      const res = await menuRename({
+        ...values,
+        id: currentId.value,
+      })
+
+      if (res.status === 201 || res.status === 200) {
+        message.success('修改成功')
+        handleCancel()
+      } else {
+        message.error(res?.data || '系统繁忙，请稍后再试')
+      }
     })
     .catch((err) => {
       console.log('err', err)
