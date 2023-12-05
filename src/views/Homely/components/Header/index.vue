@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { AddCol } from '../'
 import { userStore } from '@/stores/user'
-import {handleLogout} from "@/utils";
+import { handleLogout } from '@/utils'
 
 const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
 
@@ -21,6 +21,13 @@ const handleClickMenu = (a: any) => {
   if (a?.key === 'logout') {
     handleLogout()
   } else if (a?.key === 'update-userinfo') {
+    router.push({
+      name: 'updateUser',
+    })
+  } else if (a?.key === 'update-password') {
+    router.push({
+      name: 'changePassword',
+    })
   }
 }
 </script>
@@ -36,6 +43,7 @@ const handleClickMenu = (a: any) => {
         <template #overlay>
           <a-menu mode="vertical" @click="handleClickMenu">
             <a-menu-item key="update-userinfo"> 修改信息</a-menu-item>
+            <a-menu-item key="update-password"> 修改密码</a-menu-item>
             <a-menu-item key="logout"> 退出</a-menu-item>
           </a-menu>
         </template>

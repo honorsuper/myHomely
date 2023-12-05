@@ -88,11 +88,7 @@ const sendCaptcha = async () => {
         </a-form-item>
 
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-          <router-link to="/login">已有账号，去登录</router-link>
-        </a-form-item>
-
-        <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-          <a-button type="primary" html-type="submit">注册</a-button>
+          <a-button type="primary" html-type="submit">修改</a-button>
         </a-form-item>
       </a-form>
     </div>

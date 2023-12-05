@@ -24,6 +24,7 @@ declare module 'vue' {
     ASpace: typeof import('ant-design-vue/lib')['Space']
     ATextarea: typeof import('ant-design-vue/lib')['Textarea']
     CaretDownOutlined: typeof import('@ant-design/icons-vue')['CaretDownOutlined']
+    ColorPicker: typeof import('./src/components/ColorPicker/index.vue')['default']
     DownOutlined: typeof import('@ant-design/icons-vue')['DownOutlined']
     DownSquareOutlined: typeof import('@ant-design/icons-vue')['DownSquareOutlined']
     MenuItem: typeof import('./src/components/MenuItem/index.vue')['default']

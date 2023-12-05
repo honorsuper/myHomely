@@ -70,8 +70,8 @@ const onFinishFailed = (errorInfo: any) => {
 
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
           <div class="flex justify-between">
-            <router-link to="/rigist">创建账号</router-link>
-            <router-link to="/update_password">忘记密码</router-link>
+            <router-link to="/register">创建账号</router-link>
+            <router-link to="/change/password">忘记密码</router-link>
           </div>
         </a-form-item>
 

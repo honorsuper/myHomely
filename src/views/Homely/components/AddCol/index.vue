@@ -7,6 +7,7 @@ import { DownSquareOutlined } from '@ant-design/icons-vue'
 import { cloneDeep } from 'lodash-es'
 import { addMenu, editMenu, getMenuInfo } from '@/utils/request'
 import { message } from 'ant-design-vue'
+import { ColorPicker } from '@/components'
 
 // 弹窗展示
 const open = ref(false)
@@ -27,8 +28,7 @@ const dynamicValidateForm = reactive<{
       url: '',
       isGroup: 0,
       groupTitle: '',
-      bgColor: '#cccccc',
-      color: '#000000',
+      color: 0,
     },
   ],
   mainTitle: '',
@@ -46,11 +46,10 @@ const handleAddLink = () => {
     index: dynamicValidateForm.list.length,
     title: '',
     url: '',
+    color: 0,
     isGroup: 0,
     groupTitle: '',
     groupList: [],
-    bgColor: '#cccccc',
-    color: '#000000',
   })
 }
 
@@ -65,8 +64,7 @@ const handleAddGroup = () => {
     isGroup: 1,
     groupTitle: '',
     groupList: [],
-    bgColor: '#cccccc',
-    color: '#000000',
+    color: 0,
   })
 }
 
@@ -305,6 +303,16 @@ defineExpose({
             >
               <a-input v-model:value="user.url" placeholder="请输入链接" />
             </a-form-item>
+            <a-form-item
+              label="颜色"
+              :name="['list', index, 'color']"
+              :rules="{
+                required: true,
+                message: '请输入颜色',
+              }"
+            >
+              <ColorPicker v-model:value="user.color" />
+            </a-form-item>
             <div class="flex justify-end cursor-pointer editIcon">
               <a-dropdown>
                 <DownSquareOutlined />
@@ -374,6 +382,7 @@ defineExpose({
               >
                 <a-input v-model:value="innerUser.subUrl" placeholder="请输入链接" />
               </a-form-item>
+
               <div class="flex justify-end cursor-pointer editIcon">
                 <a-dropdown>
                   <DownSquareOutlined />
@@ -414,6 +423,16 @@ defineExpose({
                 </a-dropdown>
               </div>
             </div>
+            <a-form-item
+              :name="['list', index, 'color']"
+              :rules="{
+                required: true,
+                message: '请选择颜色',
+              }"
+              label="颜色"
+            >
+              <ColorPicker v-model:value="user.color" />
+            </a-form-item>
             <div class="flex justify-between items-center">
               <a-button
                 key="submit"

@@ -9,7 +9,38 @@ import {
 } from '@ant-design/icons-vue'
 import { AddCol } from '../../views/Homely/components'
 import Rename from './Rename.vue'
-import { addMenu, deleteColumn } from '@/utils/request'
+import { deleteColumn } from '@/utils/request'
+
+const colorList = [
+  {
+    bgColor: '#cccccc',
+    color: '#000000',
+  },
+  {
+    bgColor: '#444444',
+    color: '#ffffff',
+  },
+  {
+    bgColor: '#337ab7',
+    color: '#ffffff',
+  },
+  {
+    bgColor: '#5bc0de',
+    color: '#ffffff',
+  },
+  {
+    bgColor: '#449d44',
+    color: '#ffffff',
+  },
+  {
+    bgColor: '#f0ad4e',
+    color: '#ffffff',
+  },
+  {
+    bgColor: '#d9534f',
+    color: '#ffffff',
+  },
+]
 
 const props = defineProps<{
   info: {
@@ -26,7 +57,7 @@ const props = defineProps<{
       isGroup?: number
       groupTitle?: string
       bgColor: string
-      color: string
+      color: number
       groupList?: {
         subTitle: string
         subUrl: string
@@ -120,8 +151,8 @@ const jumpToUrl = (url: string) => {
       <div v-for="item in info.list" :key="item.id">
         <div
           :style="{
-            background: item.bgColor,
-            color: item.color,
+            background: colorList[item.color].bgColor,
+            color: colorList[item.color].color,
           }"
           class="item flex justify-center"
           @click="jumpToUrl(item.url)"
@@ -134,8 +165,8 @@ const jumpToUrl = (url: string) => {
           <div
             class="item flex justify-center"
             :style="{
-              background: item.bgColor,
-              color: item.color,
+              background: colorList[item.color].bgColor,
+              color: colorList[item.color].color,
             }"
           >
             {{ item.groupTitle }}

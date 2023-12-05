@@ -1,12 +1,10 @@
-import {useRouter} from "vue-router";
+import { useRouter } from 'vue-router'
 
-const router=useRouter()
 /**
  * 退出登录
  */
-export const handleLogout=()=>{
+export const handleLogout = () => {
+  const router = useRouter()
   localStorage.clear()
-  router.push({
-    name: 'login',
-  })
+  location.href = location.origin + '/login'
 }
