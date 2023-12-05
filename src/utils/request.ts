@@ -129,3 +129,9 @@ export async function menuRename(data: any) {
 export async function deleteColumn(data: any) {
   return await axiosInstance.post('/menu/del-column', data)
 }
+
+// 列表排序
+export async function sortColumn(data: any){
+  return await axiosInstance.post('/menu/sort-column', data)
+}
+

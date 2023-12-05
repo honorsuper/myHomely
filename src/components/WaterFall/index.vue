@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref, computed, watch } from 'vue'
 import { Sortable } from 'sortablejs-vue3'
+import { type UseDraggableReturn, VueDraggable } from 'vue-draggable-plus'
 import { MenuItem } from '@/components'
 import { getMinHeightColumn, getMinHeight, getMaxHeight } from './utils'
+import { editMenu, sortColumn } from '@/utils/request'
+import { message } from 'ant-design-vue'
 
 const props = withDefaults(
   defineProps<{
@@ -161,8 +164,19 @@ const useColumnHeightObj = () => {
   }
 }
 
-const onOrderChange = (event: any) => {
-  console.log('触发了没', event.oldIndex, event.newIndex)
+const onOrderChange = async (event: any) => {
+  const res = await sortColumn({
+    fromIndex: event.oldIndex,
+    toIndex: event.newIndex,
+  })
+
+  if (res.status === 201 || res.status === 200) {
+    message.success('修改成功')
+    // handleCancel()
+    // homelyInfo?.handleGetMenuInfo?.()
+  } else {
+    message.error(res?.data || '系统繁忙，请稍后再试')
+  }
 }
 
 watch(
@@ -185,16 +199,6 @@ onMounted(() => {
       height: containerHeight + 'px', // 因为当前为 relative 布局，所以需要主动指定高度
     }"
   >
-    <!--    <MenuItem-->
-    <!--      v-for="info in data"-->
-    <!--      :info="info"-->
-    <!--      :key="info.mainTitle"-->
-    <!--      :style="{-->
-    <!--        width: columnWidth + 'px',-->
-    <!--        left: info._style?.left + 'px',-->
-    <!--        top: info._style?.top + 'px',-->
-    <!--      }"-->
-    <!--    />-->
     <Sortable
       :list="data"
       item-key="uid"
@@ -213,6 +217,7 @@ onMounted(() => {
             left: element._style?.left + 'px',
             top: element._style?.top + 'px',
           }"
+          class="cursor-move"
         />
       </template>
     </Sortable>
