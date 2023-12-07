@@ -2,7 +2,7 @@
 import { onMounted, ref, provide } from 'vue'
 import { WaterFall } from '@/components'
 import { Header, AddCol } from './components'
-import { ChangePasswordCaptcha, getMenuInfo } from '@/utils/request'
+import { getMenuInfo } from '@/utils/request'
 import { message } from 'ant-design-vue'
 
 const menuData = ref<any[]>([])

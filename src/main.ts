@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import Antd from 'ant-design-vue'
 import App from './App.vue'
 import router from './router'
-
+import 'vue3-colorpicker/style.css'
 import './styles/index.less'
 import 'ant-design-vue/dist/reset.css'
 import { store } from '@/stores'

@@ -5,7 +5,7 @@ import type { FormInstance } from 'ant-design-vue'
 import { v4 } from 'uuid'
 import { DownSquareOutlined } from '@ant-design/icons-vue'
 import { cloneDeep } from 'lodash-es'
-import { addMenu, editMenu, getMenuInfo } from '@/utils/request'
+import { addMenu, editMenu } from '@/utils/request'
 import { message } from 'ant-design-vue'
 import { ColorPicker } from '@/components'
 
@@ -40,7 +40,6 @@ const homelyInfo = inject<any>('homely')
  * 新增链接
  */
 const handleAddLink = () => {
-  console.log('新增111')
   dynamicValidateForm.list.push({
     id: v4(),
     index: dynamicValidateForm.list.length,
@@ -102,6 +101,7 @@ const handleSubmit = () => {
       if (res.status === 201 || res.status === 200) {
         message.success('修改成功')
         handleCancel()
+
         homelyInfo?.handleGetMenuInfo?.()
       } else {
         message.error(res?.data || '系统繁忙，请稍后再试')
@@ -143,7 +143,6 @@ const handleCancel = () => {
  * 打开弹窗
  */
 const handleOpenModal = (info?: any) => {
-  console.log('info', info)
   if (info) {
     dynamicValidateForm.id = info?.id
     dynamicValidateForm.mainTitle = info?.mainTitle
@@ -160,7 +159,6 @@ const handleOpenModal = (info?: any) => {
 const handleMoveUp = (index: number, isTop = false) => {
   if (isTop) {
     const currentInfo = dynamicValidateForm.list.splice(index, 1)
-    console.log('currentInfo', currentInfo, dynamicValidateForm.list)
     dynamicValidateForm.list.unshift(currentInfo[0])
   } else {
     const preIndex = index - 1

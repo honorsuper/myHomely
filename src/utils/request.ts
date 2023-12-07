@@ -131,7 +131,16 @@ export async function deleteColumn(data: any) {
 }
 
 // 列表排序
-export async function sortColumn(data: any){
+export async function sortColumn(data: any) {
   return await axiosInstance.post('/menu/sort-column', data)
 }
 
+// 更新颜色信息
+export async function updateColorConfig(data: any) {
+  return await axiosInstance.post('/user/update-color', data)
+}
+
+// 获取用户信息
+export async function queryUserInfo() {
+  return await axiosInstance.get('/user/info')
+}

@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref, computed, watch } from 'vue'
 import { Sortable } from 'sortablejs-vue3'
-import { type UseDraggableReturn, VueDraggable } from 'vue-draggable-plus'
 import { MenuItem } from '@/components'
 import { getMinHeightColumn, getMinHeight, getMaxHeight } from './utils'
-import { editMenu, sortColumn } from '@/utils/request'
+import { sortColumn } from '@/utils/request'
 import { message } from 'ant-design-vue'
 
 const props = withDefaults(
@@ -90,6 +89,7 @@ const columnSpacingTotal = computed(() => {
 const getItemLeft = () => {
   // 最小高度所在的列 * (列宽 + 间距)
   const column = getMinHeightColumn(columnHeightObj.value)
+  console.log('column', column)
   return Number(column) * (columnWidth.value + props.columnSpacing) + containerLeft.value
 }
 
@@ -137,10 +137,13 @@ const useItemHeight = () => {
 const useItemLocation = () => {
   // 遍历数据源
   props.data.forEach((item, index) => {
+    console.log('item', item)
     // 避免重复计算
     if (item._style) {
+      console.log('_style', item._style)
       return
     }
+
     // 生成 _style 属性
     item._style = {}
     // left
@@ -165,6 +168,8 @@ const useColumnHeightObj = () => {
 }
 
 const onOrderChange = async (event: any) => {
+  if (event.oldIndex === event.newIndex) return
+
   const res = await sortColumn({
     fromIndex: event.oldIndex,
     toIndex: event.newIndex,
@@ -182,7 +187,7 @@ const onOrderChange = async (event: any) => {
 watch(
   () => props.data,
   () => {
-    setTimeout(useItemHeight)
+    useItemHeight()
   },
 )
 

@@ -35,6 +35,7 @@ specifiers:
   vue: ^3.3.4
   vue-router: ^4.2.5
   vue-tsc: ^1.8.19
+  vue3-colorpicker: ^2.2.3
 
 dependencies:
   '@ant-design/icons-vue': 7.0.1_vue@3.3.6
@@ -50,6 +51,7 @@ dependencies:
   uuid: 9.0.1
   vue: 3.3.6_typescript@5.2.2
   vue-router: 4.2.5_vue@3.3.6
+  vue3-colorpicker: registry.npmmirror.com/vue3-colorpicker/2.2.3_vue@3.3.6
 
 devDependencies:
   '@rushstack/eslint-patch': 1.5.1
@@ -3078,6 +3080,12 @@ packages:
     version: 1.15.0
     dev: false
 
+  registry.npmmirror.com/@aesoper/normal-utils/0.1.5:
+    resolution: {integrity: sha512-LFF/6y6h5mfwhnJaWqqxuC8zzDaHCG62kMRkd8xhDtq62TQj9dM17A9DhE87W7DhiARJsHLgcina/9P4eNCN1w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@aesoper/normal-utils/-/normal-utils-0.1.5.tgz}
+    name: '@aesoper/normal-utils'
+    version: 0.1.5
+    dev: false
+
   registry.npmmirror.com/@esbuild/android-arm/0.18.20:
     resolution: {integrity: sha512-fyi7TDI/ijKKNZTUJAQqiG5T7YjJXgnzkURqmGj13C6dCqckZBLdl4h7bkhHt/t0WP+zO9/zwroDvANaOqO5Sw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@esbuild/android-arm/-/android-arm-0.18.20.tgz}
     name: '@esbuild/android-arm'
@@ -3320,6 +3328,51 @@ packages:
     dev: true
     optional: true
 
+  registry.npmmirror.com/@popperjs/core/2.11.8:
+    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@popperjs/core/-/core-2.11.8.tgz}
+    name: '@popperjs/core'
+    version: 2.11.8
+    dev: false
+
+  registry.npmmirror.com/@types/web-bluetooth/0.0.18:
+    resolution: {integrity: sha512-v/ZHEj9xh82usl8LMR3GarzFY1IrbXJw5L4QfQhokjRV91q+SelFqxQWSep1ucXEZ22+dSTwLFkXeur25sPIbw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/web-bluetooth/-/web-bluetooth-0.0.18.tgz}
+    name: '@types/web-bluetooth'
+    version: 0.0.18
+    dev: false
+
+  registry.npmmirror.com/@vueuse/core/10.5.0_vue@3.3.6:
+    resolution: {integrity: sha512-z/tI2eSvxwLRjOhDm0h/SXAjNm8N5ld6/SC/JQs6o6kpJ6Ya50LnEL8g5hoYu005i28L0zqB5L5yAl8Jl26K3A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/core/-/core-10.5.0.tgz}
+    id: registry.npmmirror.com/@vueuse/core/10.5.0
+    name: '@vueuse/core'
+    version: 10.5.0
+    dependencies:
+      '@types/web-bluetooth': registry.npmmirror.com/@types/web-bluetooth/0.0.18
+      '@vueuse/metadata': registry.npmmirror.com/@vueuse/metadata/10.5.0
+      '@vueuse/shared': registry.npmmirror.com/@vueuse/shared/10.5.0_vue@3.3.6
+      vue-demi: registry.npmmirror.com/vue-demi/0.14.6_vue@3.3.6
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
+  registry.npmmirror.com/@vueuse/metadata/10.5.0:
+    resolution: {integrity: sha512-fEbElR+MaIYyCkeM0SzWkdoMtOpIwO72x8WsZHRE7IggiOlILttqttM69AS13nrDxosnDBYdyy3C5mR1LCxHsw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/metadata/-/metadata-10.5.0.tgz}
+    name: '@vueuse/metadata'
+    version: 10.5.0
+    dev: false
+
+  registry.npmmirror.com/@vueuse/shared/10.5.0_vue@3.3.6:
+    resolution: {integrity: sha512-18iyxbbHYLst9MqU1X1QNdMHIjks6wC7XTVf0KNOv5es/Ms6gjVFCAAWTVP2JStuGqydg3DT+ExpFORUEi9yhg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/shared/-/shared-10.5.0.tgz}
+    id: registry.npmmirror.com/@vueuse/shared/10.5.0
+    name: '@vueuse/shared'
+    version: 10.5.0
+    dependencies:
+      vue-demi: registry.npmmirror.com/vue-demi/0.14.6_vue@3.3.6
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
   registry.npmmirror.com/asynckit/0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/asynckit/-/asynckit-0.4.0.tgz}
     name: asynckit
@@ -3404,6 +3457,13 @@ packages:
     requiresBuild: true
     optional: true
 
+  registry.npmmirror.com/gradient-parser/1.0.2:
+    resolution: {integrity: sha512-gR6nY33xC9yJoH4wGLQtZQMXDi6RI3H37ERu7kQCVUzlXjNedpZM7xcA489Opwbq0BSGohtWGsWsntupmxelMg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/gradient-parser/-/gradient-parser-1.0.2.tgz}
+    name: gradient-parser
+    version: 1.0.2
+    engines: {node: '>=0.10.0'}
+    dev: false
+
   registry.npmmirror.com/image-size/0.5.5:
     resolution: {integrity: sha512-6TDAlDPZxUFCv+fuOkIoXT/V/f3Qbq8e37p+YOiYrUv3v9cc3/6x78VdfPgFVaB9dZYeLUfKgHRebpkm/oP2VQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/image-size/-/image-size-0.5.5.tgz}
     name: image-size
@@ -3412,6 +3472,19 @@ packages:
     hasBin: true
     requiresBuild: true
     optional: true
+
+  registry.npmmirror.com/is-plain-object/5.0.0:
+    resolution: {integrity: sha512-VRSzKkbMm5jMDoKLbltAkFQ5Qr7VDiTFGXxYFXXowVj387GeGNOCsOH6Msy00SGZ3Fp84b1Naa1psqgcCIEP5Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/is-plain-object/-/is-plain-object-5.0.0.tgz}
+    name: is-plain-object
+    version: 5.0.0
+    engines: {node: '>=0.10.0'}
+    dev: false
+
+  registry.npmmirror.com/lodash-es/4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/lodash-es/-/lodash-es-4.17.21.tgz}
+    name: lodash-es
+    version: 4.17.21
+    dev: false
 
   registry.npmmirror.com/make-dir/2.1.0:
     resolution: {integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/make-dir/-/make-dir-2.1.0.tgz}
@@ -3477,3 +3550,60 @@ packages:
     engines: {node: '>=0.10.0'}
     requiresBuild: true
     optional: true
+
+  registry.npmmirror.com/tinycolor2/1.6.0:
+    resolution: {integrity: sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tinycolor2/-/tinycolor2-1.6.0.tgz}
+    name: tinycolor2
+    version: 1.6.0
+    dev: false
+
+  registry.npmmirror.com/vue-demi/0.14.6_vue@3.3.6:
+    resolution: {integrity: sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue-demi/-/vue-demi-0.14.6.tgz}
+    id: registry.npmmirror.com/vue-demi/0.14.6
+    name: vue-demi
+    version: 0.14.6
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.3.6_typescript@5.2.2
+    dev: false
+
+  registry.npmmirror.com/vue-types/4.2.1_vue@3.3.6:
+    resolution: {integrity: sha512-DNQZmJuOvovLUIp0BENRkdnZHbI0V4e2mNvjAZOAXKD56YGvRchtUYOXA/XqTxdv7Ng5SJLZqRKRpAhm5NLaPQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue-types/-/vue-types-4.2.1.tgz}
+    id: registry.npmmirror.com/vue-types/4.2.1
+    name: vue-types
+    version: 4.2.1
+    engines: {node: '>=12.16.0'}
+    peerDependencies:
+      vue: ^2.0.0 || ^3.0.0
+    dependencies:
+      is-plain-object: registry.npmmirror.com/is-plain-object/5.0.0
+      vue: 3.3.6_typescript@5.2.2
+    dev: false
+
+  registry.npmmirror.com/vue3-colorpicker/2.2.3_vue@3.3.6:
+    resolution: {integrity: sha512-hGGH3gfXU8nv7FzSy+xCslOGPCH7YgLxsuY+pQ/GN8SwVZYAd5BXDNt1/8DF+A3wihZ8Whow9XIWwrDhAlJW1Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue3-colorpicker/-/vue3-colorpicker-2.2.3.tgz}
+    id: registry.npmmirror.com/vue3-colorpicker/2.2.3
+    name: vue3-colorpicker
+    version: 2.2.3
+    peerDependencies:
+      vue: ^3.2.6
+    dependencies:
+      '@aesoper/normal-utils': registry.npmmirror.com/@aesoper/normal-utils/0.1.5
+      '@popperjs/core': registry.npmmirror.com/@popperjs/core/2.11.8
+      '@vueuse/core': registry.npmmirror.com/@vueuse/core/10.5.0_vue@3.3.6
+      gradient-parser: registry.npmmirror.com/gradient-parser/1.0.2
+      lodash-es: registry.npmmirror.com/lodash-es/4.17.21
+      tinycolor2: registry.npmmirror.com/tinycolor2/1.6.0
+      vue: 3.3.6_typescript@5.2.2
+      vue-types: registry.npmmirror.com/vue-types/4.2.1_vue@3.3.6
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+    dev: false

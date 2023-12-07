@@ -28,6 +28,10 @@ const handleClickMenu = (a: any) => {
     router.push({
       name: 'changePassword',
     })
+  } else if (a?.key === 'color-setting') {
+    router.push({
+      name: 'colorSetting',
+    })
   }
 }
 </script>
@@ -44,6 +48,7 @@ const handleClickMenu = (a: any) => {
           <a-menu mode="vertical" @click="handleClickMenu">
             <a-menu-item key="update-userinfo"> 修改信息</a-menu-item>
             <a-menu-item key="update-password"> 修改密码</a-menu-item>
+            <a-menu-item key="color-setting"> 颜色配置</a-menu-item>
             <a-menu-item key="logout"> 退出</a-menu-item>
           </a-menu>
         </template>

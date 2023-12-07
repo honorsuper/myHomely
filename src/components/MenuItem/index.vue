@@ -10,37 +10,7 @@ import {
 import { AddCol } from '../../views/Homely/components'
 import Rename from './Rename.vue'
 import { deleteColumn } from '@/utils/request'
-
-const colorList = [
-  {
-    bgColor: '#cccccc',
-    color: '#000000',
-  },
-  {
-    bgColor: '#444444',
-    color: '#ffffff',
-  },
-  {
-    bgColor: '#337ab7',
-    color: '#ffffff',
-  },
-  {
-    bgColor: '#5bc0de',
-    color: '#ffffff',
-  },
-  {
-    bgColor: '#449d44',
-    color: '#ffffff',
-  },
-  {
-    bgColor: '#f0ad4e',
-    color: '#ffffff',
-  },
-  {
-    bgColor: '#d9534f',
-    color: '#ffffff',
-  },
-]
+import { userStore } from '@/stores/user'
 
 const props = defineProps<{
   info: {
@@ -72,6 +42,8 @@ const isHovered = useElementHover(target)
 const open = ref(false)
 const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
 const renameRef = ref<InstanceType<typeof Rename> | null>(null)
+const store = userStore()
+const colorList = JSON.parse(store.userInfo.colorConfig).colorList
 
 /**
  * 打开编辑弹窗
