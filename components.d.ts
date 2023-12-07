@@ -8,10 +8,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AButton: typeof import('ant-design-vue/lib')['Button']
+    ACheckbox: typeof import('ant-design-vue/lib')['Checkbox']
     ADropdown: typeof import('ant-design-vue/lib')['Dropdown']
     AForm: typeof import('ant-design-vue/lib')['Form']
     AFormItem: typeof import('ant-design-vue/lib')['FormItem']
     AInput: typeof import('ant-design-vue/lib')['Input']
+    AInputPassword: typeof import('ant-design-vue/lib')['InputPassword']
     AMenu: typeof import('ant-design-vue/lib')['Menu']
     AMenuDivider: typeof import('ant-design-vue/lib')['MenuDivider']
     AMenuItem: typeof import('ant-design-vue/lib')['MenuItem']
@@ -22,6 +24,7 @@ declare module 'vue' {
     ASpace: typeof import('ant-design-vue/lib')['Space']
     ATextarea: typeof import('ant-design-vue/lib')['Textarea']
     CaretDownOutlined: typeof import('@ant-design/icons-vue')['CaretDownOutlined']
+    ColorPicker: typeof import('./src/components/ColorPicker/index.vue')['default']
     DownOutlined: typeof import('@ant-design/icons-vue')['DownOutlined']
     DownSquareOutlined: typeof import('@ant-design/icons-vue')['DownSquareOutlined']
     MenuItem: typeof import('./src/components/MenuItem/index.vue')['default']

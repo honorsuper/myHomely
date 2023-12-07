@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, createVNode } from 'vue'
 import { useElementHover } from '@vueuse/core'
-import { Modal } from 'ant-design-vue'
+import { message, Modal } from 'ant-design-vue'
 import {
   DownSquareOutlined,
   ExclamationCircleOutlined,
@@ -9,6 +9,8 @@ import {
 } from '@ant-design/icons-vue'
 import { AddCol } from '../../views/Homely/components'
 import Rename from './Rename.vue'
+import { deleteColumn } from '@/utils/request'
+import { userStore } from '@/stores/user'
 
 const props = defineProps<{
   info: {
@@ -25,7 +27,7 @@ const props = defineProps<{
       isGroup?: number
       groupTitle?: string
       bgColor: string
-      color: string
+      color: number
       groupList?: {
         subTitle: string
         subUrl: string
@@ -40,6 +42,8 @@ const isHovered = useElementHover(target)
 const open = ref(false)
 const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
 const renameRef = ref<InstanceType<typeof Rename> | null>(null)
+const store = userStore()
+const colorList = JSON.parse(store.userInfo.colorConfig).colorList
 
 /**
  * 打开编辑弹窗
@@ -60,13 +64,21 @@ const handelOpenRename = () => {
   })
 }
 // 删除
-const handleDel = () => {
-  console.log('删除')
+const handleDel = async (id: number | string) => {
+  const res = await deleteColumn({
+    id,
+  })
+
+  if (res.status === 201 || res.status === 200) {
+    message.success('删除成功')
+  } else {
+    message.error(res?.data || '系统繁忙，请稍后再试')
+  }
 }
 /**
  * 确认删除
  */
-const delConfirm = () => {
+const delConfirm = (id: number | string) => {
   open.value = false
   Modal.confirm({
     title: '确认操作',
@@ -74,7 +86,7 @@ const delConfirm = () => {
     content: '是否确认删除该组数据',
     okText: '确认',
     cancelText: '取消',
-    onOk: handleDel,
+    onOk: () => handleDel(id),
   })
 }
 
@@ -85,9 +97,6 @@ const delConfirm = () => {
 const jumpToUrl = (url: string) => {
   location.href = url
 }
-
-
-
 </script>
 
 <template>
@@ -96,7 +105,7 @@ const jumpToUrl = (url: string) => {
       class="title box-border flex justify-between items-center font-medium my-handle"
       ref="target"
     >
-      标题{{ info.mainTitle }}
+      {{ info.mainTitle }}
       <div class="cursor-pointer flex items-center" v-if="isHovered || open">
         <a-dropdown v-model:open="open">
           <DownSquareOutlined />
@@ -104,7 +113,7 @@ const jumpToUrl = (url: string) => {
             <a-menu>
               <a-menu-item key="3" @click="handleOpenModal">修改</a-menu-item>
               <a-menu-item key="4" @click="handelOpenRename">重命名</a-menu-item>
-              <a-menu-item key="5" @click="delConfirm">删除</a-menu-item>
+              <a-menu-item key="5" @click="() => delConfirm(info.id)">删除</a-menu-item>
             </a-menu>
           </template>
         </a-dropdown>
@@ -114,8 +123,8 @@ const jumpToUrl = (url: string) => {
       <div v-for="item in info.list" :key="item.id">
         <div
           :style="{
-            background: item.bgColor,
-            color: item.color,
+            background: colorList[item.color].bgColor,
+            color: colorList[item.color].color,
           }"
           class="item flex justify-center"
           @click="jumpToUrl(item.url)"
@@ -128,8 +137,8 @@ const jumpToUrl = (url: string) => {
           <div
             class="item flex justify-center"
             :style="{
-              background: item.bgColor,
-              color: item.color,
+              background: colorList[item.color].bgColor,
+              color: colorList[item.color].color,
             }"
           >
             {{ item.groupTitle }}

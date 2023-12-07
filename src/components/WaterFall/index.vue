@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import { Sortable } from 'sortablejs-vue3'
 import { MenuItem } from '@/components'
 import { getMinHeightColumn, getMinHeight, getMaxHeight } from './utils'
+import { sortColumn } from '@/utils/request'
+import { message } from 'ant-design-vue'
 
 const props = withDefaults(
   defineProps<{
@@ -87,6 +89,7 @@ const columnSpacingTotal = computed(() => {
 const getItemLeft = () => {
   // 最小高度所在的列 * (列宽 + 间距)
   const column = getMinHeightColumn(columnHeightObj.value)
+  console.log('column', column)
   return Number(column) * (columnWidth.value + props.columnSpacing) + containerLeft.value
 }
 
@@ -124,7 +127,6 @@ const useItemHeight = () => {
     // 依据传入数据计算出的 img 高度
     itemHeights.push(el.offsetHeight)
   })
-  console.log('itemHeights', itemHeights)
   // 渲染位置
   useItemLocation()
 }
@@ -135,10 +137,13 @@ const useItemHeight = () => {
 const useItemLocation = () => {
   // 遍历数据源
   props.data.forEach((item, index) => {
+    console.log('item', item)
     // 避免重复计算
     if (item._style) {
+      console.log('_style', item._style)
       return
     }
+
     // 生成 _style 属性
     item._style = {}
     // left
@@ -162,17 +167,33 @@ const useColumnHeightObj = () => {
   }
 }
 
-const onOrderChange = (event: any) => {
-  console.log('触发了没', event.oldIndex, event.newIndex)
+const onOrderChange = async (event: any) => {
+  if (event.oldIndex === event.newIndex) return
+
+  const res = await sortColumn({
+    fromIndex: event.oldIndex,
+    toIndex: event.newIndex,
+  })
+
+  if (res.status === 201 || res.status === 200) {
+    message.success('修改成功')
+    // handleCancel()
+    // homelyInfo?.handleGetMenuInfo?.()
+  } else {
+    message.error(res?.data || '系统繁忙，请稍后再试')
+  }
 }
+
+watch(
+  () => props.data,
+  () => {
+    useItemHeight()
+  },
+)
 
 onMounted(() => {
   useColumnWidth()
   useColumnHeightObj()
-
-  setTimeout(() => {
-    useItemHeight()
-  })
 })
 </script>
 <template>
@@ -183,16 +204,6 @@ onMounted(() => {
       height: containerHeight + 'px', // 因为当前为 relative 布局，所以需要主动指定高度
     }"
   >
-    <!--    <MenuItem-->
-    <!--      v-for="info in data"-->
-    <!--      :info="info"-->
-    <!--      :key="info.mainTitle"-->
-    <!--      :style="{-->
-    <!--        width: columnWidth + 'px',-->
-    <!--        left: info._style?.left + 'px',-->
-    <!--        top: info._style?.top + 'px',-->
-    <!--      }"-->
-    <!--    />-->
     <Sortable
       :list="data"
       item-key="uid"
@@ -211,6 +222,7 @@ onMounted(() => {
             left: element._style?.left + 'px',
             top: element._style?.top + 'px',
           }"
+          class="cursor-move"
         />
       </template>
     </Sortable>

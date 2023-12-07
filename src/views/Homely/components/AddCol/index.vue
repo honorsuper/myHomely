@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, inject } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
 // @ts-ignore
 import { v4 } from 'uuid'
 import { DownSquareOutlined } from '@ant-design/icons-vue'
 import { cloneDeep } from 'lodash-es'
+import { addMenu, editMenu } from '@/utils/request'
+import { message } from 'ant-design-vue'
+import { ColorPicker } from '@/components'
 
 // 弹窗展示
 const open = ref(false)
@@ -20,14 +23,18 @@ const dynamicValidateForm = reactive<{
   list: [
     {
       id: v4(),
+      index: 0,
       title: '',
       url: '',
       isGroup: 0,
       groupTitle: '',
+      color: 0,
     },
   ],
   mainTitle: '',
 })
+
+const homelyInfo = inject<any>('homely')
 
 /**
  * 新增链接
@@ -35,8 +42,10 @@ const dynamicValidateForm = reactive<{
 const handleAddLink = () => {
   dynamicValidateForm.list.push({
     id: v4(),
+    index: dynamicValidateForm.list.length,
     title: '',
     url: '',
+    color: 0,
     isGroup: 0,
     groupTitle: '',
     groupList: [],
@@ -54,6 +63,7 @@ const handleAddGroup = () => {
     isGroup: 1,
     groupTitle: '',
     groupList: [],
+    color: 0,
   })
 }
 
@@ -73,12 +83,49 @@ const handleAddSub = (index: number) => {
  * 提交
  */
 const handleSubmit = () => {
-  formRef.value?.validate().then((values) => {
-    console.log('values', values)
-    if (dynamicValidateForm.id) {
-      console.log('编辑')
+  formRef.value?.validate().then(async (values) => {
+    if (dynamicValidateForm.id || dynamicValidateForm.id === 0) {
+      const menuList = dynamicValidateForm.list.map((item, index) => {
+        return {
+          ...item,
+          ...values[index],
+        }
+      })
+
+      const res = await editMenu({
+        id: dynamicValidateForm.id,
+        list: menuList,
+        mainTitle: dynamicValidateForm.mainTitle,
+      })
+
+      if (res.status === 201 || res.status === 200) {
+        message.success('修改成功')
+        handleCancel()
+
+        homelyInfo?.handleGetMenuInfo?.()
+      } else {
+        message.error(res?.data || '系统繁忙，请稍后再试')
+      }
     } else {
-      console.log('新增')
+      console.log('新增', values)
+      const menuList = dynamicValidateForm.list.map((item, index) => {
+        return {
+          ...item,
+          ...values[index],
+        }
+      })
+      const res = await addMenu({
+        list: menuList,
+        mainTitle: dynamicValidateForm.mainTitle,
+      })
+
+      if (res.status === 201 || res.status === 200) {
+        message.success('修改成功')
+        handleCancel()
+        homelyInfo?.handleGetMenuInfo?.()
+      } else {
+        message.error(res?.data || '系统繁忙，请稍后再试')
+      }
     }
   })
 }
@@ -110,15 +157,14 @@ const handleOpenModal = (info?: any) => {
  * @param isTop 是否移动到最顶部
  */
 const handleMoveUp = (index: number, isTop = false) => {
-  console.log('index', index, isTop)
   if (isTop) {
     const currentInfo = dynamicValidateForm.list.splice(index, 1)
-    console.log('currentInfo', currentInfo, dynamicValidateForm.list)
     dynamicValidateForm.list.unshift(currentInfo[0])
   } else {
     const preIndex = index - 1
-    dynamicValidateForm.list[preIndex] = cloneDeep(dynamicValidateForm.list[index])
-    dynamicValidateForm.list[index] = cloneDeep(dynamicValidateForm.list[preIndex])
+    const cloneList = cloneDeep(dynamicValidateForm.list)
+    dynamicValidateForm.list[preIndex] = cloneList[index]
+    dynamicValidateForm.list[index] = cloneList[preIndex]
   }
 }
 
@@ -128,13 +174,15 @@ const handleMoveUp = (index: number, isTop = false) => {
  * @param isBottom 是否移动到最底部
  */
 const handleMoveDown = (index: number, isBottom = false) => {
+  console.log('index', index)
   if (isBottom) {
     const currentInfo = dynamicValidateForm.list.splice(index, 1)
     dynamicValidateForm.list.push(currentInfo[0])
   } else {
     const nextIndex = index + 1
-    dynamicValidateForm.list[nextIndex] = cloneDeep(dynamicValidateForm.list[index])
-    dynamicValidateForm.list[index] = cloneDeep(dynamicValidateForm.list[nextIndex])
+    const cloneList = cloneDeep(dynamicValidateForm.list)
+    dynamicValidateForm.list[nextIndex] = cloneList[index]
+    dynamicValidateForm.list[index] = cloneList[nextIndex]
   }
 }
 
@@ -158,12 +206,9 @@ const handleSubMoveUp = (index: number, subIndex: number, isTop = false) => {
     dynamicValidateForm.list[index].groupList.unshift(currentInfo[0])
   } else {
     const preIndex = subIndex - 1
-    dynamicValidateForm.list[index].groupList[preIndex] = cloneDeep(
-      dynamicValidateForm.list[index].groupList[subIndex],
-    )
-    dynamicValidateForm.list[index].groupList[subIndex] = cloneDeep(
-      dynamicValidateForm.list[index].groupList[preIndex],
-    )
+    const cloneList = cloneDeep(dynamicValidateForm.list)
+    dynamicValidateForm.list[index].groupList[preIndex] = cloneList[index].groupList[subIndex]
+    dynamicValidateForm.list[index].groupList[subIndex] = cloneList[index].groupList[preIndex]
   }
 }
 
@@ -174,17 +219,17 @@ const handleSubMoveUp = (index: number, subIndex: number, isTop = false) => {
  * @param isBottom 是否移动到最底部
  */
 const handleSubMoveDown = (index: number, subIndex: number, isBottom = false) => {
+  console.log('isBottom', isBottom)
   if (isBottom) {
     const currentInfo = dynamicValidateForm.list[index].groupList.splice(subIndex, 1)
     dynamicValidateForm.list[index].groupList.push(currentInfo[0])
   } else {
+    console.log('subIndex', subIndex)
+    console.log('index', index)
     const nextIndex = subIndex + 1
-    dynamicValidateForm.list[index].groupList[nextIndex] = cloneDeep(
-      dynamicValidateForm.list[index].groupList[subIndex],
-    )
-    dynamicValidateForm.list[index].groupList[subIndex] = cloneDeep(
-      dynamicValidateForm.list[index].groupList[nextIndex],
-    )
+    const cloneList = cloneDeep(dynamicValidateForm.list)
+    dynamicValidateForm.list[index].groupList[nextIndex] = cloneList[index].groupList[subIndex]
+    dynamicValidateForm.list[index].groupList[subIndex] = cloneList[index].groupList[nextIndex]
   }
 }
 
@@ -256,6 +301,16 @@ defineExpose({
             >
               <a-input v-model:value="user.url" placeholder="请输入链接" />
             </a-form-item>
+            <a-form-item
+              label="颜色"
+              :name="['list', index, 'color']"
+              :rules="{
+                required: true,
+                message: '请输入颜色',
+              }"
+            >
+              <ColorPicker v-model:value="user.color" />
+            </a-form-item>
             <div class="flex justify-end cursor-pointer editIcon">
               <a-dropdown>
                 <DownSquareOutlined />
@@ -325,6 +380,7 @@ defineExpose({
               >
                 <a-input v-model:value="innerUser.subUrl" placeholder="请输入链接" />
               </a-form-item>
+
               <div class="flex justify-end cursor-pointer editIcon">
                 <a-dropdown>
                   <DownSquareOutlined />
@@ -365,6 +421,16 @@ defineExpose({
                 </a-dropdown>
               </div>
             </div>
+            <a-form-item
+              :name="['list', index, 'color']"
+              :rules="{
+                required: true,
+                message: '请选择颜色',
+              }"
+              label="颜色"
+            >
+              <ColorPicker v-model:value="user.color" />
+            </a-form-item>
             <div class="flex justify-between items-center">
               <a-button
                 key="submit"
