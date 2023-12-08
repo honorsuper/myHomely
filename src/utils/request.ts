@@ -1,3 +1,4 @@
+import { message } from 'ant-design-vue'
 import axios, { type AxiosRequestConfig } from 'axios'
 
 const axiosInstance = axios.create({
@@ -29,7 +30,7 @@ axiosInstance.interceptors.response.use(
     const { data, config } = error.response
 
     if (refreshing) {
-      new Promise((resolve) => {
+      return new Promise((resolve) => {
         queue.push({
           config,
           resolve,
@@ -38,8 +39,17 @@ axiosInstance.interceptors.response.use(
     }
     if (data.code === 401 && !config.url.includes('/user/refresh')) {
       refreshing = true
+
       const res = await refreshToken()
       refreshing = false
+
+      const { data } = res.data
+      if (res.status === 201 || res.status === 200) {
+        localStorage.setItem('access_token', data.access_token)
+        localStorage.setItem('refresh_token', data.refresh_token)
+      } else {
+        message.error(data || '系统繁忙，请稍后再试')
+      }
 
       if (res.status === 200) {
         queue.forEach(({ config, resolve }) => {
@@ -50,7 +60,7 @@ axiosInstance.interceptors.response.use(
       } else {
         setTimeout(() => {
           window.location.href = '/login'
-        }, 1500)
+        })
       }
     } else {
       return error.response
