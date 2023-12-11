@@ -1,21 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { AddCol } from '../'
+import { ref } from "vue"
+import { useRouter, } from 'vue-router'
 import { userStore } from '@/stores/user'
 import { handleLogout } from '@/utils'
+import ColorSetting from '../ColorSetting/index.vue';
 
-const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
-
+const colorSettingRef = ref<InstanceType<typeof ColorSetting> | null>(null)
 const router = useRouter()
 
 const store = userStore()
-/**
- * 打开弹窗
- */
-const handleOpenModal = () => {
-  addColRef?.value?.handleOpenModal?.()
-}
 
 const handleClickMenu = (a: any) => {
   if (a?.key === 'logout') {
@@ -29,17 +22,17 @@ const handleClickMenu = (a: any) => {
       name: 'changePassword',
     })
   } else if (a?.key === 'color-setting') {
-    router.push({
-      name: 'colorSetting',
-    })
+    console.log("!11", colorSettingRef.value)
+    colorSettingRef.value?.showDrawer?.()
   }
 }
+
+
 </script>
 <template>
   <div class="header-wrap flex items-center justify-between">
-    <div class="title">头部区域</div>
+    <div class="title">my-Homely</div>
     <div class="flex items-center gap-2">
-      <a-button type="primary" @click="handleOpenModal">新增列</a-button>
       <a-dropdown>
         <div @click.prevent class="nickname">
           <div>{{ store.userInfo.nickName }}</div>
@@ -54,14 +47,15 @@ const handleClickMenu = (a: any) => {
         </template>
       </a-dropdown>
     </div>
-    <AddCol ref="addColRef" />
+
   </div>
+  <ColorSetting ref="colorSettingRef" />
 </template>
 <style scoped lang="less">
 .header-wrap {
   height: 64px;
   box-shadow: 0 8px 24px -2px rgba(0, 0, 0, 0.05);
-  padding: 0 58px;
+  padding: 0 20px;
   background: #ffffff;
   margin-bottom: 30px;
 }

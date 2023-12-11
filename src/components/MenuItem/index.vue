@@ -168,6 +168,7 @@ const jumpToUrl = (url: string) => {
   float: left;
   color: #fff;
   background: #fff;
+  // border: 1px solid #dddddd;
 }
 
 .title {
@@ -176,6 +177,9 @@ const jumpToUrl = (url: string) => {
   background: #f5f5f5;
   color: rgba(0, 0, 0, 0.88);
   font-weight: 500;
+  border: 1px solid #dddddd;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
 .item {
@@ -186,5 +190,9 @@ const jumpToUrl = (url: string) => {
 
 .menu-item-content {
   padding: 10px;
+  border: 1px solid #dddddd;
+  border-top: none;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 </style>

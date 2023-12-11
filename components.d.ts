@@ -9,7 +9,10 @@ declare module 'vue' {
   export interface GlobalComponents {
     AButton: typeof import('ant-design-vue/lib')['Button']
     ACheckbox: typeof import('ant-design-vue/lib')['Checkbox']
+    ACol: typeof import('ant-design-vue/lib')['Col']
+    ADrawer: typeof import('ant-design-vue/lib')['Drawer']
     ADropdown: typeof import('ant-design-vue/lib')['Dropdown']
+    AFloatButton: typeof import('ant-design-vue/lib')['FloatButton']
     AForm: typeof import('ant-design-vue/lib')['Form']
     AFormItem: typeof import('ant-design-vue/lib')['FormItem']
     AInput: typeof import('ant-design-vue/lib')['Input']
@@ -20,6 +23,7 @@ declare module 'vue' {
     AModal: typeof import('ant-design-vue/lib')['Modal']
     ARadio: typeof import('ant-design-vue/lib')['Radio']
     ARadioGroup: typeof import('ant-design-vue/lib')['RadioGroup']
+    ARow: typeof import('ant-design-vue/lib')['Row']
     ASelect: typeof import('ant-design-vue/lib')['Select']
     ASpace: typeof import('ant-design-vue/lib')['Space']
     ATextarea: typeof import('ant-design-vue/lib')['Textarea']
@@ -33,6 +37,7 @@ declare module 'vue' {
     Rename: typeof import('./src/components/MenuItem/Rename.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    UserOutlined: typeof import('@ant-design/icons-vue')['UserOutlined']
     WaterFall: typeof import('./src/components/WaterFall/index.vue')['default']
   }
 }

@@ -30,6 +30,11 @@ const router = createRouter({
       component: UserInfo,
     },
     {
+      path: '/forget/password',
+      name: 'forgetPassword',
+      component: ChangePassword,
+    },
+    {
       path: '/change/password',
       name: 'changePassword',
       component: ChangePassword,
