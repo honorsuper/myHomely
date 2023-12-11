@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { message } from 'ant-design-vue'
+import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import { login } from '@/utils/request'
 
@@ -36,60 +37,64 @@ const onFinish = async (values: any) => {
   }
 }
 
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo)
+const toRigister = () => {
+  router.push({
+    name: 'register',
+  })
+}
+
+const toForgetPassword = () => {
+  router.push({
+    name: 'forgetPassword',
+  })
 }
 </script>
 <template>
-  <div class="login-wrap flex justify-center items-center">
-    <div class="form-wrap">
-      <a-form
-        :model="formState"
-        name="basic"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        autocomplete="off"
-        @finish="onFinish"
-        @finishFailed="onFinishFailed"
-      >
-        <a-form-item
-          label="用户名"
-          name="username"
-          :rules="[{ required: true, message: '请输入用户名!' }]"
-        >
-          <a-input v-model:value="formState.username" />
-        </a-form-item>
+  <div class="flex justify-center items-center h-full login-wrapper flex-col">
+    <div class="content-wrapper">
+      <div class="text-xl mb-4">账号登录</div>
+      <div class="form-wrap">
+        <a-form :model="formState" name="basic" autocomplete="off" @finish="onFinish">
+          <a-form-item name="username" :rules="[{ required: true, message: '请输入用户名!' }]">
+            <a-input v-model:value="formState.username" placeholder="请输入用户名">
+              <template #prefix><UserOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
+            </a-input>
+          </a-form-item>
 
-        <a-form-item
-          label="密码"
-          name="password"
-          :rules="[{ required: true, message: '请输入密码!' }]"
-        >
-          <a-input-password v-model:value="formState.password" />
-        </a-form-item>
+          <a-form-item name="password" :rules="[{ required: true, message: '请输入密码!' }]">
+            <a-input-password v-model:value="formState.password" placeholder="请输入密码">
+              <template #prefix><LockOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
+            </a-input-password>
+          </a-form-item>
 
-        <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-          <div class="flex justify-between">
-            <router-link to="/register">创建账号</router-link>
-            <router-link to="/change/password">忘记密码</router-link>
-          </div>
-        </a-form-item>
+          <a-button type="primary" html-type="submit" block class="h-10 rounded-full"
+            >登录</a-button
+          >
 
-        <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-          <a-button type="primary" html-type="submit">登录</a-button>
-        </a-form-item>
-      </a-form>
+          <a-form-item>
+            <div class="flex justify-between gap-4 mt-6">
+              <a-button class="w-1/2" @click="toRigister">账号注册</a-button>
+              <a-button class="w-1/2" @click="toForgetPassword">忘记密码</a-button>
+            </div>
+          </a-form-item>
+        </a-form>
+      </div>
     </div>
   </div>
 </template>
 <style scoped lang="less">
-.login-wrap {
-  width: 100%;
-  min-height: 100vh;
-  background-color: #ffffff;
+.login-wrapper {
+  background-color: gray;
 }
-
-.form-wrap {
-  width: 400px;
+.content-wrapper {
+  width: 450px;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 32px 32px 8px 32px;
+  :deep {
+    input.ant-input {
+      height: 30px;
+    }
+  }
 }
 </style>
