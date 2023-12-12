@@ -31,7 +31,7 @@ const handleOpenModal = () => {
 
 provide('homely', {
   handleGetMenuInfo,
-}) // 若提供的是非字符串值会导致错误
+})
 
 onMounted(() => {
   handleGetMenuInfo()
@@ -49,7 +49,6 @@ onMounted(() => {
         <PlusOutlined @click="handleOpenModal" />
       </template>
     </a-float-button>
-    <!-- <a-float-button @click="handleOpenModal" /> -->
   </div>
 </template>
 

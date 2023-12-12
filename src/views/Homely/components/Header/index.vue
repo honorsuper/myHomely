@@ -22,7 +22,6 @@ const handleClickMenu = (a: any) => {
       name: 'changePassword',
     })
   } else if (a?.key === 'color-setting') {
-    console.log("!11", colorSettingRef.value)
     colorSettingRef.value?.showDrawer?.()
   }
 }

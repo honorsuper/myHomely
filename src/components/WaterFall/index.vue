@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref, computed, watch } from 'vue'
+import { onMounted, ref, computed, watch, nextTick, inject } from 'vue'
 import { Sortable } from 'sortablejs-vue3'
 import { MenuItem } from '@/components'
 import { getMinHeightColumn, getMinHeight, getMaxHeight } from './utils'
 import { sortColumn } from '@/utils/request'
 import { message } from 'ant-design-vue'
+import type { SortableOptions } from 'sortablejs'
+import type { AutoScrollOptions } from 'sortablejs/plugins'
 
 const props = withDefaults(
   defineProps<{
@@ -56,6 +58,20 @@ const columnHeightObj = ref<Record<string, number>>({})
 // 容器的总高度
 const containerHeight = ref(0)
 
+const homelyInfo = inject<any>('homely')
+
+const options = computed<SortableOptions | AutoScrollOptions>(() => {
+  return {
+    draggable: '.my-handle',
+    animation: 150,
+    ghostClass: 'ghost',
+    dragClass: 'drag',
+    scroll: true,
+    forceFallback: true,
+    bubbleScroll: true,
+  }
+})
+
 /**
  * 计算容器宽度
  */
@@ -89,7 +105,6 @@ const columnSpacingTotal = computed(() => {
 const getItemLeft = () => {
   // 最小高度所在的列 * (列宽 + 间距)
   const column = getMinHeightColumn(columnHeightObj.value)
-  console.log('column', column)
   return Number(column) * (columnWidth.value + props.columnSpacing) + containerLeft.value
 }
 
@@ -109,7 +124,6 @@ let itemHeights: number[] = []
 const increasingHeight = (index: number) => {
   // 最小高度所在的列
   const minHeightColumn = getMinHeightColumn(columnHeightObj.value)
-
   // 该列高度自增
   columnHeightObj.value[minHeightColumn] += itemHeights[index] + props.rowSpacing
 }
@@ -121,7 +135,6 @@ const useItemHeight = () => {
   itemHeights = []
   // 拿到所有元素
   let itemElements = [...document.getElementsByClassName('waterfall-item')] as HTMLElement[]
-
   // 计算 item 高度
   itemElements.forEach((el) => {
     // 依据传入数据计算出的 img 高度
@@ -137,10 +150,8 @@ const useItemHeight = () => {
 const useItemLocation = () => {
   // 遍历数据源
   props.data.forEach((item, index) => {
-    console.log('item', item)
     // 避免重复计算
     if (item._style) {
-      console.log('_style', item._style)
       return
     }
 
@@ -150,25 +161,27 @@ const useItemLocation = () => {
     item._style.left = getItemLeft()
     // top
     item._style.top = getItemTop()
+
     // 指定列高度自增
     increasingHeight(index)
   })
-
   // 指定容器高度
   containerHeight.value = getMaxHeight(columnHeightObj.value)
 }
+
 /**
  * 构建记录各列的高度的对象,后续需要比较出哪列的高度最低
  */
 const useColumnHeightObj = () => {
-  columnHeightObj.value = {}
   for (let i = 0; i < props.column; i++) {
     columnHeightObj.value[i] = 0
   }
 }
 
 const onOrderChange = async (event: any) => {
-  if (event.oldIndex === event.newIndex) return
+  console.log('newIndex', event.newIndex)
+  console.log('oldIndex', event.oldIndex)
+  // if (event.oldIndex === event.newIndex) return
 
   const res = await sortColumn({
     fromIndex: event.oldIndex,
@@ -187,7 +200,11 @@ const onOrderChange = async (event: any) => {
 watch(
   () => props.data,
   () => {
-    useItemHeight()
+    nextTick(() => {
+      itemHeights = []
+      useColumnHeightObj()
+      useItemHeight()
+    })
   },
 )
 
@@ -204,15 +221,18 @@ onMounted(() => {
       height: containerHeight + 'px', // 因为当前为 relative 布局，所以需要主动指定高度
     }"
   >
-    <Sortable
-      :list="data"
-      item-key="uid"
-      tag="div"
-      @end="onOrderChange"
-      :options="{
-        handle: '.my-handle',
+    <MenuItem
+      v-for="element in data"
+      :info="element"
+      :key="element.mainTitle"
+      :style="{
+        width: columnWidth + 'px',
+        left: element._style?.left + 'px',
+        top: element._style?.top + 'px',
       }"
-    >
+      class="my-handle"
+    />
+    <!-- <Sortable :list="data" item-key="id" :options="options">
       <template #item="{ element }">
         <MenuItem
           :info="element"
@@ -222,15 +242,24 @@ onMounted(() => {
             left: element._style?.left + 'px',
             top: element._style?.top + 'px',
           }"
-          class="cursor-move"
+          class="cursor-move my-handle"
         />
       </template>
-    </Sortable>
+    </Sortable> -->
   </div>
 </template>
 <style scoped lang="less">
 .waterfall-wrap {
   padding-left: 150px;
   padding-right: 150px;
+}
+.ghost {
+  opacity: 0.5;
+  background: #fff;
+  border: 1px dashed #ccc;
+}
+
+.drag {
+  background: #f5f5f5;
 }
 </style>

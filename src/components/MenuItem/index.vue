@@ -44,9 +44,7 @@ const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
 const renameRef = ref<InstanceType<typeof Rename> | null>(null)
 const store = userStore()
 
-
 const colorList = computed(() => {
-  console.log("11", JSON.parse(store.userInfo.colorConfig))
   return JSON.parse(store.userInfo.colorConfig) ?? []
 })
 
@@ -102,12 +100,11 @@ const delConfirm = (id: number | string) => {
 const jumpToUrl = (url: string) => {
   location.href = url
 }
-
 </script>
 
 <template>
   <div class="waterfall-item rounded absolute" :key="info.mainTitle">
-    <div class="title box-border flex justify-between items-center font-medium my-handle" ref="target">
+    <div class="title box-border flex justify-between items-center font-medium" ref="target">
       {{ info.mainTitle }}
       <div class="cursor-pointer flex items-center" v-if="isHovered || open">
         <a-dropdown v-model:open="open">
@@ -124,18 +121,26 @@ const jumpToUrl = (url: string) => {
     </div>
     <div class="menu-item-content flex-col flex gap-y-2 cursor-pointer">
       <div v-for="item in info.list" :key="item.id">
-        <div :style="{
-          background: colorList[item.color]?.bgColor,
-          color: colorList[item.color]?.color,
-        }" class="item flex justify-center" @click="jumpToUrl(item.url)" v-if="!item?.isGroup">
+        <div
+          :style="{
+            background: colorList[item.color]?.bgColor,
+            color: colorList[item.color]?.color,
+          }"
+          class="item flex justify-center"
+          @click="jumpToUrl(item.url)"
+          v-if="!item?.isGroup"
+        >
           {{ item.title }}
         </div>
 
         <a-dropdown v-else>
-          <div class="item flex justify-center" :style="{
-            background: colorList[item.color].bgColor,
-            color: colorList[item.color].color,
-          }">
+          <div
+            class="item flex justify-center"
+            :style="{
+              background: colorList[item.color].bgColor,
+              color: colorList[item.color].color,
+            }"
+          >
             {{ item.groupTitle }}
             <div class="flex items-center">
               <CaretDownOutlined />
