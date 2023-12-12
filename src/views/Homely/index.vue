@@ -4,14 +4,16 @@ import { WaterFall } from '@/components'
 import { Header, AddCol } from './components'
 import { getMenuInfo, queryIsFirst, setFirst } from '@/utils/request'
 import { message, type TourProps } from 'ant-design-vue'
-import { PlusOutlined } from '@ant-design/icons-vue'
+import { PlusOutlined, GithubOutlined } from '@ant-design/icons-vue'
 import { userStore } from '@/stores/user'
 
 const ref1 = ref(null)
+const ref2 = ref(null)
 const menuData = ref<any[]>([])
 const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
 const open = ref(false)
 const store = userStore()
+const current = ref(0)
 
 const handleGetMenuInfo = async () => {
   const res = await getMenuInfo()
@@ -49,6 +51,12 @@ const steps: TourProps['steps'] = [
     target: () => ref1.value && ref1.value.$el,
     placement: 'topRight',
   },
+  {
+    title: '收藏',
+    description: '创作不易，喜欢请收藏',
+    target: () => ref2.value && ref2.value.$el,
+    placement: 'topRight',
+  },
 ]
 
 /**
@@ -63,6 +71,10 @@ const handleGetIsFirst = async () => {
   } else {
     message.error(res?.data || '系统繁忙，请稍后再试')
   }
+}
+
+const handleToGithub = () => {
+  window.open('https://github.com/honorsuper/myHomely')
 }
 
 provide('homely', {
@@ -80,20 +92,27 @@ onMounted(() => {
     <Header />
     <WaterFall :data="menuData" />
     <AddCol ref="addColRef" />
+    <a-float-button-group shape="circle" :style="{ right: '34px' }">
+      <a-float-button type="primary" ref="ref1" @click="handleOpenModal">
+        <template #icon>
+          <PlusOutlined />
+        </template>
+      </a-float-button>
 
-    <a-float-button type="primary" ref="ref1" @click="handleOpenModal">
-      <template #icon>
-        <PlusOutlined />
-      </template>
-    </a-float-button>
+      <a-float-button @click="handleToGithub" ref="ref2">
+        <template #icon>
+          <GithubOutlined />
+        </template>
+      </a-float-button>
+    </a-float-button-group>
 
-    <a-tour :current="0" :open="open" :steps="steps" @close="handleOpen(false)" />
+    <a-tour v-model:current="current" :open="open" :steps="steps" @close="handleOpen(false)" />
   </div>
 </template>
 
 <style lang="less" scoped>
 .out-wrap {
-  width: 100vw;
-  min-height: 100vh;
+  height: 100%;
+  background-color: #fafafa;
 }
 </style>

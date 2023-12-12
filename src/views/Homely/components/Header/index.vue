@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, createVNode } from 'vue'
 import { useRouter } from 'vue-router'
-import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+import { ExclamationCircleOutlined, GithubOutlined } from '@ant-design/icons-vue'
 import { Modal } from 'ant-design-vue'
 import { userStore } from '@/stores/user'
 import { handleLogout } from '@/utils'
@@ -65,12 +65,29 @@ const handleLogoutConfirm = () => {
 .header-wrap {
   height: 64px;
   box-shadow: 0 8px 24px -2px rgba(0, 0, 0, 0.05);
-  padding: 0 20px;
-  background: #ffffff;
+  padding: 0 30px;
+  background-color: #ffffff;
+  // background: #f7f9fb;
   margin-bottom: 30px;
+}
+// .icon {
+//   width: 40px;
+//   height: 40px;
+//   border: 1px solid red;
+// }
+
+.title {
+  font-weight: bold;
+  // color: #a4b2c1;
+  // color: #8b5cf6;
+  color: #262626;
+  font-size: 25px;
 }
 
 .nickname {
+  margin-right: 10px;
+  font-size: 16px;
+  color: #262626;
   :hover {
     cursor: pointer;
   }

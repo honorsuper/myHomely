@@ -2,7 +2,7 @@
 import { reactive } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
-import { ChangePasswordCaptcha, register } from '@/utils/request'
+import { ChangePasswordCaptcha, changePassword } from '@/utils/request'
 
 interface FormState {
   username: string
@@ -26,7 +26,7 @@ const router = useRouter()
 const route = useRoute()
 const onFinish = async (values: any) => {
   const { confirmPassword, ...rest } = values
-  const res = await register({
+  const res = await changePassword({
     ...rest,
   })
   const { data } = res.data
@@ -146,7 +146,7 @@ const handleBack = () => {
 </template>
 <style scoped lang="less">
 .register-wrap {
-  background-color: gray;
+  background-color: #fafafa;
 }
 .spec-form-item {
   :deep {
@@ -158,6 +158,7 @@ const handleBack = () => {
 .content-wrapper {
   width: 450px;
   background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
   border-radius: 20px;
   padding: 32px;
   :deep {

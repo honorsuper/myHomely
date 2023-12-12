@@ -2,6 +2,8 @@
   "name": "myhomely",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
+  "author": "honorsuper<honorsuper@126.com>",
   "scripts": {
     "dev": "vite --host",
     "build": "run-p type-check \"build-only {@}\" --",
