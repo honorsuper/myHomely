@@ -4,6 +4,7 @@ import { message } from 'ant-design-vue'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import { login } from '@/utils/request'
+import { userStore } from '@/stores/user'
 
 interface FormState {
   username: string
@@ -16,6 +17,7 @@ const formState = reactive<FormState>({
 })
 
 const router = useRouter()
+const store = userStore()
 
 const onFinish = async (values: any) => {
   const res = await login(values.username, values.password)
@@ -26,7 +28,7 @@ const onFinish = async (values: any) => {
     localStorage.setItem('access_token', data.accessToken)
     localStorage.setItem('refresh_token', data.refreshToken)
     localStorage.setItem('user_info', JSON.stringify(data.userInfo))
-
+    store.setSystemInfo(data.userInfo)
     setTimeout(() => {
       router.push({
         name: 'home',
@@ -57,19 +59,21 @@ const toForgetPassword = () => {
         <a-form :model="formState" name="basic" autocomplete="off" @finish="onFinish">
           <a-form-item name="username" :rules="[{ required: true, message: '请输入用户名!' }]">
             <a-input v-model:value="formState.username" placeholder="请输入用户名">
-              <template #prefix><UserOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
+              <template #prefix>
+                <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
+              </template>
             </a-input>
           </a-form-item>
 
           <a-form-item name="password" :rules="[{ required: true, message: '请输入密码!' }]">
             <a-input-password v-model:value="formState.password" placeholder="请输入密码">
-              <template #prefix><LockOutlined style="color: rgba(0, 0, 0, 0.25)" /></template>
+              <template #prefix>
+                <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
+              </template>
             </a-input-password>
           </a-form-item>
 
-          <a-button type="primary" html-type="submit" block class="h-10 rounded-full"
-            >登录</a-button
-          >
+          <a-button type="primary" html-type="submit" block class="h-10 rounded-full">登录</a-button>
 
           <a-form-item>
             <div class="flex justify-between gap-4 mt-6">
@@ -86,11 +90,13 @@ const toForgetPassword = () => {
 .login-wrapper {
   background-color: gray;
 }
+
 .content-wrapper {
   width: 450px;
   background-color: #fff;
   border-radius: 20px;
   padding: 32px 32px 8px 32px;
+
   :deep {
     input.ant-input {
       height: 30px;

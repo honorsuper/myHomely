@@ -30,19 +30,24 @@ axiosInstance.interceptors.response.use(
     const { data, config } = error.response
 
     if (refreshing) {
-      return new Promise((resolve) => {
-        queue.push({
-          config,
-          resolve,
+      console.log('到这里的')
+      if (config.url.includes('/user/refresh')) {
+        setTimeout(() => {
+          window.location.href = '/login'
         })
-      })
+      } else {
+        return new Promise((resolve) => {
+          queue.push({
+            config,
+            resolve,
+          })
+        })
+      }
     }
     if (data.code === 401 && !config.url.includes('/user/refresh')) {
       refreshing = true
-
       const res = await refreshToken()
       refreshing = false
-
       const { data } = res.data
       if (res.status === 201 || res.status === 200) {
         localStorage.setItem('access_token', data.access_token)

@@ -14,7 +14,7 @@ interface IColorList {
 const store = userStore()
 const formRef = ref<FormInstance>()
 const dynamicValidateForm = reactive<{ colorList: IColorList[] }>({
-  colorList: JSON.parse(store.userInfo.colorConfig).colorList,
+  colorList: JSON.parse(store.userInfo.colorConfig ?? '[]'),
 })
 const router = useRouter()
 
@@ -31,10 +31,11 @@ const addColor = () => {
   })
 }
 const onFinish = async (values: IColorList[]) => {
+  console.log("走了吗")
   console.log('Received values of form:', values)
 
   const res = await updateColorConfig({
-    colorList: values,
+    colorList: values?.colorList?.colorlist
   })
   const { data } = res.data
   if (res.status === 201 || res.status === 200) {
@@ -48,50 +49,23 @@ const onFinish = async (values: IColorList[]) => {
 </script>
 <template>
   <div class="color-setting-wrap">
-    <a-form
-      ref="formRef"
-      name="dynamic_form_nest_item"
-      :model="dynamicValidateForm"
-      @finish="onFinish"
-    >
-      <a-space
-        v-for="(item, index) in dynamicValidateForm.colorList"
-        :key="`${index}-${item}`"
-        style="display: flex; margin-bottom: 8px"
-        align="baseline"
-      >
-        <a-form-item
-          :name="['colorList', index, 'bgColor']"
-          :label="`背景色${index + 1}`"
-          :rules="{
-            required: true,
-            message: '请填写背景色',
-          }"
-        >
-          <ColorPicker
-            v-model:pureColor="item.bgColor"
-            :disableAlpha="true"
-            :disableHistory="true"
-            shape="circle"
-            format="hex"
-          />
+    <a-form ref="formRef" name="dynamic_form_nest_item" :model="dynamicValidateForm" @finish="onFinish">
+      <a-space v-for="(item, index) in dynamicValidateForm.colorList" :key="`${index}-${item}`"
+        style="display: flex; margin-bottom: 8px" align="baseline">
+        <a-form-item :name="['colorList', index, 'bgColor']" :label="`背景色${index + 1}`" :rules="{
+          required: true,
+          message: '请填写背景色',
+        }">
+          <ColorPicker v-model:pureColor="item.bgColor" :disableAlpha="true" :disableHistory="true" shape="circle"
+            format="hex" />
           <span>{{ item.bgColor }}</span>
         </a-form-item>
-        <a-form-item
-          label="字体颜色"
-          :name="['colorList', index, 'color']"
-          :rules="{
-            required: true,
-            message: '请填写字体颜色',
-          }"
-        >
-          <ColorPicker
-            v-model:pureColor="item.color"
-            :disableAlpha="true"
-            :disableHistory="true"
-            shape="circle"
-            format="hex"
-          />
+        <a-form-item label="字体颜色" :name="['colorList', index, 'color']" :rules="{
+          required: true,
+          message: '请填写字体颜色',
+        }">
+          <ColorPicker v-model:pureColor="item.color" :disableAlpha="true" :disableHistory="true" shape="circle"
+            format="hex" />
           <span>{{ item.color }}</span>
         </a-form-item>
         <MinusCircleOutlined @click="removeColor(item)" />
@@ -103,7 +77,7 @@ const onFinish = async (values: IColorList[]) => {
         </a-button>
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit">Submit</a-button>
+        <a-button type="primary" html-type="submit">提交</a-button>
       </a-form-item>
     </a-form>
   </div>

@@ -272,43 +272,27 @@ defineExpose({
   <a-modal v-model:open="open" title="新增" ok-text="确认" cancel-text="取消" :width="750">
     <div class="inner-form">
       <a-form ref="formRef" name="dynamic_form_nest_item" :model="dynamicValidateForm">
-        <a-form-item
-          name="mainTitle"
-          label="主标题"
-          :rules="[{ required: true, message: '请输入主标题' }]"
-        >
+        <a-form-item name="mainTitle" label="主标题" :rules="[{ required: true, message: '请输入主标题' }]">
           <a-input v-model:value="dynamicValidateForm.mainTitle" />
         </a-form-item>
         <div v-for="(user, index) in dynamicValidateForm.list" :key="user.id" class="dynamic-wrap">
           <template v-if="!user.isGroup">
-            <a-form-item
-              :name="['list', index, 'title']"
-              :rules="{
-                required: true,
-                message: '请输入标题',
-              }"
-              label="标题"
-            >
+            <a-form-item :name="['list', index, 'title']" :rules="{
+              required: true,
+              message: '请输入标题',
+            }" label="标题">
               <a-input v-model:value="user.title" placeholder="请输入标题" />
             </a-form-item>
-            <a-form-item
-              label="链接"
-              :name="['list', index, 'url']"
-              :rules="{
-                required: true,
-                message: '请输入链接',
-              }"
-            >
+            <a-form-item label="链接" :name="['list', index, 'url']" :rules="{
+              required: true,
+              message: '请输入链接',
+            }">
               <a-input v-model:value="user.url" placeholder="请输入链接" />
             </a-form-item>
-            <a-form-item
-              label="颜色"
-              :name="['list', index, 'color']"
-              :rules="{
-                required: true,
-                message: '请输入颜色',
-              }"
-            >
+            <a-form-item label="颜色" :name="['list', index, 'color']" :rules="{
+              required: true,
+              message: '请输入颜色',
+            }">
               <ColorPicker v-model:value="user.color" />
             </a-form-item>
             <div class="flex justify-end cursor-pointer editIcon">
@@ -319,20 +303,13 @@ defineExpose({
                     <a-menu-item key="0" @click="handleMoveUp(index, true)" v-if="index > 0">
                       移动到顶部
                     </a-menu-item>
-                    <a-menu-item key="1" @click="handleMoveUp(index)" v-if="index > 0"
-                      >上移
+                    <a-menu-item key="1" @click="handleMoveUp(index)" v-if="index > 0">上移
                     </a-menu-item>
-                    <a-menu-item
-                      key="2"
-                      @click="handleMoveDown(index)"
-                      v-if="index < dynamicValidateForm.list.length - 1"
-                      >下移
+                    <a-menu-item key="2" @click="handleMoveDown(index)"
+                      v-if="index < dynamicValidateForm.list.length - 1">下移
                     </a-menu-item>
-                    <a-menu-item
-                      key="3"
-                      @click="handleMoveDown(index, true)"
-                      v-if="index < dynamicValidateForm.list.length - 1"
-                    >
+                    <a-menu-item key="3" @click="handleMoveDown(index, true)"
+                      v-if="index < dynamicValidateForm.list.length - 1">
                       移动到底部
                     </a-menu-item>
                     <a-menu-divider />
@@ -345,39 +322,23 @@ defineExpose({
             </div>
           </template>
           <template v-else>
-            <a-form-item
-              :name="['list', index, 'groupTitle']"
-              :rules="{
-                required: true,
-                message: '请输入组标题',
-              }"
-              label="组标题"
-            >
+            <a-form-item :name="['list', index, 'groupTitle']" :rules="{
+              required: true,
+              message: '请输入组标题',
+            }" label="组标题">
               <a-input v-model:value="user.groupTitle" placeholder="请输入组标题" />
             </a-form-item>
-            <div
-              v-for="(innerUser, innerIndex) in user.groupList"
-              :key="innerUser.id"
-              class="inner-dynamic-wrap"
-            >
-              <a-form-item
-                :name="['list', index, 'groupList', innerIndex, 'subTitle']"
-                :rules="{
-                  required: true,
-                  message: '请输入标题',
-                }"
-                label="标题"
-              >
+            <div v-for="(innerUser, innerIndex) in user.groupList" :key="innerUser.id" class="inner-dynamic-wrap">
+              <a-form-item :name="['list', index, 'groupList', innerIndex, 'subTitle']" :rules="{
+                required: true,
+                message: '请输入标题',
+              }" label="标题">
                 <a-input v-model:value="innerUser.subTitle" placeholder="请输入标题" />
               </a-form-item>
-              <a-form-item
-                :name="['list', index, 'groupList', innerIndex, 'subUrl']"
-                :rules="{
-                  required: true,
-                  message: '请输入链接',
-                }"
-                label="标题"
-              >
+              <a-form-item :name="['list', index, 'groupList', innerIndex, 'subUrl']" :rules="{
+                required: true,
+                message: '请输入链接',
+              }" label="链接">
                 <a-input v-model:value="innerUser.subUrl" placeholder="请输入链接" />
               </a-form-item>
 
@@ -386,30 +347,16 @@ defineExpose({
                   <DownSquareOutlined />
                   <template #overlay>
                     <a-menu>
-                      <a-menu-item
-                        key="0"
-                        @click="handleSubMoveUp(index, innerIndex, true)"
-                        v-if="innerIndex > 0"
-                      >
+                      <a-menu-item key="0" @click="handleSubMoveUp(index, innerIndex, true)" v-if="innerIndex > 0">
                         移动到顶部
                       </a-menu-item>
-                      <a-menu-item
-                        key="1"
-                        v-if="innerIndex > 0"
-                        @click="handleSubMoveUp(index, innerIndex)"
-                        >上移
+                      <a-menu-item key="1" v-if="innerIndex > 0" @click="handleSubMoveUp(index, innerIndex)">上移
                       </a-menu-item>
-                      <a-menu-item
-                        key="2"
-                        v-if="innerIndex < dynamicValidateForm.list[index].groupList.length - 1"
-                        @click="handleSubMoveDown(index, innerIndex)"
-                        >下移
+                      <a-menu-item key="2" v-if="innerIndex < dynamicValidateForm.list[index].groupList.length - 1"
+                        @click="handleSubMoveDown(index, innerIndex)">下移
                       </a-menu-item>
-                      <a-menu-item
-                        key="3"
-                        v-if="innerIndex < dynamicValidateForm.list[index].groupList.length - 1"
-                        @click="handleSubMoveDown(index, innerIndex, true)"
-                      >
+                      <a-menu-item key="3" v-if="innerIndex < dynamicValidateForm.list[index].groupList.length - 1"
+                        @click="handleSubMoveDown(index, innerIndex, true)">
                         移动到底部
                       </a-menu-item>
                       <a-menu-divider />
@@ -421,23 +368,15 @@ defineExpose({
                 </a-dropdown>
               </div>
             </div>
-            <a-form-item
-              :name="['list', index, 'color']"
-              :rules="{
-                required: true,
-                message: '请选择颜色',
-              }"
-              label="颜色"
-            >
+            <a-form-item :name="['list', index, 'color']" :rules="{
+              required: true,
+              message: '请选择颜色',
+            }" label="颜色">
               <ColorPicker v-model:value="user.color" />
             </a-form-item>
             <div class="flex justify-between items-center">
-              <a-button
-                key="submit"
-                type="primary"
-                @click="() => handleAddSub(index)"
-                :style="{ marginBottom: '10px' }"
-                >新增链接
+              <a-button key="submit" type="primary" @click="() => handleAddSub(index)"
+                :style="{ marginBottom: '10px' }">新增链接
               </a-button>
               <a-dropdown>
                 <DownSquareOutlined />
@@ -446,20 +385,13 @@ defineExpose({
                     <a-menu-item key="0" @click="handleMoveUp(index, true)" v-if="index > 0">
                       移动到顶部
                     </a-menu-item>
-                    <a-menu-item key="1" @click="handleMoveUp(index)" v-if="index > 0"
-                      >上移
+                    <a-menu-item key="1" @click="handleMoveUp(index)" v-if="index > 0">上移
                     </a-menu-item>
-                    <a-menu-item
-                      key="2"
-                      @click="handleMoveDown(index)"
-                      v-if="index < dynamicValidateForm.list.length - 1"
-                      >下移
+                    <a-menu-item key="2" @click="handleMoveDown(index)"
+                      v-if="index < dynamicValidateForm.list.length - 1">下移
                     </a-menu-item>
-                    <a-menu-item
-                      key="3"
-                      @click="handleMoveDown(index, true)"
-                      v-if="index < dynamicValidateForm.list.length - 1"
-                    >
+                    <a-menu-item key="3" @click="handleMoveDown(index, true)"
+                      v-if="index < dynamicValidateForm.list.length - 1">
                       移动到底部
                     </a-menu-item>
                     <a-menu-divider />

@@ -15,7 +15,7 @@ const open = ref<boolean>(false)
 const store = userStore()
 const formRef = ref<FormInstance>()
 const dynamicValidateForm = reactive<{ colorList: IColorList[] }>({
-  colorList: JSON.parse(store.userInfo.colorConfig).colorList,
+  colorList: JSON.parse(store.userInfo.colorConfig || '[]'),
 })
 
 
@@ -43,7 +43,7 @@ const onClose = () => {
 
 watch(open, (newValue) => {
   if (newValue) {
-    dynamicValidateForm.colorList = JSON.parse(store.userInfo.colorConfig).colorList
+    dynamicValidateForm.colorList = JSON.parse(store.userInfo.colorConfig ?? '[]')
   }
 })
 
@@ -55,9 +55,12 @@ const handleSubmit = () => {
   formRef.value
     ?.validate()
     .then(async (values) => {
-      const res = await updateColorConfig({
-        colorList: values,
-      })
+      console.log("values", values)
+      const params = {
+        colorList: values.colorList,
+      }
+      console.log("param", params)
+      const res = await updateColorConfig(params)
       const { data } = res.data
       if (res.status === 201 || res.status === 200) {
         message.success('修改成功')
@@ -114,7 +117,7 @@ defineExpose({
     </a-form>
     <template #extra>
       <a-space>
-        <a-button type="primary" @click="handleSubmit">Submit</a-button>
+        <a-button type="primary" @click="handleSubmit">提交</a-button>
       </a-space>
     </template>
   </a-drawer>

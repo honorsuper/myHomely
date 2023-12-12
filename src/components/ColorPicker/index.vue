@@ -13,7 +13,7 @@ const selected = ref(true)
 
 const store = userStore()
 
-const colorList = JSON.parse(store.userInfo.colorConfig).colorList
+const colorList = JSON.parse(store.userInfo.colorConfig)
 
 const handleChangeStatus = () => {
   selected.value = false
@@ -33,37 +33,25 @@ watch(
 )
 </script>
 <template>
-  <div
-    :style="{
-      background: '#ffffff',
-      padding: '10px',
-      borderRadius: '6px',
-    }"
-  >
-    <div
-      v-if="selected"
-      @click="handleChangeStatus"
-      class="cursor-pointer"
-      :style="{
-        background: colorList[value || 0].bgColor,
-        color: colorList[value || 0].color,
-        width: '25px',
-        height: '25px',
-      }"
-    />
+  <div :style="{
+    background: '#ffffff',
+    padding: '10px',
+    borderRadius: '6px',
+  }">
+    <div v-if="selected" @click="handleChangeStatus" class="cursor-pointer" :style="{
+      background: colorList[value || 0].bgColor,
+      color: colorList[value || 0].color,
+      width: '25px',
+      height: '25px',
+    }" />
     <div class="flex gap-4" v-else>
-      <div
-        v-for="(item, index) in colorList"
-        :key="index"
-        class="cursor-pointer"
-        @click="handleSelectColor(index)"
+      <div v-for="(item, index) in colorList" :key="index" class="cursor-pointer" @click="handleSelectColor(index)"
         :style="{
           background: item.bgColor,
           color: item.color,
           width: '25px',
           height: '25px',
-        }"
-      />
+        }" />
     </div>
   </div>
 </template>

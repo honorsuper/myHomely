@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, provide } from 'vue'
 import { WaterFall } from '@/components'
-import { Header, AddCol, ColorSetting } from './components'
+import { Header, AddCol } from './components'
 import { getMenuInfo } from '@/utils/request'
 import { message } from 'ant-design-vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
