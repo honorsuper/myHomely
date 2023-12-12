@@ -88,7 +88,11 @@ const handleBack = () => {
             :rules="[{ required: true, message: '请输入密码' }]"
             class="spec-form-item"
           >
-            <a-input-password v-model:value="formState.password" placeholder="请输入密码" />
+            <a-input-password
+              v-model:value="formState.password"
+              placeholder="请输入密码"
+              autoComplete="new-password"
+            />
           </a-form-item>
 
           <a-form-item
@@ -99,6 +103,7 @@ const handleBack = () => {
             <a-input-password
               v-model:value="formState.confirmPassword"
               placeholder="请再次输入密码"
+              autoComplete="new-password"
             />
           </a-form-item>
 
