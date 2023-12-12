@@ -11,6 +11,7 @@ import { AddCol } from '../../views/Homely/components'
 import Rename from './Rename.vue'
 import { deleteColumn } from '@/utils/request'
 import { userStore } from '@/stores/user'
+import { DEFAULT_BG_COLOR, DEFAULT_COLOR } from '@/constants'
 
 const props = defineProps<{
   info: {
@@ -123,8 +124,8 @@ const jumpToUrl = (url: string) => {
       <div v-for="item in info.list" :key="item.id">
         <div
           :style="{
-            background: colorList[item.color]?.bgColor,
-            color: colorList[item.color]?.color,
+            background: colorList[item.color]?.bgColor ?? DEFAULT_BG_COLOR,
+            color: colorList[item.color]?.color ?? DEFAULT_COLOR,
           }"
           class="item flex justify-center"
           @click="jumpToUrl(item.url)"
@@ -137,8 +138,8 @@ const jumpToUrl = (url: string) => {
           <div
             class="item flex justify-center"
             :style="{
-              background: colorList[item.color].bgColor,
-              color: colorList[item.color].color,
+              background: colorList[item.color]?.bgColor ?? DEFAULT_BG_COLOR,
+              color: colorList[item.color]?.color ?? DEFAULT_COLOR,
             }"
           >
             {{ item.groupTitle }}

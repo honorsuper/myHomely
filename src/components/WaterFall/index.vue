@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, computed, watch, nextTick, inject } from 'vue'
-import { Sortable } from 'sortablejs-vue3'
+// import { Sortable } from 'sortablejs-vue3'
 import { MenuItem } from '@/components'
 import { getMinHeightColumn, getMinHeight, getMaxHeight } from './utils'
 import { sortColumn } from '@/utils/request'
