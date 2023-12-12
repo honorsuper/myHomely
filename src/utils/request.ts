@@ -155,6 +155,11 @@ export async function updateColorConfig(data: any) {
   return await axiosInstance.post('/user/update-color', data)
 }
 
+// 重置颜色
+export async function resetColorConfig() {
+  return await axiosInstance.get('/user/reset-color')
+}
+
 // 获取用户信息
 export async function queryUserInfo() {
   return await axiosInstance.get('/user/info')

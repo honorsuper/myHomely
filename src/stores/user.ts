@@ -19,7 +19,6 @@ export const userStore = defineStore({
     },
 
     async handleGetUserInfo() {
-      // const res = getUserInfo()
       const res = await queryUserInfo()
       const { data } = res.data
       if (res.status === 201 || res.status === 200) {

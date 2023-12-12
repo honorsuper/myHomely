@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue"
-import { useRouter, } from 'vue-router'
+import { ref, createVNode } from 'vue'
+import { useRouter } from 'vue-router'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+import { Modal } from 'ant-design-vue'
 import { userStore } from '@/stores/user'
 import { handleLogout } from '@/utils'
-import ColorSetting from '../ColorSetting/index.vue';
+import ColorSetting from '../ColorSetting/index.vue'
 
 const colorSettingRef = ref<InstanceType<typeof ColorSetting> | null>(null)
 const router = useRouter()
@@ -12,7 +14,7 @@ const store = userStore()
 
 const handleClickMenu = (a: any) => {
   if (a?.key === 'logout') {
-    handleLogout()
+    handleLogoutConfirm()
   } else if (a?.key === 'update-userinfo') {
     router.push({
       name: 'updateUser',
@@ -26,7 +28,17 @@ const handleClickMenu = (a: any) => {
   }
 }
 
-
+// 退出确认
+const handleLogoutConfirm = () => {
+  Modal.confirm({
+    title: '退出登录',
+    icon: createVNode(ExclamationCircleOutlined),
+    content: '是否确认退出登录',
+    onOk() {
+      handleLogout()
+    },
+  })
+}
 </script>
 <template>
   <div class="header-wrap flex items-center justify-between">
@@ -46,7 +58,6 @@ const handleClickMenu = (a: any) => {
         </template>
       </a-dropdown>
     </div>
-
   </div>
   <ColorSetting ref="colorSettingRef" />
 </template>
