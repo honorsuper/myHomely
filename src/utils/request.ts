@@ -164,3 +164,13 @@ export async function resetColorConfig() {
 export async function queryUserInfo() {
   return await axiosInstance.get('/user/info')
 }
+
+// 上报首次进入
+export async function setFirst() {
+  return await axiosInstance.get('/user/set-first')
+}
+
+// 判断时候首次进入
+export async function queryIsFirst() {
+  return await axiosInstance.get('/user/is-first')
+}
