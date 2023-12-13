@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { onMounted, ref, provide } from 'vue'
 import { WaterFall } from '@/components'
-import { Header, AddCol, ColorSetting } from './components'
-import { getMenuInfo } from '@/utils/request'
-import { message } from 'ant-design-vue'
-import { PlusOutlined } from '@ant-design/icons-vue'
+import { Header, AddCol } from './components'
+import { getMenuInfo, queryIsFirst, setFirst } from '@/utils/request'
+import { message, type TourProps } from 'ant-design-vue'
+import { PlusOutlined, GithubOutlined } from '@ant-design/icons-vue'
+import { userStore } from '@/stores/user'
 
+const ref1 = ref(null)
+const ref2 = ref(null)
 const menuData = ref<any[]>([])
 const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
-
+const open = ref(false)
+const store = userStore()
+const current = ref(0)
 
 const handleGetMenuInfo = async () => {
   const res = await getMenuInfo()
@@ -27,14 +32,58 @@ const handleOpenModal = () => {
   addColRef?.value?.handleOpenModal?.()
 }
 
+const handleOpen = async (val: boolean) => {
+  open.value = val
+  if (!val) {
+    const res = await setFirst()
+    if (res.status === 201 || res.status === 200) {
+      store.handleGetUserInfo()
+    } else {
+      message.error(res?.data || '系统繁忙，请稍后再试')
+    }
+  }
+}
 
+const steps: TourProps['steps'] = [
+  {
+    title: '新增',
+    description: '点击新增模块',
+    target: () => ref1.value && ref1.value.$el,
+    placement: 'topRight',
+  },
+  {
+    title: '收藏',
+    description: '创作不易，喜欢请收藏',
+    target: () => ref2.value && ref2.value.$el,
+    placement: 'topRight',
+  },
+]
+
+/**
+ * 获取是否首次进入
+ */
+const handleGetIsFirst = async () => {
+  const res = await queryIsFirst()
+  if (res.status === 201 || res.status === 200) {
+    if (res.data.data.isFirst) {
+      handleOpen(true)
+    }
+  } else {
+    message.error(res?.data || '系统繁忙，请稍后再试')
+  }
+}
+
+const handleToGithub = () => {
+  window.open('https://github.com/honorsuper/myHomely')
+}
 
 provide('homely', {
   handleGetMenuInfo,
-}) // 若提供的是非字符串值会导致错误
+})
 
 onMounted(() => {
   handleGetMenuInfo()
+  handleGetIsFirst()
 })
 </script>
 
@@ -43,19 +92,27 @@ onMounted(() => {
     <Header />
     <WaterFall :data="menuData" />
     <AddCol ref="addColRef" />
+    <a-float-button-group shape="circle" :style="{ right: '34px' }">
+      <a-float-button type="primary" ref="ref1" @click="handleOpenModal">
+        <template #icon>
+          <PlusOutlined />
+        </template>
+      </a-float-button>
 
-    <a-float-button type="primary">
-      <template #icon>
-        <PlusOutlined @click="handleOpenModal" />
-      </template>
-    </a-float-button>
-    <!-- <a-float-button @click="handleOpenModal" /> -->
+      <a-float-button @click="handleToGithub" ref="ref2">
+        <template #icon>
+          <GithubOutlined />
+        </template>
+      </a-float-button>
+    </a-float-button-group>
+
+    <a-tour v-model:current="current" :open="open" :steps="steps" @close="handleOpen(false)" />
   </div>
 </template>
 
 <style lang="less" scoped>
 .out-wrap {
-  width: 100vw;
-  min-height: 100vh;
+  height: 100%;
+  background-color: #fafafa;
 }
 </style>

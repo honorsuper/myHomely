@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, inject } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
 import { getMenuInfo, menuRename } from '@/utils/request'
 import { message } from 'ant-design-vue'
@@ -14,6 +14,8 @@ const currentId = ref<number | null>(null)
 const formState = reactive({
   mainTitle: '',
 })
+
+const homelyInfo = inject<any>('homely')
 
 /**
  * 打开重命名弹窗
@@ -41,6 +43,7 @@ const handleSubmit = () => {
       if (res.status === 201 || res.status === 200) {
         message.success('修改成功')
         handleCancel()
+        homelyInfo?.handleGetMenuInfo?.()
       } else {
         message.error(res?.data || '系统繁忙，请稍后再试')
       }

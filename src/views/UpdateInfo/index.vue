@@ -111,7 +111,7 @@ const handleToHome = () => {
 </template>
 <style scoped lang="less">
 .register-wrap {
-  background-color: gray;
+  background-color: #fafafa;
 }
 .spec-form-item {
   :deep {
@@ -123,6 +123,7 @@ const handleToHome = () => {
 .content-wrapper {
   width: 450px;
   background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
   border-radius: 20px;
   padding: 32px;
   :deep {

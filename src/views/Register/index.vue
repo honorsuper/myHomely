@@ -88,7 +88,11 @@ const handleToLogin = () => {
             :rules="[{ required: true, message: '请输入密码' }]"
             class="spec-form-item"
           >
-            <a-input-password v-model:value="formState.password" placeholder="请输入密码" />
+            <a-input-password
+              v-model:value="formState.password"
+              placeholder="请输入密码"
+              autoComplete="new-password"
+            />
           </a-form-item>
 
           <a-form-item
@@ -99,6 +103,7 @@ const handleToLogin = () => {
             <a-input-password
               v-model:value="formState.confirmPassword"
               placeholder="请再次输入密码"
+              autoComplete="new-password"
             />
           </a-form-item>
 
@@ -141,7 +146,7 @@ const handleToLogin = () => {
 </template>
 <style scoped lang="less">
 .register-wrap {
-  background-color: gray;
+  background-color: #fafafa;
 }
 .spec-form-item {
   :deep {
@@ -153,6 +158,7 @@ const handleToLogin = () => {
 .content-wrapper {
   width: 450px;
   background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
   border-radius: 20px;
   padding: 32px;
   :deep {

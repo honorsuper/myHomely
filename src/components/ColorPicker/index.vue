@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { userStore } from '@/stores/user'
 import { ref, watch } from 'vue'
+import { DEFAULT_BG_COLOR, DEFAULT_COLOR } from '@/constants'
 
 const props = defineProps<{
   value: number
@@ -13,7 +14,7 @@ const selected = ref(true)
 
 const store = userStore()
 
-const colorList = JSON.parse(store.userInfo.colorConfig).colorList
+const colorList = JSON.parse(store.userInfo.colorConfig)
 
 const handleChangeStatus = () => {
   selected.value = false
@@ -45,8 +46,8 @@ watch(
       @click="handleChangeStatus"
       class="cursor-pointer"
       :style="{
-        background: colorList[value || 0].bgColor,
-        color: colorList[value || 0].color,
+        background: colorList[value || 0]?.bgColor ?? DEFAULT_BG_COLOR,
+        color: colorList[value || 0]?.color ?? DEFAULT_COLOR,
         width: '25px',
         height: '25px',
       }"

@@ -7,12 +7,14 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AAvatar: typeof import('ant-design-vue/lib')['Avatar']
     AButton: typeof import('ant-design-vue/lib')['Button']
     ACheckbox: typeof import('ant-design-vue/lib')['Checkbox']
     ACol: typeof import('ant-design-vue/lib')['Col']
     ADrawer: typeof import('ant-design-vue/lib')['Drawer']
     ADropdown: typeof import('ant-design-vue/lib')['Dropdown']
     AFloatButton: typeof import('ant-design-vue/lib')['FloatButton']
+    AFloatButtonGroup: typeof import('ant-design-vue/lib')['FloatButtonGroup']
     AForm: typeof import('ant-design-vue/lib')['Form']
     AFormItem: typeof import('ant-design-vue/lib')['FormItem']
     AInput: typeof import('ant-design-vue/lib')['Input']
@@ -27,10 +29,12 @@ declare module 'vue' {
     ASelect: typeof import('ant-design-vue/lib')['Select']
     ASpace: typeof import('ant-design-vue/lib')['Space']
     ATextarea: typeof import('ant-design-vue/lib')['Textarea']
+    ATour: typeof import('ant-design-vue/lib')['Tour']
     CaretDownOutlined: typeof import('@ant-design/icons-vue')['CaretDownOutlined']
     ColorPicker: typeof import('./src/components/ColorPicker/index.vue')['default']
     DownOutlined: typeof import('@ant-design/icons-vue')['DownOutlined']
     DownSquareOutlined: typeof import('@ant-design/icons-vue')['DownSquareOutlined']
+    GithubOutlined: typeof import('@ant-design/icons-vue')['GithubOutlined']
     MenuItem: typeof import('./src/components/MenuItem/index.vue')['default']
     MinusCircleOutlined: typeof import('@ant-design/icons-vue')['MinusCircleOutlined']
     PlusOutlined: typeof import('@ant-design/icons-vue')['PlusOutlined']

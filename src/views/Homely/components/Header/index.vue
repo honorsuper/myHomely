@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue"
-import { useRouter, } from 'vue-router'
+import { ref, createVNode } from 'vue'
+import { useRouter } from 'vue-router'
+import { ExclamationCircleOutlined, GithubOutlined } from '@ant-design/icons-vue'
+import { Modal } from 'ant-design-vue'
 import { userStore } from '@/stores/user'
 import { handleLogout } from '@/utils'
-import ColorSetting from '../ColorSetting/index.vue';
+import ColorSetting from '../ColorSetting/index.vue'
 
 const colorSettingRef = ref<InstanceType<typeof ColorSetting> | null>(null)
 const router = useRouter()
@@ -12,7 +14,7 @@ const store = userStore()
 
 const handleClickMenu = (a: any) => {
   if (a?.key === 'logout') {
-    handleLogout()
+    handleLogoutConfirm()
   } else if (a?.key === 'update-userinfo') {
     router.push({
       name: 'updateUser',
@@ -22,12 +24,21 @@ const handleClickMenu = (a: any) => {
       name: 'changePassword',
     })
   } else if (a?.key === 'color-setting') {
-    console.log("!11", colorSettingRef.value)
     colorSettingRef.value?.showDrawer?.()
   }
 }
 
-
+// 退出确认
+const handleLogoutConfirm = () => {
+  Modal.confirm({
+    title: '退出登录',
+    icon: createVNode(ExclamationCircleOutlined),
+    content: '是否确认退出登录',
+    onOk() {
+      handleLogout()
+    },
+  })
+}
 </script>
 <template>
   <div class="header-wrap flex items-center justify-between">
@@ -47,7 +58,6 @@ const handleClickMenu = (a: any) => {
         </template>
       </a-dropdown>
     </div>
-
   </div>
   <ColorSetting ref="colorSettingRef" />
 </template>
@@ -55,12 +65,29 @@ const handleClickMenu = (a: any) => {
 .header-wrap {
   height: 64px;
   box-shadow: 0 8px 24px -2px rgba(0, 0, 0, 0.05);
-  padding: 0 20px;
-  background: #ffffff;
+  padding: 0 30px;
+  background-color: #ffffff;
+  // background: #f7f9fb;
   margin-bottom: 30px;
+}
+// .icon {
+//   width: 40px;
+//   height: 40px;
+//   border: 1px solid red;
+// }
+
+.title {
+  font-weight: bold;
+  // color: #a4b2c1;
+  // color: #8b5cf6;
+  color: #262626;
+  font-size: 25px;
 }
 
 .nickname {
+  margin-right: 10px;
+  font-size: 16px;
+  color: #262626;
   :hover {
     cursor: pointer;
   }

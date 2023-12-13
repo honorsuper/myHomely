@@ -30,19 +30,24 @@ axiosInstance.interceptors.response.use(
     const { data, config } = error.response
 
     if (refreshing) {
-      return new Promise((resolve) => {
-        queue.push({
-          config,
-          resolve,
+      console.log('到这里的')
+      if (config.url.includes('/user/refresh')) {
+        setTimeout(() => {
+          window.location.href = '/login'
         })
-      })
+      } else {
+        return new Promise((resolve) => {
+          queue.push({
+            config,
+            resolve,
+          })
+        })
+      }
     }
     if (data.code === 401 && !config.url.includes('/user/refresh')) {
       refreshing = true
-
       const res = await refreshToken()
       refreshing = false
-
       const { data } = res.data
       if (res.status === 201 || res.status === 200) {
         localStorage.setItem('access_token', data.access_token)
@@ -150,7 +155,22 @@ export async function updateColorConfig(data: any) {
   return await axiosInstance.post('/user/update-color', data)
 }
 
+// 重置颜色
+export async function resetColorConfig() {
+  return await axiosInstance.get('/user/reset-color')
+}
+
 // 获取用户信息
 export async function queryUserInfo() {
   return await axiosInstance.get('/user/info')
+}
+
+// 上报首次进入
+export async function setFirst() {
+  return await axiosInstance.get('/user/set-first')
+}
+
+// 判断时候首次进入
+export async function queryIsFirst() {
+  return await axiosInstance.get('/user/is-first')
 }

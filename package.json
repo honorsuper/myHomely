@@ -2,6 +2,8 @@
   "name": "myhomely",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
+  "author": "honorsuper<honorsuper@126.com>",
   "scripts": {
     "dev": "vite --host",
     "build": "run-p type-check \"build-only {@}\" --",
@@ -21,6 +23,7 @@
     "less": "^4.2.0",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
+    "sortablejs": "^1.15.1",
     "sortablejs-vue3": "^1.2.10",
     "uuid": "^9.0.1",
     "vue": "^3.3.4",
