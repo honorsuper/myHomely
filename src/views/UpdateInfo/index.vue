@@ -57,7 +57,9 @@ const handleToHome = () => {
 }
 </script>
 <template>
-  <div class="flex justify-center items-center h-full login-wrapper flex-col register-wrap">
+  <div
+    class="flex justify-center items-center h-full login-wrapper flex-col register-wrap dark:bg-[#20293a]"
+  >
     <div class="content-wrapper">
       <div class="text-xl mb-4">信息修改</div>
       <div class="form-wrap">

@@ -95,7 +95,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="out-wrap flex flex-col">
+  <div class="out-wrap flex flex-col dark:bg-[#20293a]">
     <Header ref="headerRef" />
     <WaterFall :data="menuData" />
     <AddCol ref="addColRef" />

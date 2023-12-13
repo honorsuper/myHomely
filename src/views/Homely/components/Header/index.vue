@@ -6,6 +6,7 @@ import { Modal } from 'ant-design-vue'
 import { userStore } from '@/stores/user'
 import { handleLogout } from '@/utils'
 import ColorSetting from '../ColorSetting/index.vue'
+import { ThemeType } from '@/enum'
 
 const colorSettingRef = ref<InstanceType<typeof ColorSetting> | null>(null)
 const router = useRouter()
@@ -42,14 +43,27 @@ const handleLogoutConfirm = () => {
   })
 }
 
+/**
+ * 切换主题
+ */
+const handleChangeThemeType = () => {
+  if (store.theme === ThemeType.LIGHT) {
+    store.changeThemeType(ThemeType.DARK)
+  } else {
+    store.changeThemeType(ThemeType.LIGHT)
+  }
+}
+
 defineExpose({
   getRef3: () => ref3,
 })
 </script>
 <template>
-  <div class="header-wrap flex items-center justify-between">
+  <div class="header-wrap flex items-center justify-between dark:bg-[#000000]/20">
     <div class="title"><img src="@/assets/images/title.png" /></div>
     <div class="flex items-center gap-2">
+      <span v-if="store.theme === ThemeType.LIGHT" @click="handleChangeThemeType">极简白</span>
+      <span v-else @click="handleChangeThemeType">极夜黑</span>
       <a-dropdown>
         <div @click.prevent class="nickname" ref="ref3">
           <div>{{ store.userInfo.nickName }}</div>
@@ -72,7 +86,7 @@ defineExpose({
   height: 64px;
   box-shadow: 0 8px 24px -2px rgba(0, 0, 0, 0.05);
   padding: 0 30px;
-  background-color: #ffffff;
+  // background-color: #ffffff;
   margin-bottom: 30px;
 }
 

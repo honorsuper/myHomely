@@ -8,10 +8,12 @@ import './styles/index.less'
 import './styles/global.less'
 import 'ant-design-vue/dist/reset.css'
 import { store } from '@/stores'
+import { useTheme } from '@/hooks/useTheme'
 
 const app = createApp(App)
 app.use(Antd)
 app.use(store)
 app.use(router)
+useTheme()
 
 app.mount('#app')

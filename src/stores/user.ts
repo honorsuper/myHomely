@@ -2,22 +2,28 @@ import { defineStore } from 'pinia'
 import { getUserInfo } from '@/stores/utils'
 import { queryUserInfo } from '@/utils/request'
 import { message } from 'ant-design-vue'
+import { ThemeType } from '@/enum'
 
 interface UserState {
   userInfo: any
+  theme: string
 }
 
 export const userStore = defineStore({
   id: 'app-system',
   state: (): UserState => ({
     userInfo: getUserInfo(),
+    theme: ThemeType.LIGHT,
   }),
   actions: {
-    /**设置用户名，公司列表 */
+    /**设置用户名*/
     setSystemInfo(data: any = {}) {
       this.userInfo = data
     },
 
+    /**
+     * 获取用户信息
+     */
     async handleGetUserInfo() {
       const res = await queryUserInfo()
       const { data } = res.data
@@ -27,6 +33,14 @@ export const userStore = defineStore({
       } else {
         message.error(data || '系统繁忙，请稍后再试')
       }
+    },
+
+    /**
+     * 切换主题
+     * @param type 主题类型
+     */
+    changeThemeType(type: string) {
+      this.theme = type
     },
   },
 })
