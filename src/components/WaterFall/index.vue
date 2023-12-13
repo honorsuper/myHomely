@@ -253,13 +253,4 @@ onMounted(() => {
   padding-left: 150px;
   padding-right: 150px;
 }
-.ghost {
-  opacity: 0.5;
-  background: #fff;
-  border: 1px dashed #ccc;
-}
-
-.drag {
-  background: #f5f5f5;
-}
 </style>

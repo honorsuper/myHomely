@@ -9,6 +9,7 @@ import { userStore } from '@/stores/user'
 
 const ref1 = ref(null)
 const ref2 = ref(null)
+const headerRef = ref<InstanceType<typeof Header> | null>(null)
 const menuData = ref<any[]>([])
 const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
 const open = ref(false)
@@ -53,8 +54,14 @@ const steps: TourProps['steps'] = [
   },
   {
     title: '收藏',
-    description: '创作不易，喜欢请收藏',
+    description: '创作不易，喜欢请三连哈',
     target: () => ref2.value && ref2.value.$el,
+    placement: 'topRight',
+  },
+  {
+    title: '信息设置',
+    description: '信息修改，密码修改，颜色配置，退出登录',
+    target: () => headerRef.value?.getRef3?.()?.value,
     placement: 'topRight',
   },
 ]
@@ -89,7 +96,7 @@ onMounted(() => {
 
 <template>
   <div class="out-wrap flex flex-col">
-    <Header />
+    <Header ref="headerRef" />
     <WaterFall :data="menuData" />
     <AddCol ref="addColRef" />
     <a-float-button-group shape="circle" :style="{ right: '34px' }">

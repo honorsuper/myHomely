@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, createVNode } from 'vue'
 import { useRouter } from 'vue-router'
-import { ExclamationCircleOutlined, GithubOutlined } from '@ant-design/icons-vue'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 import { Modal } from 'ant-design-vue'
 import { userStore } from '@/stores/user'
 import { handleLogout } from '@/utils'
@@ -9,8 +9,8 @@ import ColorSetting from '../ColorSetting/index.vue'
 
 const colorSettingRef = ref<InstanceType<typeof ColorSetting> | null>(null)
 const router = useRouter()
-
 const store = userStore()
+const ref3 = ref(null)
 
 const handleClickMenu = (a: any) => {
   if (a?.key === 'logout') {
@@ -34,18 +34,24 @@ const handleLogoutConfirm = () => {
     title: '退出登录',
     icon: createVNode(ExclamationCircleOutlined),
     content: '是否确认退出登录',
+    okText: '确认',
+    cancelText: '取消',
     onOk() {
       handleLogout()
     },
   })
 }
+
+defineExpose({
+  getRef3: () => ref3,
+})
 </script>
 <template>
   <div class="header-wrap flex items-center justify-between">
-    <div class="title">my-Homely</div>
+    <div class="title"><img src="@/assets/images/title.png" /></div>
     <div class="flex items-center gap-2">
       <a-dropdown>
-        <div @click.prevent class="nickname">
+        <div @click.prevent class="nickname" ref="ref3">
           <div>{{ store.userInfo.nickName }}</div>
         </div>
         <template #overlay>
@@ -67,27 +73,22 @@ const handleLogoutConfirm = () => {
   box-shadow: 0 8px 24px -2px rgba(0, 0, 0, 0.05);
   padding: 0 30px;
   background-color: #ffffff;
-  // background: #f7f9fb;
   margin-bottom: 30px;
 }
-// .icon {
-//   width: 40px;
-//   height: 40px;
-//   border: 1px solid red;
-// }
 
 .title {
-  font-weight: bold;
-  // color: #a4b2c1;
-  // color: #8b5cf6;
-  color: #262626;
-  font-size: 25px;
+  img {
+    width: 120px;
+  }
 }
 
 .nickname {
   margin-right: 10px;
   font-size: 16px;
   color: #262626;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 10px;
   :hover {
     cursor: pointer;
   }

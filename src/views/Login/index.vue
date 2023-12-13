@@ -53,7 +53,9 @@ const toForgetPassword = () => {
 </script>
 <template>
   <div class="wrapper h-full relative justify-center items-center flex">
-    <div class="title absolute">myHomely</div>
+    <div class="title absolute">
+      <img src="@/assets/images/title.png" />
+    </div>
 
     <div class="flex login-wrapper flex-col">
       <div class="content-wrapper">
@@ -97,12 +99,9 @@ const toForgetPassword = () => {
   background-color: #fafafa;
 }
 .title {
-  color: #222222;
-  font-size: 50px;
-  font-weight: bold;
-  padding: 20px 40px;
-  left: 20px;
-  top: 20px;
+  left: 80px;
+  top: 50px;
+  width: 250px;
 }
 .login-wrapper {
   background-color: #fafafa;

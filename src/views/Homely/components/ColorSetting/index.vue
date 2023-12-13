@@ -59,6 +59,8 @@ const handleResetShow = () => {
     title: '颜色重置',
     icon: createVNode(ExclamationCircleOutlined),
     content: '确认将颜色配置重置为默认',
+    okText: '确认',
+    cancelText: '取消',
     onOk() {
       handleReset()
     },
