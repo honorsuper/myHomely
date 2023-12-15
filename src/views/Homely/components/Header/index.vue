@@ -8,12 +8,17 @@ import { handleLogout } from '@/utils'
 import ColorSetting from '../ColorSetting/index.vue'
 import { ThemeType } from '@/enum'
 
+const props = defineProps<{
+  handleOpenGuide: () => void
+}>()
+
 const colorSettingRef = ref<InstanceType<typeof ColorSetting> | null>(null)
 const router = useRouter()
 const store = userStore()
 const ref3 = ref(null)
 const ref4 = ref(null)
 const ref5 = ref(null)
+const ref6 = ref(null)
 
 const handleClickMenu = (a: any) => {
   if (a?.key === 'logout') {
@@ -56,25 +61,46 @@ const handleChangeThemeType = () => {
   }
 }
 
+const handleToGithub = () => {
+  window.open('https://github.com/honorsuper/myHomely')
+}
+
+const openGuide = () => {
+  props.handleOpenGuide()
+}
+
 defineExpose({
   getRef3: () => ref3,
   getRef4: () => ref4,
   getRef5: () => ref5,
+  getRef6: () => ref6,
 })
 </script>
 <template>
   <div class="header-wrap flex items-center justify-between dark:bg-[#000000]/20">
     <div class="title"><img src="@/assets/images/title.png" /></div>
     <div class="flex items-center gap-2">
-      <div class="mode-icon-wrap dark:bg-[#f5f5f5]" ref="ref5">
+      <div class="mode-icon-wrap dark:bg-[#f5f5f5]" ref="ref6" @click="handleToGithub">
         <img class="mode-icon" src="@/assets/icons/github.png" />
       </div>
-
-      <div v-if="store.theme === ThemeType.LIGHT" class="mode-icon-wrap" ref="ref4">
-        <img class="mode-icon" src="@/assets/icons/light.png" @click="handleChangeThemeType" />
+      <div
+        v-if="store.theme === ThemeType.LIGHT"
+        class="mode-icon-wrap"
+        ref="ref5"
+        @click="handleChangeThemeType"
+      >
+        <img class="mode-icon" src="@/assets/icons/light.png" />
       </div>
-      <div class="mode-icon-wrap dark:bg-[#f5f5f5]" v-else>
-        <img class="mode-icon" src="@/assets/icons/dark.png" @click="handleChangeThemeType" />
+      <div
+        class="mode-icon-wrap dark:bg-[#f5f5f5]"
+        v-else
+        ref="ref5"
+        @click="handleChangeThemeType"
+      >
+        <img class="mode-icon" src="@/assets/icons/dark.png" />
+      </div>
+      <div class="mode-icon-wrap" ref="ref4" @click="openGuide">
+        <img class="mode-icon" src="@/assets/icons/guide.png" />
       </div>
 
       <a-dropdown>

@@ -13,13 +13,12 @@ const headerRef = ref<InstanceType<typeof Header> | null>(null)
 const menuData = ref<any[]>([])
 const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
 const feedBackRef = ref<InstanceType<typeof FeedBack> | null>(null)
-const open = ref(true)
+const open = ref(false)
 const store = userStore()
 const current = ref(0)
 
 const handleGetMenuInfo = async () => {
   const res = await getMenuInfo()
-
   if (res.status === 201 || res.status === 200) {
     menuData.value = JSON.parse(res?.data?.data?.menuConfig)
   } else {
@@ -46,6 +45,10 @@ const handleOpen = async (val: boolean) => {
   }
 }
 
+const handleOpenGuide = () => {
+  open.value = true
+}
+
 const steps: TourProps['steps'] = [
   {
     title: '新增',
@@ -66,15 +69,21 @@ const steps: TourProps['steps'] = [
     placement: 'topRight',
   },
   {
+    title: '打开引导',
+    description: '功能引导',
+    target: () => headerRef.value?.getRef4?.()?.value,
+    placement: 'topRight',
+  },
+  {
     title: '主题切换',
     description: '极简白，极夜黑',
-    target: () => headerRef.value?.getRef4?.()?.value,
+    target: () => headerRef.value?.getRef5?.()?.value,
     placement: 'topRight',
   },
   {
     title: '收藏',
     description: '创作不易，喜欢请三连哈',
-    target: () => headerRef.value?.getRef5?.()?.value,
+    target: () => headerRef.value?.getRef6?.()?.value,
     placement: 'topRight',
   },
 ]
@@ -113,7 +122,7 @@ onMounted(() => {
 
 <template>
   <div class="out-wrap flex flex-col dark:bg-[#20293a]">
-    <Header ref="headerRef" />
+    <Header ref="headerRef" :handleOpenGuide="handleOpenGuide" />
     <WaterFall :data="menuData" />
     <AddCol ref="addColRef" />
     <FeedBack ref="feedBackRef" />
