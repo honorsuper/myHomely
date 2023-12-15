@@ -23,53 +23,55 @@ let refreshing = false
 const queue: PendingTask[] = []
 
 axiosInstance.interceptors.response.use(
-  (response) => {
-    return response
-  },
-  async (error) => {
-    const { data, config } = error.response
-
-    if (refreshing) {
-      console.log('到这里的')
-      if (config.url.includes('/user/refresh')) {
-        setTimeout(() => {
-          window.location.href = '/login'
-        })
-      } else {
-        return new Promise((resolve) => {
-          queue.push({
-            config,
-            resolve,
+  async (response: any) => {
+    const { data, config } = response
+    if (data.code === 0) {
+      return response
+    } else if (data.code === 401) {
+      if (!config?.url?.includes('/user/refresh')) {
+        if (refreshing) {
+          return new Promise((resolve) => {
+            queue.push({
+              config,
+              resolve,
+            })
           })
-        })
-      }
-    }
-    if (data.code === 401 && !config.url.includes('/user/refresh')) {
-      refreshing = true
-      const res = await refreshToken()
-      refreshing = false
-      const { data } = res.data
-      if (res.status === 201 || res.status === 200) {
-        localStorage.setItem('access_token', data.access_token)
-        localStorage.setItem('refresh_token', data.refresh_token)
-      } else {
-        message.error(data || '系统繁忙，请稍后再试')
-      }
+        }
+        refreshing = true
+        const res = await refreshToken()
+        refreshing = false
+        const { data } = res.data
+        if (res.status === 201 || res.status === 200) {
+          localStorage.setItem('access_token', data.access_token)
+          localStorage.setItem('refresh_token', data.refresh_token)
+        } else {
+          message.error(data || '系统繁忙，请稍后再试')
+        }
 
-      if (res.status === 200) {
-        queue.forEach(({ config, resolve }) => {
-          resolve(axiosInstance(config))
-        })
+        if (res.status === 200) {
+          queue.forEach(({ config, resolve }) => {
+            resolve(axiosInstance(config))
+          })
 
-        return axiosInstance(config)
+          return axiosInstance(config)
+        } else {
+          setTimeout(() => {
+            window.location.href = '/login'
+          })
+          return response
+        }
       } else {
         setTimeout(() => {
           window.location.href = '/login'
         })
       }
     } else {
-      return error.response
+      message.error(data.message || '系统异常')
+      return response
     }
+  },
+  async (error) => {
+    return error.response
   },
 )
 
