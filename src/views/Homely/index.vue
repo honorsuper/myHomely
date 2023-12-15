@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, provide } from 'vue'
 import { WaterFall } from '@/components'
-import { Header, AddCol } from './components'
+import { Header, AddCol, FeedBack } from './components'
 import { getMenuInfo, queryIsFirst, setFirst } from '@/utils/request'
 import { message, type TourProps } from 'ant-design-vue'
-import { PlusOutlined, GithubOutlined } from '@ant-design/icons-vue'
+import { PlusOutlined } from '@ant-design/icons-vue'
 import { userStore } from '@/stores/user'
 
 const ref1 = ref(null)
@@ -12,6 +12,7 @@ const ref2 = ref(null)
 const headerRef = ref<InstanceType<typeof Header> | null>(null)
 const menuData = ref<any[]>([])
 const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
+const feedBackRef = ref<InstanceType<typeof FeedBack> | null>(null)
 const open = ref(false)
 const store = userStore()
 const current = ref(0)
@@ -84,6 +85,10 @@ const handleToGithub = () => {
   window.open('https://github.com/honorsuper/myHomely')
 }
 
+const handleOpenFeedBackModal = () => {
+  feedBackRef?.value?.handleOpenModal?.()
+}
+
 provide('homely', {
   handleGetMenuInfo,
 })
@@ -99,6 +104,7 @@ onMounted(() => {
     <Header ref="headerRef" />
     <WaterFall :data="menuData" />
     <AddCol ref="addColRef" />
+    <FeedBack ref="feedBackRef" />
     <a-float-button-group shape="circle" :style="{ right: '34px' }">
       <a-float-button type="primary" ref="ref1" @click="handleOpenModal">
         <template #icon>
@@ -106,10 +112,9 @@ onMounted(() => {
         </template>
       </a-float-button>
 
-      <a-float-button @click="handleToGithub" ref="ref2">
+      <a-float-button @click="handleOpenFeedBackModal" ref="ref2">
         <template #icon>
           <img src="@/assets/icons/email.png" />
-          <!-- <GithubOutlined /> -->
         </template>
       </a-float-button>
     </a-float-button-group>

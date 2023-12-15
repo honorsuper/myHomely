@@ -176,3 +176,7 @@ export async function setFirst() {
 export async function queryIsFirst() {
   return await axiosInstance.get('/user/is-first')
 }
+// 留言
+export async function addOpinion(data: any) {
+  return await axiosInstance.post('/feedback/add-opinion', data)
+}
