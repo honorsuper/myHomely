@@ -34,6 +34,7 @@ specifiers:
   uuid: ^9.0.1
   vite: ^4.4.11
   vue: ^3.3.4
+  vue-request: ^2.0.0
   vue-router: ^4.2.5
   vue-tsc: ^1.8.19
   vue3-colorpicker: ^2.2.3
@@ -52,6 +53,7 @@ dependencies:
   sortablejs-vue3: 1.2.10_i3vkbg2fztj7jno7sh3heeojya
   uuid: 9.0.1
   vue: 3.3.6_typescript@5.2.2
+  vue-request: registry.npmmirror.com/vue-request/2.0.0_vue@3.3.6
   vue-router: 4.2.5_vue@3.3.6
   vue3-colorpicker: registry.npmmirror.com/vue3-colorpicker/2.2.3_vue@3.3.6
 
@@ -3581,6 +3583,22 @@ packages:
         optional: true
     dependencies:
       vue: 3.3.6_typescript@5.2.2
+    dev: false
+
+  registry.npmmirror.com/vue-request/2.0.0_vue@3.3.6:
+    resolution: {integrity: sha512-1f7lNTJpgoPPl9j8c7iaf3AbTdgwvkEsYFDlPv2Iar1dC8DEc9SRb+50yxharyDrXf0ta9DoB3mG3UrInx65Qg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue-request/-/vue-request-2.0.0.tgz}
+    id: registry.npmmirror.com/vue-request/2.0.0
+    name: vue-request
+    version: 2.0.0
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^2.0.0 || >=3.0.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.3.6_typescript@5.2.2
+      vue-demi: registry.npmmirror.com/vue-demi/0.14.6_vue@3.3.6
     dev: false
 
   registry.npmmirror.com/vue-types/4.2.1_vue@3.3.6:

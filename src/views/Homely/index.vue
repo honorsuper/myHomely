@@ -108,7 +108,8 @@ onMounted(() => {
 
       <a-float-button @click="handleToGithub" ref="ref2">
         <template #icon>
-          <GithubOutlined />
+          <img src="@/assets/icons/email.png" />
+          <!-- <GithubOutlined /> -->
         </template>
       </a-float-button>
     </a-float-button-group>

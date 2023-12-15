@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, createVNode } from 'vue'
 import { useRouter } from 'vue-router'
-import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+import { ExclamationCircleOutlined, GithubOutlined } from '@ant-design/icons-vue'
 import { Modal } from 'ant-design-vue'
 import { userStore } from '@/stores/user'
 import { handleLogout } from '@/utils'
@@ -62,8 +62,17 @@ defineExpose({
   <div class="header-wrap flex items-center justify-between dark:bg-[#000000]/20">
     <div class="title"><img src="@/assets/images/title.png" /></div>
     <div class="flex items-center gap-2">
-      <span v-if="store.theme === ThemeType.LIGHT" @click="handleChangeThemeType">极简白</span>
-      <span v-else @click="handleChangeThemeType">极夜黑</span>
+      <div class="mode-icon-wrap dark:bg-[#f5f5f5]">
+        <img class="mode-icon" src="@/assets/icons/github.png" />
+      </div>
+
+      <div v-if="store.theme === ThemeType.LIGHT" class="mode-icon-wrap">
+        <img class="mode-icon" src="@/assets/icons/light.png" @click="handleChangeThemeType" />
+      </div>
+      <div class="mode-icon-wrap dark:bg-[#f5f5f5]" v-else>
+        <img class="mode-icon" src="@/assets/icons/dark.png" @click="handleChangeThemeType" />
+      </div>
+
       <a-dropdown>
         <div @click.prevent class="nickname" ref="ref3">
           <div>{{ store.userInfo.nickName }}</div>
@@ -106,5 +115,18 @@ defineExpose({
   :hover {
     cursor: pointer;
   }
+}
+.mode-icon-wrap {
+  width: 37.89px;
+  height: 37.89px;
+  line-height: 36px;
+  text-align: center;
+  background: #f5f5f5;
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+.mode-icon {
+  width: 22px;
 }
 </style>
