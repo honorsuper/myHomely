@@ -13,7 +13,7 @@ const headerRef = ref<InstanceType<typeof Header> | null>(null)
 const menuData = ref<any[]>([])
 const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
 const feedBackRef = ref<InstanceType<typeof FeedBack> | null>(null)
-const open = ref(false)
+const open = ref(true)
 const store = userStore()
 const current = ref(0)
 
@@ -54,8 +54,8 @@ const steps: TourProps['steps'] = [
     placement: 'topRight',
   },
   {
-    title: '收藏',
-    description: '创作不易，喜欢请三连哈',
+    title: '留言',
+    description: '留下您宝贵的意见，您的意见是我前进的东路',
     target: () => ref2.value && ref2.value.$el,
     placement: 'topRight',
   },
@@ -63,6 +63,18 @@ const steps: TourProps['steps'] = [
     title: '信息设置',
     description: '信息修改，密码修改，颜色配置，退出登录',
     target: () => headerRef.value?.getRef3?.()?.value,
+    placement: 'topRight',
+  },
+  {
+    title: '主题切换',
+    description: '极简白，极夜黑',
+    target: () => headerRef.value?.getRef4?.()?.value,
+    placement: 'topRight',
+  },
+  {
+    title: '收藏',
+    description: '创作不易，喜欢请三连哈',
+    target: () => headerRef.value?.getRef5?.()?.value,
     placement: 'topRight',
   },
 ]

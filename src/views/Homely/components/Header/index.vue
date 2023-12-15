@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, createVNode } from 'vue'
 import { useRouter } from 'vue-router'
-import { ExclamationCircleOutlined, GithubOutlined } from '@ant-design/icons-vue'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 import { Modal } from 'ant-design-vue'
 import { userStore } from '@/stores/user'
 import { handleLogout } from '@/utils'
@@ -12,6 +12,8 @@ const colorSettingRef = ref<InstanceType<typeof ColorSetting> | null>(null)
 const router = useRouter()
 const store = userStore()
 const ref3 = ref(null)
+const ref4 = ref(null)
+const ref5 = ref(null)
 
 const handleClickMenu = (a: any) => {
   if (a?.key === 'logout') {
@@ -56,17 +58,19 @@ const handleChangeThemeType = () => {
 
 defineExpose({
   getRef3: () => ref3,
+  getRef4: () => ref4,
+  getRef5: () => ref5,
 })
 </script>
 <template>
   <div class="header-wrap flex items-center justify-between dark:bg-[#000000]/20">
     <div class="title"><img src="@/assets/images/title.png" /></div>
     <div class="flex items-center gap-2">
-      <div class="mode-icon-wrap dark:bg-[#f5f5f5]">
+      <div class="mode-icon-wrap dark:bg-[#f5f5f5]" ref="ref5">
         <img class="mode-icon" src="@/assets/icons/github.png" />
       </div>
 
-      <div v-if="store.theme === ThemeType.LIGHT" class="mode-icon-wrap">
+      <div v-if="store.theme === ThemeType.LIGHT" class="mode-icon-wrap" ref="ref4">
         <img class="mode-icon" src="@/assets/icons/light.png" @click="handleChangeThemeType" />
       </div>
       <div class="mode-icon-wrap dark:bg-[#f5f5f5]" v-else>
