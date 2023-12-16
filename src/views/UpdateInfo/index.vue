@@ -2,7 +2,9 @@
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
-import { register, updateUserInfoCaptcha } from '@/utils/request'
+import { updateUserInfo, updateUserInfoCaptcha } from '@/utils/request'
+import useAsync from '@/hooks/useQuery'
+import { userStore } from '@/stores/user'
 
 interface FormState {
   nickName: string
@@ -17,23 +19,32 @@ const formState = reactive<FormState>({
 })
 
 const router = useRouter()
+const store = userStore()
 
-const onFinish = async (values: any) => {
-  const res = await register({
-    ...values,
-  })
-  const { data } = res.data
-  if (res.status === 201 || res.status === 200) {
+const { run: runUpdateUserInfo } = useAsync(updateUserInfo, {
+  manual: true,
+  onSuccess: () => {
     message.success('修改成功')
-    // TODO: 重新获取用户信息
+    store.handleGetUserInfo()
     setTimeout(() => {
       router.push({
-        name: 'login',
+        name: 'home',
       })
     }, 500)
-  } else {
-    message.error(data || '系统繁忙，请稍后再试')
-  }
+  },
+})
+
+const { run: runUpdateUserInfoCaptcha } = useAsync(updateUserInfoCaptcha, {
+  manual: true,
+  onSuccess: () => {
+    message.success('发送成功')
+  },
+})
+
+const onFinish = async (values: any) => {
+  runUpdateUserInfo({
+    ...values,
+  })
 }
 
 const onFinishFailed = (errorInfo: any) => {
@@ -41,13 +52,7 @@ const onFinishFailed = (errorInfo: any) => {
 }
 
 const sendCaptcha = async () => {
-  const res = await updateUserInfoCaptcha(formState.email)
-  const { data } = res.data
-  if (res.status === 201 || res.status === 200) {
-    message.success('发送成功')
-  } else {
-    message.error(data || '系统繁忙，请稍后再试')
-  }
+  runUpdateUserInfoCaptcha(formState.email)
 }
 
 const handleToHome = () => {

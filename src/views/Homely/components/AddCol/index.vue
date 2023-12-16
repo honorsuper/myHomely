@@ -9,6 +9,7 @@ import { addMenu, editMenu } from '@/utils/request'
 import { message } from 'ant-design-vue'
 import { ColorPicker } from '@/components'
 import { ITEM_COUNT, GROUP_LINKS_COUNT } from '@/enum/index'
+import useAsync from '@/hooks/useQuery'
 
 // 弹窗展示
 const open = ref(false)
@@ -36,6 +37,26 @@ const dynamicValidateForm = reactive<{
 })
 
 const homelyInfo = inject<any>('homely')
+
+/**新增menu */
+const { run: runAddMenu } = useAsync(addMenu, {
+  manual: true,
+  onSuccess: () => {
+    message.success('修改成功')
+    handleCancel()
+    homelyInfo?.handleGetMenuInfo?.()
+  },
+})
+
+/**新增meny */
+const { run: runEditMenu } = useAsync(editMenu, {
+  manual: true,
+  onSuccess: () => {
+    message.success('修改成功')
+    handleCancel()
+    homelyInfo?.handleGetMenuInfo?.()
+  },
+})
 
 /**
  * 新增链接
@@ -93,21 +114,11 @@ const handleSubmit = () => {
           ...values[index],
         }
       })
-
-      const res = await editMenu({
+      runEditMenu({
         id: dynamicValidateForm.id,
         list: menuList,
         mainTitle: dynamicValidateForm.mainTitle,
       })
-
-      if (res.status === 201 || res.status === 200) {
-        message.success('修改成功')
-        handleCancel()
-
-        homelyInfo?.handleGetMenuInfo?.()
-      } else {
-        message.error(res?.data || '系统繁忙，请稍后再试')
-      }
     } else {
       // 新增
       const menuList = dynamicValidateForm.list.map((item, index) => {
@@ -116,18 +127,11 @@ const handleSubmit = () => {
           ...values[index],
         }
       })
-      const res = await addMenu({
+
+      runAddMenu({
         list: menuList,
         mainTitle: dynamicValidateForm.mainTitle,
       })
-
-      if (res.status === 201 || res.status === 200) {
-        message.success('修改成功')
-        handleCancel()
-        homelyInfo?.handleGetMenuInfo?.()
-      } else {
-        message.error(res?.data || '系统繁忙，请稍后再试')
-      }
     }
   })
 }

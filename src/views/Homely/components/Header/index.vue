@@ -125,7 +125,6 @@ defineExpose({
   height: 64px;
   box-shadow: 0 8px 24px -2px rgba(0, 0, 0, 0.05);
   padding: 0 30px;
-  // background-color: #ffffff;
   margin-bottom: 30px;
 }
 

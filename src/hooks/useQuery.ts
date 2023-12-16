@@ -16,13 +16,14 @@ const useAsync = <TData, TParams extends unknown[]>(
     needErrorMessage?: boolean
   },
   //TODO: 怎么得到函数的类型
-): unknown => {
+): any => {
   let asyncOptions = cloneDeep(options || {}) as Options<IData<TData>, TParams>
   const successCallback: (data: IData<TData>, params: TParams) => void = (result, params) => {
-    if (result?.code === 0) {
-      options?.onSuccess?.(result?.data, params)
+    const res: any = result.data
+    if (res?.code === 0) {
+      options?.onSuccess?.(res, params)
     } else {
-      options?.needErrorMessage && message.error(result.message || '系统异常')
+      options?.needErrorMessage && message.error(res.message || '系统异常')
       options?.failExtraFn?.()
     }
   }

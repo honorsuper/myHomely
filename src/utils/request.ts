@@ -66,7 +66,6 @@ axiosInstance.interceptors.response.use(
         })
       }
     } else {
-      message.error(data.message || '系统异常')
       return response
     }
   },
@@ -85,7 +84,7 @@ async function refreshToken() {
 }
 
 // 用户登录
-export async function login(username: string, password: string) {
+export async function login(username: string, password: string): Promise<any> {
   return await axiosInstance.post('/user/login', {
     username,
     password,
@@ -93,90 +92,90 @@ export async function login(username: string, password: string) {
 }
 
 // 用户注册
-export async function register(data: any) {
+export async function register(data: any): Promise<any> {
   return await axiosInstance.post('/user/register', data)
 }
 
 // 用户注册验证码
-export async function registerCaptcha(address: string) {
+export async function registerCaptcha(address: string): Promise<any> {
   return await axiosInstance.get(`/user/register-captcha?address=${address}`)
 }
 
 // 修改用户信息
-export async function updateUserInfo(data: any) {
+export async function updateUserInfo(data: any): Promise<any> {
   return await axiosInstance.post('/user/update', data)
 }
 
 // 修改用户信息验证码
-export async function updateUserInfoCaptcha(address: string) {
+export async function updateUserInfoCaptcha(address: string): Promise<any> {
   return await axiosInstance.get(`/user/update-captcha?address=${address}`)
 }
 
 //修改密码
-export async function changePassword(data: any) {
+export async function changePassword(data: any): Promise<any> {
   return await axiosInstance.post('/user/update_password', data)
 }
 
 // 修改密码验证码
-export async function ChangePasswordCaptcha(address: string) {
+export async function ChangePasswordCaptcha(address: string): Promise<any> {
   return await axiosInstance.get(`/user/update_password-captcha?address=${address}`)
 }
 
 // 获取导航菜单
-export async function getMenuInfo() {
+export async function getMenuInfo(): Promise<any> {
   return await axiosInstance.get('/menu/column-info')
 }
 
 // 修改菜单
-export async function editMenu(data: any) {
+export async function editMenu(data: any): Promise<any> {
   return await axiosInstance.post('/menu/edit-column', data)
 }
 
 // 新增菜单
-export async function addMenu(data: any) {
+export async function addMenu(data: any): Promise<any> {
   return await axiosInstance.post('/menu/add-column', data)
 }
 
 // 重命名
-export async function menuRename(data: any) {
+export async function menuRename(data: any): Promise<any> {
   return await axiosInstance.post('/menu/rename', data)
 }
 
 // 删除列
-export async function deleteColumn(data: any) {
+export async function deleteColumn(data: any): Promise<any> {
   return await axiosInstance.post('/menu/del-column', data)
 }
 
 // 列表排序
-export async function sortColumn(data: any) {
+export async function sortColumn(data: any): Promise<any> {
   return await axiosInstance.post('/menu/sort-column', data)
 }
 
 // 更新颜色信息
-export async function updateColorConfig(data: any) {
+export async function updateColorConfig(data: any): Promise<any> {
   return await axiosInstance.post('/user/update-color', data)
 }
 
 // 重置颜色
-export async function resetColorConfig() {
+export async function resetColorConfig(): Promise<any> {
   return await axiosInstance.get('/user/reset-color')
 }
 
 // 获取用户信息
-export async function queryUserInfo() {
+export async function queryUserInfo(): Promise<any> {
   return await axiosInstance.get('/user/info')
 }
 
 // 上报首次进入
-export async function setFirst() {
+export async function setFirst(): Promise<any> {
   return await axiosInstance.get('/user/set-first')
 }
 
 // 判断时候首次进入
-export async function queryIsFirst() {
+export async function queryIsFirst(): Promise<any> {
   return await axiosInstance.get('/user/is-first')
 }
 // 留言
-export async function addOpinion(data: any) {
+export async function addOpinion(data: any): Promise<any> {
   return await axiosInstance.post('/feedback/add-opinion', data)
 }

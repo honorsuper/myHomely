@@ -11,6 +11,7 @@ import { AddCol } from '../../views/Homely/components'
 import { deleteColumn } from '@/utils/request'
 import { userStore } from '@/stores/user'
 import { DEFAULT_BG_COLOR, DEFAULT_COLOR } from '@/constants'
+import useAsync from '@/hooks/useQuery'
 
 const props = defineProps<{
   info: {
@@ -47,6 +48,14 @@ const colorList = computed(() => {
   return JSON.parse(store.userInfo.colorConfig) ?? []
 })
 
+const { run: runDeleteColumn } = useAsync(deleteColumn, {
+  manual: true,
+  onSuccess: () => {
+    message.success('删除成功')
+    homelyInfo?.handleGetMenuInfo?.()
+  },
+})
+
 /**
  * 打开编辑弹窗
  */
@@ -57,16 +66,9 @@ const handleOpenModal = () => {
 
 // 删除
 const handleDel = async (id: number | string) => {
-  const res = await deleteColumn({
+  runDeleteColumn({
     id,
   })
-
-  if (res.status === 201 || res.status === 200) {
-    message.success('删除成功')
-    homelyInfo?.handleGetMenuInfo?.()
-  } else {
-    message.error(res?.data || '系统繁忙，请稍后再试')
-  }
 }
 /**
  * 确认删除

@@ -5,6 +5,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import { login } from '@/utils/request'
 import { userStore } from '@/stores/user'
+import useAsync from '@/hooks/useQuery'
 
 interface FormState {
   username: string
@@ -19,10 +20,10 @@ const formState = reactive<FormState>({
 const router = useRouter()
 const store = userStore()
 
-const onFinish = async (values: any) => {
-  const res = await login(values.username, values.password)
-  const { data } = res.data
-  if (res.status === 201 || res.status === 200) {
+const { run: runLogin } = useAsync(login, {
+  manual: true,
+  onSuccess: (res: any) => {
+    const { data } = res
     message.success('登录成功')
 
     localStorage.setItem('access_token', data.accessToken)
@@ -34,9 +35,11 @@ const onFinish = async (values: any) => {
         name: 'home',
       })
     }, 500)
-  } else {
-    message.error(data || '系统繁忙，请稍后再试')
-  }
+  },
+})
+
+const onFinish = async (values: any) => {
+  runLogin(values.username, values.password)
 }
 
 const toRigister = () => {

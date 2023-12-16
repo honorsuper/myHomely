@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { message, type FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { register, registerCaptcha } from '@/utils/request'
+import useAsync from '@/hooks/useQuery'
 
 interface FormState {
   username: string
@@ -26,22 +27,31 @@ const formState = reactive<FormState>({
 const router = useRouter()
 const formRef = ref<FormInstance>()
 
-const onFinish = async (values: any) => {
-  const { confirmPassword, ...rest } = values
-  const res = await register({
-    ...rest,
-  })
-  const { data } = res.data
-  if (res.status === 201 || res.status === 200) {
+const { run: runRegister } = useAsync(register, {
+  manual: true,
+  onSuccess: () => {
     message.success('注册成功')
     setTimeout(() => {
       router.push({
         name: 'login',
       })
     }, 500)
-  } else {
-    message.error(data || '系统繁忙，请稍后再试')
-  }
+  },
+})
+
+const { run: runRegisterCaptcha } = useAsync(registerCaptcha, {
+  manual: true,
+  onSuccess: () => {
+    message.success('发送成功')
+  },
+})
+
+const onFinish = async (values: any) => {
+  const { confirmPassword, ...rest } = values
+
+  runRegister({
+    ...rest,
+  })
 }
 
 const onFinishFailed = (errorInfo: any) => {
@@ -49,14 +59,7 @@ const onFinishFailed = (errorInfo: any) => {
 }
 
 const sendCaptcha = async () => {
-  // TODO: 邮箱合法性校验
-  const res = await registerCaptcha(formState.email)
-  const { data } = res.data
-  if (res.status === 201 || res.status === 200) {
-    message.success('发送成功')
-  } else {
-    message.error(data || '系统繁忙，请稍后再试')
-  }
+  runRegisterCaptcha(formState.email)
 }
 
 const handleToLogin = () => {

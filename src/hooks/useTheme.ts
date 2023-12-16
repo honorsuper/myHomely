@@ -9,7 +9,6 @@ export const useTheme = () => {
    * @param {*} theme 主题的标记常量
    */
   const changeTheme = (theme: string) => {
-    console.log('走了吗', theme)
     document.querySelector('html')!.className = theme
   }
 

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref, provide } from 'vue'
+import { ref, provide } from 'vue'
 import { WaterFall } from '@/components'
 import { Header, AddCol, FeedBack } from './components'
 import { getMenuInfo, queryIsFirst, setFirst } from '@/utils/request'
 import { message, type TourProps } from 'ant-design-vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { userStore } from '@/stores/user'
+import useAsync from '@/hooks/useQuery'
 
 const ref1 = ref(null)
 const ref2 = ref(null)
@@ -16,6 +17,30 @@ const feedBackRef = ref<InstanceType<typeof FeedBack> | null>(null)
 const open = ref(false)
 const store = userStore()
 const current = ref(0)
+
+/**获取书签信息 */
+useAsync(getMenuInfo, {
+  onSuccess: (res: any) => {
+    menuData.value = JSON.parse(res?.data?.menuConfig)
+  },
+})
+
+/**获取是否首次进入 */
+useAsync(queryIsFirst, {
+  onSuccess: (res: any) => {
+    if (res?.data.isFirst) {
+      handleOpen(true)
+    }
+  },
+})
+
+/**首次访问上报 */
+const { run: runSetFirst } = useAsync(setFirst, {
+  manual: true,
+  onSuccess: () => {
+    store.handleGetUserInfo()
+  },
+})
 
 const handleGetMenuInfo = async () => {
   const res = await getMenuInfo()
@@ -36,12 +61,7 @@ const handleOpenModal = () => {
 const handleOpen = async (val: boolean) => {
   open.value = val
   if (!val) {
-    const res = await setFirst()
-    if (res.status === 201 || res.status === 200) {
-      store.handleGetUserInfo()
-    } else {
-      message.error(res?.data || '系统繁忙，请稍后再试')
-    }
+    runSetFirst()
   }
   if (!val) {
     current.value = 0
@@ -91,20 +111,6 @@ const steps: TourProps['steps'] = [
   },
 ]
 
-/**
- * 获取是否首次进入
- */
-const handleGetIsFirst = async () => {
-  const res = await queryIsFirst()
-  if (res.status === 201 || res.status === 200) {
-    if (res.data.data.isFirst) {
-      handleOpen(true)
-    }
-  } else {
-    message.error(res?.data || '系统繁忙，请稍后再试')
-  }
-}
-
 const handleOpenFeedBackModal = () => {
   feedBackRef?.value?.handleOpenModal?.()
 }
@@ -114,11 +120,6 @@ provide('homely', {
   getColumnInfo: () => {
     return menuData.value
   },
-})
-
-onMounted(() => {
-  handleGetMenuInfo()
-  handleGetIsFirst()
 })
 </script>
 

@@ -6,6 +6,7 @@ import { userStore } from '@/stores/user'
 import { ColorPicker } from 'vue3-colorpicker'
 import { updateColorConfig, resetColorConfig } from '@/utils/request'
 import { DEFAULT_BG_COLOR, DEFAULT_COLOR } from '@/constants'
+import useAsync from '@/hooks/useQuery'
 
 interface IColorList {
   bgColor: string
@@ -17,6 +18,26 @@ const store = userStore()
 const formRef = ref<FormInstance>()
 const dynamicValidateForm = reactive<{ colorList: IColorList[] }>({
   colorList: JSON.parse(store.userInfo.colorConfig || '[]'),
+})
+
+/**更新颜色配置 */
+const { run: runUpdateColorConfig } = useAsync(updateColorConfig, {
+  manual: true,
+  onSuccess: () => {
+    message.success('修改成功')
+    store.handleGetUserInfo()
+    onClose()
+  },
+})
+
+/**重置颜色配置 */
+const { run: runResetColorConfig } = useAsync(resetColorConfig, {
+  manual: true,
+  onSuccess: () => {
+    message.success('操作成功')
+    onClose()
+    store.handleGetUserInfo()
+  },
 })
 
 const removeColor = (item: IColorList) => {
@@ -40,20 +61,6 @@ const onClose = () => {
   open.value = false
 }
 
-/**
- * 颜色重置
- */
-const handleReset = async () => {
-  const res = await resetColorConfig()
-  if (res.status === 201 || res.status === 200) {
-    message.success('操作成功')
-    onClose()
-    store.handleGetUserInfo()
-  } else {
-    message.error(res?.data || '系统繁忙，请稍后再试')
-  }
-}
-
 const handleResetShow = () => {
   Modal.confirm({
     title: '颜色重置',
@@ -62,7 +69,7 @@ const handleResetShow = () => {
     okText: '确认',
     cancelText: '取消',
     onOk() {
-      handleReset()
+      runResetColorConfig()
     },
   })
 }
@@ -83,15 +90,7 @@ const handleSubmit = () => {
       const params = {
         colorList: values.colorList,
       }
-      const res = await updateColorConfig(params)
-      const { data } = res.data
-      if (res.status === 201 || res.status === 200) {
-        message.success('修改成功')
-        store.handleGetUserInfo()
-        onClose()
-      } else {
-        message.error(data || '系统繁忙，请稍后再试')
-      }
+      runUpdateColorConfig(params)
     })
     .catch((err) => {
       console.log('err', err)

@@ -3,6 +3,7 @@ import { ref, reactive, watch } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
 import { message } from 'ant-design-vue'
 import { addOpinion } from '@/utils/request'
+import useAsync from '@/hooks/useQuery'
 // 弹窗展示
 const open = ref(false)
 // 表单
@@ -10,6 +11,15 @@ const formRef = ref<FormInstance>()
 
 const formState = reactive({
   opinion: '',
+})
+
+/**更新颜色配置 */
+const { run: runAddOpinion } = useAsync(addOpinion, {
+  manual: true,
+  onSuccess: () => {
+    message.success('反馈成功！')
+    handleCancel()
+  },
 })
 
 const handleOpenModal = () => {
@@ -23,16 +33,7 @@ const handleOk = () => {
   formRef.value
     ?.validate()
     .then(async (values) => {
-      console.log('values', values)
-
-      const res = await addOpinion(values)
-
-      if (res.status === 201 || res.status === 200) {
-        message.success('留言成功')
-        handleCancel()
-      } else {
-        message.error(res?.data || '系统繁忙，请稍后再试')
-      }
+      runAddOpinion(values)
     })
     .catch((err) => {
       console.log('err', err)

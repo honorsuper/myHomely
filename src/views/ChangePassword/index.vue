@@ -4,6 +4,8 @@ import { useRouter, useRoute } from 'vue-router'
 import { message, type FormInstance } from 'ant-design-vue'
 import { ChangePasswordCaptcha, changePassword } from '@/utils/request'
 import type { Rule } from 'ant-design-vue/es/form'
+import useAsync from '@/hooks/useQuery'
+import { handleLogout } from '@/utils'
 
 interface FormState {
   username: string
@@ -27,22 +29,31 @@ const router = useRouter()
 const route = useRoute()
 const formRef = ref<FormInstance>()
 
-const onFinish = async (values: any) => {
-  const { confirmPassword, ...rest } = values
-  const res = await changePassword({
-    ...rest,
-  })
-  const { data } = res.data
-  if (res.status === 201 || res.status === 200) {
-    message.success('注册成功')
+const { run: runChangePassword } = useAsync(changePassword, {
+  manual: true,
+  onSuccess: () => {
+    message.success('修改成功')
+    handleLogout()
     setTimeout(() => {
       router.push({
         name: 'login',
       })
     }, 500)
-  } else {
-    message.error(data || '系统繁忙，请稍后再试')
-  }
+  },
+})
+
+const { run: runChangePasswordCaptcha } = useAsync(ChangePasswordCaptcha, {
+  manual: true,
+  onSuccess: () => {
+    message.success('发送成功')
+  },
+})
+
+const onFinish = async (values: any) => {
+  const { confirmPassword, ...rest } = values
+  runChangePassword({
+    ...rest,
+  })
 }
 
 const onFinishFailed = (errorInfo: any) => {
@@ -50,15 +61,7 @@ const onFinishFailed = (errorInfo: any) => {
 }
 
 const sendCaptcha = async () => {
-  const res = await ChangePasswordCaptcha(formState.email)
-
-  const { data } = res.data
-
-  if (res.status === 201 || res.status === 200) {
-    message.success('发送成功')
-  } else {
-    message.error(data || '系统繁忙，请稍后再试')
-  }
+  runChangePasswordCaptcha(formState.email)
 }
 
 const handleBack = () => {
