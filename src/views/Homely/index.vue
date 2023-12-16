@@ -43,6 +43,9 @@ const handleOpen = async (val: boolean) => {
       message.error(res?.data || '系统繁忙，请稍后再试')
     }
   }
+  if (!val) {
+    current.value = 0
+  }
 }
 
 const handleOpenGuide = () => {
@@ -102,16 +105,15 @@ const handleGetIsFirst = async () => {
   }
 }
 
-const handleToGithub = () => {
-  window.open('https://github.com/honorsuper/myHomely')
-}
-
 const handleOpenFeedBackModal = () => {
   feedBackRef?.value?.handleOpenModal?.()
 }
 
 provide('homely', {
   handleGetMenuInfo,
+  getColumnInfo: () => {
+    return menuData.value
+  },
 })
 
 onMounted(() => {

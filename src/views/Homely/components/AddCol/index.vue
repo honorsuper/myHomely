@@ -8,6 +8,7 @@ import { cloneDeep } from 'lodash-es'
 import { addMenu, editMenu } from '@/utils/request'
 import { message } from 'ant-design-vue'
 import { ColorPicker } from '@/components'
+import { ITEM_COUNT, GROUP_LINKS_COUNT } from '@/enum/index'
 
 // 弹窗展示
 const open = ref(false)
@@ -147,6 +148,11 @@ const handleOpenModal = (info?: any) => {
     dynamicValidateForm.id = info?.id
     dynamicValidateForm.mainTitle = info?.mainTitle
     dynamicValidateForm.list = cloneDeep(info?.list)
+  }
+  if (!info) {
+    if (homelyInfo?.getColumnInfo?.()?.length > 9) {
+      return message.warning('最多新建10列')
+    }
   }
   open.value = true
 }
@@ -437,7 +443,10 @@ defineExpose({
                 type="primary"
                 @click="() => handleAddSub(index)"
                 :style="{ marginBottom: '10px' }"
-                >新增链接
+                :disabled="
+                  dynamicValidateForm.list[index].groupList?.length > GROUP_LINKS_COUNT - 1
+                "
+                >新增链接11
               </a-button>
               <a-dropdown>
                 <DownSquareOutlined />
@@ -475,8 +484,18 @@ defineExpose({
     <template #footer>
       <div class="flex justify-between">
         <div>
-          <a-button type="primary" @click="handleAddLink">新增链接</a-button>
-          <a-button type="primary" @click="handleAddGroup">新增组</a-button>
+          <a-button
+            type="primary"
+            @click="handleAddLink"
+            :disabled="dynamicValidateForm.list.length > ITEM_COUNT - 1"
+            >新增链接</a-button
+          >
+          <a-button
+            type="primary"
+            @click="handleAddGroup"
+            :disabled="dynamicValidateForm.list.length > ITEM_COUNT - 1"
+            >新增组</a-button
+          >
         </div>
         <div>
           <a-button key="back" @click="handleCancel">取消</a-button>
