@@ -31,6 +31,7 @@ declare module 'vue' {
     ASpace: typeof import('ant-design-vue/lib')['Space']
     ATextarea: typeof import('ant-design-vue/lib')['Textarea']
     ATour: typeof import('ant-design-vue/lib')['Tour']
+    ATypographyText: typeof import('ant-design-vue/lib')['TypographyText']
     CaretDownOutlined: typeof import('@ant-design/icons-vue')['CaretDownOutlined']
     ColorPicker: typeof import('./src/components/ColorPicker/index.vue')['default']
     DownOutlined: typeof import('@ant-design/icons-vue')['DownOutlined']

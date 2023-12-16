@@ -295,7 +295,7 @@ defineExpose({
               }"
               label="标题"
             >
-              <a-input v-model:value="user.title" placeholder="请输入标题" />
+              <a-input v-model:value="user.title" placeholder="请输入标题" :maxlength="20" />
             </a-form-item>
             <a-form-item
               label="链接"
@@ -305,7 +305,7 @@ defineExpose({
                 message: '请输入链接',
               }"
             >
-              <a-input v-model:value="user.url" placeholder="请输入链接" />
+              <a-input v-model:value="user.url" placeholder="请输入链接" :maxlength="100" />
             </a-form-item>
             <a-form-item
               label="颜色"
@@ -359,7 +359,7 @@ defineExpose({
               }"
               label="组标题"
             >
-              <a-input v-model:value="user.groupTitle" placeholder="请输入组标题" />
+              <a-input v-model:value="user.groupTitle" placeholder="请输入组标题" :maxlength="20" />
             </a-form-item>
             <div
               v-for="(innerUser, innerIndex) in user.groupList"
@@ -374,7 +374,11 @@ defineExpose({
                 }"
                 label="标题"
               >
-                <a-input v-model:value="innerUser.subTitle" placeholder="请输入标题" />
+                <a-input
+                  v-model:value="innerUser.subTitle"
+                  placeholder="请输入标题"
+                  :maxlength="20"
+                />
               </a-form-item>
               <a-form-item
                 :name="['list', index, 'groupList', innerIndex, 'subUrl']"
@@ -384,7 +388,11 @@ defineExpose({
                 }"
                 label="链接"
               >
-                <a-input v-model:value="innerUser.subUrl" placeholder="请输入链接" />
+                <a-input
+                  v-model:value="innerUser.subUrl"
+                  placeholder="请输入链接"
+                  :maxlength="100"
+                />
               </a-form-item>
 
               <div class="flex justify-end cursor-pointer editIcon">
@@ -446,7 +454,7 @@ defineExpose({
                 :disabled="
                   dynamicValidateForm.list[index].groupList?.length > GROUP_LINKS_COUNT - 1
                 "
-                >新增链接11
+                >新增链接
               </a-button>
               <a-dropdown>
                 <DownSquareOutlined />

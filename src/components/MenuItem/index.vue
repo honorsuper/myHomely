@@ -42,7 +42,7 @@ const target = ref()
 const isHovered = useElementHover(target)
 const open = ref(false)
 const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
-const renameRef = ref<InstanceType<typeof Rename> | null>(null)
+// const renameRef = ref<InstanceType<typeof Rename> | null>(null)
 const store = userStore()
 
 const colorList = computed(() => {
@@ -60,13 +60,13 @@ const handleOpenModal = () => {
 /**
  * 打开重命弹窗
  */
-const handelOpenRename = () => {
-  open.value = false
-  renameRef.value?.handleOpenRename?.({
-    id: props.info.id,
-    mainTitle: props.info.mainTitle,
-  })
-}
+// const handelOpenRename = () => {
+//   open.value = false
+//   renameRef.value?.handleOpenRename?.({
+//     id: props.info.id,
+//     mainTitle: props.info.mainTitle,
+//   })
+// }
 // 删除
 const handleDel = async (id: number | string) => {
   const res = await deleteColumn({
@@ -106,14 +106,19 @@ const jumpToUrl = (url: string) => {
 <template>
   <div class="waterfall-item rounded absolute" :key="info.mainTitle">
     <div class="title box-border flex justify-between items-center font-medium" ref="target">
-      {{ info.mainTitle }}
+      <a-typography-text
+        :ellipsis="{ tooltip: info.mainTitle }"
+        :style="{ width: '122px' }"
+        :content="info.mainTitle"
+      />
+
       <div class="cursor-pointer flex items-center" v-if="isHovered || open">
         <a-dropdown v-model:open="open">
           <DownSquareOutlined />
           <template #overlay>
             <a-menu>
               <a-menu-item key="3" @click="handleOpenModal">修改</a-menu-item>
-              <a-menu-item key="4" @click="handelOpenRename">重命名</a-menu-item>
+              <!-- <a-menu-item key="4" @click="handelOpenRename">重命名</a-menu-item> -->
               <a-menu-item key="5" @click="() => delConfirm(info.id)">删除</a-menu-item>
             </a-menu>
           </template>
@@ -161,7 +166,7 @@ const jumpToUrl = (url: string) => {
       </div>
     </div>
     <AddCol ref="addColRef" />
-    <Rename ref="renameRef" />
+    <!-- <Rename ref="renameRef" /> -->
   </div>
 </template>
 <style scoped lang="less">
