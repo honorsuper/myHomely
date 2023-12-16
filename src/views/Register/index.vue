@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { message } from 'ant-design-vue'
+import { message, type FormInstance } from 'ant-design-vue'
+import type { Rule } from 'ant-design-vue/es/form'
 import { register, registerCaptcha } from '@/utils/request'
 
 interface FormState {
@@ -23,6 +24,7 @@ const formState = reactive<FormState>({
 })
 
 const router = useRouter()
+const formRef = ref<FormInstance>()
 
 const onFinish = async (values: any) => {
   const { confirmPassword, ...rest } = values
@@ -62,6 +64,26 @@ const handleToLogin = () => {
     name: 'login',
   })
 }
+
+const validatePass = async (_rule: Rule, value: string) => {
+  if (value === '') {
+    return Promise.reject('请输入密码')
+  } else {
+    if (formState.confirmPassword !== '') {
+      formRef.value?.validateFields?.('confirmPassword')
+    }
+    return Promise.resolve()
+  }
+}
+const validatePass2 = async (_rule: Rule, value: string) => {
+  if (value === '') {
+    return Promise.reject('请再次输入密码')
+  } else if (value !== formState.password) {
+    return Promise.reject('两次密码输入不一致')
+  } else {
+    return Promise.resolve()
+  }
+}
 </script>
 <template>
   <div class="flex justify-center items-center h-full login-wrapper flex-col register-wrap">
@@ -74,6 +96,7 @@ const handleToLogin = () => {
           autocomplete="off"
           @finish="onFinish"
           @finishFailed="onFinishFailed"
+          ref="formRef"
         >
           <a-form-item name="username" :rules="[{ required: true, message: '请输入用户名' }]">
             <a-input v-model:value="formState.username" placeholder="请输入用户名" />
@@ -85,19 +108,20 @@ const handleToLogin = () => {
 
           <a-form-item
             name="password"
-            :rules="[{ required: true, message: '请输入密码' }]"
+            :rules="[{ required: true, validator: validatePass, trigger: 'change' }]"
             class="spec-form-item"
           >
             <a-input-password
               v-model:value="formState.password"
               placeholder="请输入密码"
               autoComplete="new-password"
+              :maxlength="20"
             />
           </a-form-item>
 
           <a-form-item
             name="confirmPassword"
-            :rules="[{ required: true, message: '请再此输入密码' }]"
+            :rules="[{ validator: validatePass2, trigger: 'change' }]"
             class="spec-form-item"
           >
             <a-input-password
