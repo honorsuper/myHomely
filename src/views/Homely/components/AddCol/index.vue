@@ -86,6 +86,7 @@ const handleAddSub = (index: number) => {
 const handleSubmit = () => {
   formRef.value?.validate().then(async (values) => {
     if (dynamicValidateForm.id || dynamicValidateForm.id === 0) {
+      // 编辑
       const menuList = dynamicValidateForm.list.map((item, index) => {
         return {
           ...item,
@@ -108,7 +109,7 @@ const handleSubmit = () => {
         message.error(res?.data || '系统繁忙，请稍后再试')
       }
     } else {
-      console.log('新增', values)
+      // 新增
       const menuList = dynamicValidateForm.list.map((item, index) => {
         return {
           ...item,
@@ -136,7 +137,18 @@ const handleSubmit = () => {
  */
 const handleCancel = () => {
   open.value = false
-  dynamicValidateForm.list = []
+  dynamicValidateForm.list = [
+    {
+      id: v4(),
+      index: 0,
+      title: '',
+      url: '',
+      isGroup: 0,
+      groupTitle: '',
+      color: 0,
+    },
+  ]
+  dynamicValidateForm.id = null
   dynamicValidateForm.mainTitle = ''
 }
 
