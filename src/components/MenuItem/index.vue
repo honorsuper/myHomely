@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, createVNode, computed } from 'vue'
+import { ref, createVNode, computed, inject } from 'vue'
 import { useElementHover } from '@vueuse/core'
 import { message, Modal } from 'ant-design-vue'
 import {
@@ -8,7 +8,6 @@ import {
   CaretDownOutlined,
 } from '@ant-design/icons-vue'
 import { AddCol } from '../../views/Homely/components'
-import Rename from './Rename.vue'
 import { deleteColumn } from '@/utils/request'
 import { userStore } from '@/stores/user'
 import { DEFAULT_BG_COLOR, DEFAULT_COLOR } from '@/constants'
@@ -42,7 +41,6 @@ const target = ref()
 const isHovered = useElementHover(target)
 const open = ref(false)
 const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
-// const renameRef = ref<InstanceType<typeof Rename> | null>(null)
 const store = userStore()
 
 const colorList = computed(() => {
@@ -57,16 +55,6 @@ const handleOpenModal = () => {
   addColRef.value?.handleOpenModal(props?.info)
 }
 
-/**
- * 打开重命弹窗
- */
-// const handelOpenRename = () => {
-//   open.value = false
-//   renameRef.value?.handleOpenRename?.({
-//     id: props.info.id,
-//     mainTitle: props.info.mainTitle,
-//   })
-// }
 // 删除
 const handleDel = async (id: number | string) => {
   const res = await deleteColumn({
@@ -75,6 +63,7 @@ const handleDel = async (id: number | string) => {
 
   if (res.status === 201 || res.status === 200) {
     message.success('删除成功')
+    homelyInfo?.handleGetMenuInfo?.()
   } else {
     message.error(res?.data || '系统繁忙，请稍后再试')
   }
@@ -101,6 +90,8 @@ const delConfirm = (id: number | string) => {
 const jumpToUrl = (url: string) => {
   location.href = url
 }
+
+const homelyInfo = inject<any>('homely')
 </script>
 
 <template>
@@ -118,7 +109,6 @@ const jumpToUrl = (url: string) => {
           <template #overlay>
             <a-menu>
               <a-menu-item key="3" @click="handleOpenModal">修改</a-menu-item>
-              <!-- <a-menu-item key="4" @click="handelOpenRename">重命名</a-menu-item> -->
               <a-menu-item key="5" @click="() => delConfirm(info.id)">删除</a-menu-item>
             </a-menu>
           </template>
@@ -166,7 +156,6 @@ const jumpToUrl = (url: string) => {
       </div>
     </div>
     <AddCol ref="addColRef" />
-    <!-- <Rename ref="renameRef" /> -->
   </div>
 </template>
 <style scoped lang="less">
@@ -174,7 +163,6 @@ const jumpToUrl = (url: string) => {
   float: left;
   color: #fff;
   background: #fff;
-  // border: 1px solid #dddddd;
 }
 
 .title {

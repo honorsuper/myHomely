@@ -206,6 +206,10 @@ watch(
       useItemHeight()
     })
   },
+  {
+    immediate: true,
+    deep: true,
+  },
 )
 
 onMounted(() => {
