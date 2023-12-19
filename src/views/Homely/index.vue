@@ -81,7 +81,7 @@ const steps: TourProps['steps'] = [
   },
   {
     title: '留言',
-    description: '留下您宝贵的意见，您的意见是我前进的东路',
+    description: '留下您宝贵的意见，您的意见是我前进的动力',
     target: () => ref2.value && ref2.value.$el,
     placement: 'topRight',
   },
