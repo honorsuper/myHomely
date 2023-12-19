@@ -11,6 +11,7 @@ declare module 'vue' {
     AConfigProvider: typeof import('ant-design-vue/lib')['ConfigProvider']
     ADrawer: typeof import('ant-design-vue/lib')['Drawer']
     ADropdown: typeof import('ant-design-vue/lib')['Dropdown']
+    AEmpty: typeof import('ant-design-vue/lib')['Empty']
     AFloatButton: typeof import('ant-design-vue/lib')['FloatButton']
     AFloatButtonGroup: typeof import('ant-design-vue/lib')['FloatButtonGroup']
     AForm: typeof import('ant-design-vue/lib')['Form']

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref, computed, watch, nextTick, inject } from 'vue'
+import { onMounted, ref, computed, watch, nextTick } from 'vue'
 // import { Sortable } from 'sortablejs-vue3'
 import { MenuItem } from '@/components'
 import { getMinHeightColumn, getMinHeight, getMaxHeight } from './utils'
-import { sortColumn } from '@/utils/request'
-import { message } from 'ant-design-vue'
-import type { SortableOptions } from 'sortablejs'
-import type { AutoScrollOptions } from 'sortablejs/plugins'
+// import { sortColumn } from '@/utils/request'
+// import { message } from 'ant-design-vue'
+// import type { SortableOptions } from 'sortablejs'
+// import type { AutoScrollOptions } from 'sortablejs/plugins'
 
 const props = withDefaults(
   defineProps<{
@@ -58,19 +58,19 @@ const columnHeightObj = ref<Record<string, number>>({})
 // 容器的总高度
 const containerHeight = ref(0)
 
-const homelyInfo = inject<any>('homely')
+// const homelyInfo = inject<any>('homely')
 
-const options = computed<SortableOptions | AutoScrollOptions>(() => {
-  return {
-    draggable: '.my-handle',
-    animation: 150,
-    ghostClass: 'ghost',
-    dragClass: 'drag',
-    scroll: true,
-    forceFallback: true,
-    bubbleScroll: true,
-  }
-})
+// const options = computed<SortableOptions | AutoScrollOptions>(() => {
+//   return {
+//     draggable: '.my-handle',
+//     animation: 150,
+//     ghostClass: 'ghost',
+//     dragClass: 'drag',
+//     scroll: true,
+//     forceFallback: true,
+//     bubbleScroll: true,
+//   }
+// })
 
 /**
  * 计算容器宽度
@@ -178,28 +178,29 @@ const useColumnHeightObj = () => {
   }
 }
 
-const onOrderChange = async (event: any) => {
-  console.log('newIndex', event.newIndex)
-  console.log('oldIndex', event.oldIndex)
-  // if (event.oldIndex === event.newIndex) return
+// const onOrderChange = async (event: any) => {
+//   console.log('newIndex', event.newIndex)
+//   console.log('oldIndex', event.oldIndex)
+//   // if (event.oldIndex === event.newIndex) return
 
-  const res = await sortColumn({
-    fromIndex: event.oldIndex,
-    toIndex: event.newIndex,
-  })
+//   const res = await sortColumn({
+//     fromIndex: event.oldIndex,
+//     toIndex: event.newIndex,
+//   })
 
-  if (res.status === 201 || res.status === 200) {
-    message.success('修改成功')
-    // handleCancel()
-    // homelyInfo?.handleGetMenuInfo?.()
-  } else {
-    message.error(res?.data || '系统繁忙，请稍后再试')
-  }
-}
+//   if (res.status === 201 || res.status === 200) {
+//     message.success('修改成功')
+//     // handleCancel()
+//     // homelyInfo?.handleGetMenuInfo?.()
+//   } else {
+//     message.error(res?.data || '系统繁忙，请稍后再试')
+//   }
+// }
 
 watch(
   () => props.data,
-  () => {
+  (newValue) => {
+    if (newValue?.length === 0) return
     nextTick(() => {
       itemHeights = []
       useColumnHeightObj()

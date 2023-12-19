@@ -52,7 +52,9 @@ const { run: runDeleteColumn } = useAsync(deleteColumn, {
   manual: true,
   onSuccess: () => {
     message.success('删除成功')
-    homelyInfo?.handleGetMenuInfo?.()
+    setTimeout(() => {
+      homelyInfo?.handleGetMenuInfo?.()
+    }, 500)
   },
 })
 

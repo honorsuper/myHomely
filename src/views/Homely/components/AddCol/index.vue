@@ -360,7 +360,13 @@ defineExpose({
                     <a-menu-divider />
                     <a-menu-item key="4" @click="convertToMenu(index)"> 转为菜单</a-menu-item>
                     <a-menu-divider />
-                    <a-menu-item key="5" @click="handleDel(index)"> 删除</a-menu-item>
+                    <a-menu-item
+                      key="5"
+                      @click="handleDel(index)"
+                      :disabled="dynamicValidateForm.list?.length === 1"
+                    >
+                      删除</a-menu-item
+                    >
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -444,7 +450,7 @@ defineExpose({
                       </a-menu-item>
                       <a-menu-divider />
                       <a-menu-item key="5" @click="handleSubDel(index, innerIndex)">
-                        删除
+                        删除1
                       </a-menu-item>
                     </a-menu>
                   </template>
@@ -496,7 +502,13 @@ defineExpose({
                       移动到底部
                     </a-menu-item>
                     <a-menu-divider />
-                    <a-menu-item key="5" @click="handleDel(index)"> 删除</a-menu-item>
+                    <a-menu-item
+                      key="5"
+                      @click="handleDel(index)"
+                      :disabled="dynamicValidateForm.list?.length === 1"
+                    >
+                      删除</a-menu-item
+                    >
                   </a-menu>
                 </template>
               </a-dropdown>

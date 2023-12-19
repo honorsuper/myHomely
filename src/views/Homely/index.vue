@@ -126,7 +126,10 @@ provide('homely', {
 <template>
   <div class="out-wrap flex flex-col dark:bg-[#20293a]">
     <Header ref="headerRef" :handleOpenGuide="handleOpenGuide" />
-    <WaterFall :data="menuData" />
+    <WaterFall :data="menuData" v-if="menuData?.length > 0" />
+    <div class="flex h-full justify-center items-center" v-else>
+      <a-empty description="暂无数据，点击右下角「加号」创建" />
+    </div>
     <AddCol ref="addColRef" />
     <FeedBack ref="feedBackRef" />
     <a-float-button-group shape="circle" :style="{ right: '34px' }">
