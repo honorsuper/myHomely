@@ -47,10 +47,6 @@ const onFinish = async (values: any) => {
   })
 }
 
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo)
-}
-
 const sendCaptcha = async () => {
   runUpdateUserInfoCaptcha(formState.email)
 }
@@ -68,13 +64,7 @@ const handleToHome = () => {
     <div class="content-wrapper">
       <div class="text-xl mb-4">信息修改</div>
       <div class="form-wrap">
-        <a-form
-          :model="formState"
-          name="basic"
-          autocomplete="off"
-          @finish="onFinish"
-          @finishFailed="onFinishFailed"
-        >
+        <a-form :model="formState" name="basic" autocomplete="off" @finish="onFinish">
           <a-form-item name="nickName" :rules="[{ required: true, message: '请输入昵称' }]">
             <a-input v-model:value="formState.nickName" placeholder="请输入昵称" />
           </a-form-item>

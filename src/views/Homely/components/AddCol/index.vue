@@ -42,7 +42,7 @@ const homelyInfo = inject<any>('homely')
 const { run: runAddMenu } = useAsync(addMenu, {
   manual: true,
   onSuccess: () => {
-    message.success('修改成功')
+    message.success('新增成功')
     handleCancel()
     homelyInfo?.handleGetMenuInfo?.()
   },
@@ -196,7 +196,6 @@ const handleMoveUp = (index: number, isTop = false) => {
  * @param isBottom 是否移动到最底部
  */
 const handleMoveDown = (index: number, isBottom = false) => {
-  console.log('index', index)
   if (isBottom) {
     const currentInfo = dynamicValidateForm.list.splice(index, 1)
     dynamicValidateForm.list.push(currentInfo[0])
@@ -241,13 +240,10 @@ const handleSubMoveUp = (index: number, subIndex: number, isTop = false) => {
  * @param isBottom 是否移动到最底部
  */
 const handleSubMoveDown = (index: number, subIndex: number, isBottom = false) => {
-  console.log('isBottom', isBottom)
   if (isBottom) {
     const currentInfo = dynamicValidateForm.list[index].groupList.splice(subIndex, 1)
     dynamicValidateForm.list[index].groupList.push(currentInfo[0])
   } else {
-    console.log('subIndex', subIndex)
-    console.log('index', index)
     const nextIndex = subIndex + 1
     const cloneList = cloneDeep(dynamicValidateForm.list)
     dynamicValidateForm.list[index].groupList[nextIndex] = cloneList[index].groupList[subIndex]

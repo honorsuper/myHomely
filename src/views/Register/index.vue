@@ -54,10 +54,6 @@ const onFinish = async (values: any) => {
   })
 }
 
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo)
-}
-
 const sendCaptcha = async () => {
   runRegisterCaptcha(formState.email)
 }
@@ -93,14 +89,7 @@ const validatePass2 = async (_rule: Rule, value: string) => {
     <div class="content-wrapper">
       <div class="text-xl mb-4">账号注册</div>
       <div class="form-wrap">
-        <a-form
-          :model="formState"
-          name="basic"
-          autocomplete="off"
-          @finish="onFinish"
-          @finishFailed="onFinishFailed"
-          ref="formRef"
-        >
+        <a-form :model="formState" name="basic" autocomplete="off" @finish="onFinish" ref="formRef">
           <a-form-item name="username" :rules="[{ required: true, message: '请输入用户名' }]">
             <a-input v-model:value="formState.username" placeholder="请输入用户名" />
           </a-form-item>
