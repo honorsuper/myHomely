@@ -11,12 +11,12 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+RUN npm run build-only
 
 # production stage
 FROM nginx:stable-perl as production-stage
 
-VOLUME /Users/honorsuper/nginx/cert:/etc/nginx/cert
+VOLUME ["/etc/nginx/cert"]
 
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
