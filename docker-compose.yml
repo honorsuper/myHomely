@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  nest-app:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - '3000:3000' 
+      - '80:80'
+    volumes:
+      - /Users/honorsuper/nginx/cert:/etc/nginx/cert
+
+

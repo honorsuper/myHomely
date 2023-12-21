@@ -22,6 +22,8 @@ COPY --from=build-stage /app/dist /usr/share/nginx/html
 
 COPY --from=build-stage /app/default.conf /etc/nginx/conf.d/default.conf
 
+WORKDIR /app
+
 
 EXPOSE 80 443
 
