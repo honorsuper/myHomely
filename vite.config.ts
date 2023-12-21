@@ -1,4 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
+// @ts-ignore
 import vitePluginTencentOss from 'vite-plugin-tencent-oss'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -7,19 +8,18 @@ import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 // import AutoImport from 'unplugin-auto-import/vite';
 
-const options = {
-  region: '<Your Region>',
-  secretId: '<Your Secret ID>',
-  secretKey: '<Your Secret Key>',
-  bucket: '<Your Bucket>',
-}
+// const options = {
+//   region: '<Your Region>',
+//   secretId: '<Your Secret ID>',
+//   secretKey: '<Your Secret Key>',
+//   bucket: '<Your Bucket>',
+// }
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
-    vitePluginTencentOss(options),
     Components({
       resolvers: [
         AntDesignVueResolver({
