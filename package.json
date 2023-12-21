@@ -27,6 +27,7 @@
     "sortablejs": "^1.15.1",
     "sortablejs-vue3": "^1.2.10",
     "uuid": "^9.0.1",
+    "vite-plugin-tencent-oss": "^0.0.7",
     "vue": "^3.3.4",
     "vue-request": "^2.0.0",
     "vue-router": "^4.2.5",
