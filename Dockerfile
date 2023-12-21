@@ -14,7 +14,7 @@ COPY . .
 RUN npm run build-only
 
 # production stage
-FROM nginx:stable-perl as production-stage
+FROM nginx:stable-alpine  as production-stage
 
 VOLUME ["/etc/nginx/cert"]
 
