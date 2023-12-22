@@ -94,7 +94,7 @@ const validatePass2 = async (_rule: Rule, value: string) => {
 </script>
 <template>
   <div
-    class="flex justify-center items-center h-full login-wrapper flex-col register-wrap dark:bg-[#20293a]"
+    class="flex justify-center items-center h-full login-wrapper flex-col bg-[#fafafa] dark:bg-[#20293a]"
   >
     <div class="content-wrapper">
       <div class="text-xl mb-4">修改密码</div>
@@ -162,9 +162,6 @@ const validatePass2 = async (_rule: Rule, value: string) => {
   </div>
 </template>
 <style scoped lang="less">
-.register-wrap {
-  background-color: #fafafa;
-}
 .spec-form-item {
   :deep {
     input.ant-input {

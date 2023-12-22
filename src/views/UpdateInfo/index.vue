@@ -59,7 +59,7 @@ const handleToHome = () => {
 </script>
 <template>
   <div
-    class="flex justify-center items-center h-full login-wrapper flex-col register-wrap dark:bg-[#20293a]"
+    class="flex justify-center items-center h-full login-wrapper flex-col dark:bg-[#20293a] bg-[#fafafa]"
   >
     <div class="content-wrapper">
       <div class="text-xl mb-4">信息修改</div>
@@ -107,9 +107,6 @@ const handleToHome = () => {
   </div>
 </template>
 <style scoped lang="less">
-.register-wrap {
-  background-color: #fafafa;
-}
 .spec-form-item {
   :deep {
     input.ant-input {

@@ -124,7 +124,7 @@ provide('homely', {
 </script>
 
 <template>
-  <div class="out-wrap flex flex-col dark:bg-[#20293a]">
+  <div class="out-wrap flex flex-col dark:bg-[#20293a] bg-[#fafafa]">
     <Header ref="headerRef" :handleOpenGuide="handleOpenGuide" />
     <WaterFall :data="menuData" v-if="menuData?.length > 0" />
     <div class="flex h-full justify-center items-center" v-else>
@@ -153,6 +153,6 @@ provide('homely', {
 <style lang="less" scoped>
 .out-wrap {
   height: 100%;
-  background-color: #fafafa;
+  // background-color: #fafafa;
 }
 </style>
