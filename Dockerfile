@@ -7,11 +7,11 @@ COPY package.json ./
 RUN npm config set registry https://registry.npm.taobao.org/
 
 
-RUN npm install
+RUN yarn
 
 COPY . .
 
-RUN npm run build-only
+RUN yarn build-only
 
 # production stage
 FROM nginx:stable-alpine  as production-stage

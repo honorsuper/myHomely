@@ -7,6 +7,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 // import AutoImport from 'unplugin-auto-import/vite';
+const prod = process.env.NODE_ENV === 'production'
 
 const options = {
   region: '<Your Region>',
@@ -20,7 +21,7 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
-    vitePluginTencentOss(options),
+    prod && vitePluginTencentOss(options),
     Components({
       resolvers: [
         AntDesignVueResolver({
