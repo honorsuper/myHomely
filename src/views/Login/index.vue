@@ -55,7 +55,7 @@ const toForgetPassword = () => {
 </script>
 <template>
   <div class="wrapper h-full relative justify-center items-center flex">
-    <div class="title absolute">
+    <div class="title absolute flex items-center">
       <img src="@/assets/images/title.png" />
     </div>
 
@@ -103,7 +103,9 @@ const toForgetPassword = () => {
 .title {
   left: 80px;
   top: 50px;
-  width: 250px;
+  img {
+    width: 400px;
+  }
 }
 .login-wrapper {
   background-color: #fafafa;

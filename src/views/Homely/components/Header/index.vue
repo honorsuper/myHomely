@@ -78,7 +78,12 @@ defineExpose({
 </script>
 <template>
   <div class="header-wrap flex items-center justify-between dark:bg-[#000000]/20">
-    <div class="title"><img src="@/assets/images/title.png" /></div>
+    <div class="title">
+      <img src="@/assets/images/title_light.png" v-if="store.theme === ThemeType.LIGHT" /><img
+        src="@/assets/images/title_dark.png"
+        v-else
+      />
+    </div>
     <div class="flex items-center gap-2">
       <div class="mode-icon-wrap dark:bg-[#f5f5f5]" ref="ref6" @click="handleToGithub">
         <img class="mode-icon" src="@/assets/icons/github.png" />
@@ -130,7 +135,7 @@ defineExpose({
 
 .title {
   img {
-    width: 120px;
+    width: 240px;
   }
 }
 
