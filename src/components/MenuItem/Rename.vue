@@ -43,7 +43,9 @@ const handleSubmit = () => {
       if (res.status === 201 || res.status === 200) {
         message.success('修改成功')
         handleCancel()
-        homelyInfo?.handleGetMenuInfo?.()
+        setTimeout(() => {
+          homelyInfo?.handleGetMenuInfo?.()
+        }, 500)
       } else {
         message.error(res?.data || '系统繁忙，请稍后再试')
       }

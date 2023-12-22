@@ -44,7 +44,9 @@ const { run: runAddMenu } = useAsync(addMenu, {
   onSuccess: () => {
     message.success('新增成功')
     handleCancel()
-    homelyInfo?.handleGetMenuInfo?.()
+    setTimeout(() => {
+      homelyInfo?.handleGetMenuInfo?.()
+    }, 500)
   },
 })
 
@@ -54,7 +56,9 @@ const { run: runEditMenu } = useAsync(editMenu, {
   onSuccess: () => {
     message.success('修改成功')
     handleCancel()
-    homelyInfo?.handleGetMenuInfo?.()
+    setTimeout(() => {
+      homelyInfo?.handleGetMenuInfo?.()
+    }, 500)
   },
 })
 
