@@ -91,7 +91,10 @@ const validatePass2 = async (_rule: Rule, value: string) => {
       <div class="form-wrap">
         <a-form :model="formState" name="basic" autocomplete="off" @finish="onFinish" ref="formRef">
           <a-form-item name="username" :rules="[{ required: true, message: '请输入用户名' }]">
-            <a-input v-model:value="formState.username" placeholder="请输入用户名" />
+            <a-input
+              v-model:value="formState.username"
+              placeholder="请输入用户名，注册成功后无法修改"
+            />
           </a-form-item>
 
           <a-form-item name="nickName" :rules="[{ required: true, message: '请输入昵称' }]">

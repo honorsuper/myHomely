@@ -13,7 +13,7 @@ const useAsync = <TData, TParams extends unknown[]>(
   options: Omit<Options<IData<TData>, TParams>, 'onSuccess'> & {
     failExtraFn?: () => void
     onSuccess?: (data: TData, params: TParams) => void
-    needErrorMessage?: boolean
+    noNeedErrorMessage?: boolean
   },
   //TODO: 怎么得到函数的类型
 ): any => {
@@ -23,7 +23,7 @@ const useAsync = <TData, TParams extends unknown[]>(
     if (res?.code === 0) {
       options?.onSuccess?.(res, params)
     } else {
-      options?.needErrorMessage && message.error(res.message || '系统异常')
+      !options?.noNeedErrorMessage && message.error(res.message || '系统异常')
       options?.failExtraFn?.()
     }
   }

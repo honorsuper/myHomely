@@ -25,7 +25,6 @@ const { run: runLogin } = useAsync(login, {
   onSuccess: (res: any) => {
     const { data } = res
     message.success('登录成功')
-
     localStorage.setItem('access_token', data.accessToken)
     localStorage.setItem('refresh_token', data.refreshToken)
     localStorage.setItem('user_info', JSON.stringify(data.userInfo))
