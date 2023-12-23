@@ -17,8 +17,9 @@ const flag = computed(() => {
       },
     }"
   >
-    <div v-if="flag" class="bg-white h-full w-full flex justify-center items-center">
-      本应用暂不支持移动端，请在PC端打开！
+    <div v-if="flag" class="bg-white h-full w-full flex justify-center items-center flex-col">
+      暂不支持移动端，请在PC端使用！
+      <img src="@/assets/images/home.jpg" class="w-4/5 mt-4" />
     </div>
     <RouterView v-else />
   </a-config-provider>

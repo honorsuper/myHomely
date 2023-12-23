@@ -30,3 +30,8 @@ yarn
 yarn dev
 ```
 
+
+## 产品展示图
+
+![Home](./src/assets//images/home.jpg)
+
