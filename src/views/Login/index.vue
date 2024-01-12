@@ -54,7 +54,7 @@ const toForgetPassword = () => {
 }
 </script>
 <template>
-  <div class="wrapper h-full relative justify-center items-center flex">
+  <div class="wrapper h-full relative justify-center items-center flex flex-col">
     <div class="title absolute flex items-center">
       <img src="@/assets/images/title.png" />
     </div>
@@ -94,6 +94,9 @@ const toForgetPassword = () => {
         </div>
       </div>
     </div>
+    <div class="footer">
+      <a href="https://beian.miit.gov.cn/" target="_blank">ICP备案：沪ICP备2022026655号</a>
+    </div>
   </div>
 </template>
 <style scoped lang="less">
@@ -126,5 +129,9 @@ const toForgetPassword = () => {
       height: 30px;
     }
   }
+}
+.footer {
+  position: fixed;
+  bottom: 20px;
 }
 </style>

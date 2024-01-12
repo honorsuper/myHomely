@@ -126,6 +126,7 @@ provide('homely', {
 <template>
   <div class="out-wrap flex flex-col dark:bg-[#20293a] bg-[#fafafa]">
     <Header ref="headerRef" :handleOpenGuide="handleOpenGuide" />
+
     <WaterFall :data="menuData" v-if="menuData?.length > 0" />
     <div class="flex h-full justify-center items-center" v-else>
       <a-empty description="暂无数据，点击右下角「加号」创建" />
@@ -153,6 +154,7 @@ provide('homely', {
 <style lang="less" scoped>
 .out-wrap {
   height: 100%;
-  // background-color: #fafafa;
+  background: url('../../assets/images/bg1.jpg');
+  background-size: 100% 100%;
 }
 </style>

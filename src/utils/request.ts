@@ -98,7 +98,12 @@ export async function register(data: any): Promise<any> {
 
 // 用户注册验证码
 export async function registerCaptcha(address: string): Promise<any> {
-  return await axiosInstance.get(`/user/register-captcha?address=${address}`)
+  // return await axiosInstance.get(`/user/register-captcha?address=${address}`)
+  return axiosInstance({
+    url: `/user/register-captcha?address=${address}`,
+    method: 'get',
+    responseType: 'json',
+  })
 }
 
 // 修改用户信息
