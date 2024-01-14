@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { ref, provide } from 'vue'
-import { WaterFall } from '@/components'
-import { Header, AddCol, FeedBack } from './components'
+import { ref } from 'vue'
+import { Header } from '../views/Homely/components'
 import { getMenuInfo, queryIsFirst, setFirst } from '@/utils/request'
-import { message, type TourProps } from 'ant-design-vue'
-import { PlusOutlined } from '@ant-design/icons-vue'
+import { type TourProps } from 'ant-design-vue'
 import { userStore } from '@/stores/user'
 import useAsync from '@/hooks/useQuery'
 
@@ -12,8 +10,6 @@ const ref1 = ref(null)
 const ref2 = ref(null)
 const headerRef = ref<InstanceType<typeof Header> | null>(null)
 const menuData = ref<any[]>([])
-const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
-const feedBackRef = ref<InstanceType<typeof FeedBack> | null>(null)
 
 const open = ref(false)
 const store = userStore()
@@ -42,22 +38,6 @@ const { run: runSetFirst } = useAsync(setFirst, {
     store.handleGetUserInfo()
   },
 })
-
-const handleGetMenuInfo = async () => {
-  const res = await getMenuInfo()
-  if (res.status === 201 || res.status === 200) {
-    menuData.value = JSON.parse(res?.data?.data?.menuConfig)
-  } else {
-    message.error(res?.data || '系统繁忙，请稍后再试')
-  }
-}
-
-/**
- * 打开弹窗
- */
-const handleOpenModal = () => {
-  addColRef?.value?.handleOpenModal?.()
-}
 
 const handleOpen = async (val: boolean) => {
   open.value = val
@@ -111,36 +91,23 @@ const steps: TourProps['steps'] = [
     placement: 'topRight',
   },
 ]
-
-const handleOpenFeedBackModal = () => {
-  feedBackRef?.value?.handleOpenModal?.()
-}
-
-provide('homely', {
-  handleGetMenuInfo,
-  getColumnInfo: () => {
-    return menuData.value
-  },
-})
 </script>
 
 <template>
-  <div class="flex flex-col relative">
-    <!-- <Header ref="headerRef" :handleOpenGuide="handleOpenGuide" /> -->
+  <div class="out-wrap flex flex-col dark:bg-[#20293a] bg-[#fafafa]">
+    <Header ref="headerRef" :handleOpenGuide="handleOpenGuide" />
+    <div class="flex-"><router-view /></div>
 
-    <WaterFall :data="menuData" v-if="menuData?.length > 0" />
-    <div class="flex h-full justify-center items-center" v-else>
-      <a-empty description="暂无数据，点击右下角「加号」创建" />
-    </div>
-    <AddCol ref="addColRef" />
-    <FeedBack ref="feedBackRef" />
+    <a-tour v-model:current="current" :open="open" :steps="steps" @close="handleOpen(false)" />
   </div>
 </template>
 
 <style lang="less" scoped>
 .out-wrap {
-  // height: 100%;
-  // background: url('../../assets/images/bg1.jpg');
-  // background-size: 100% 100%;
+  height: 100vh;
+  overflow-y: auto;
+  background: url('../assets/images/bg1.jpg') no-repeat;
+  background-size: cover;
+  background-position: top;
 }
 </style>

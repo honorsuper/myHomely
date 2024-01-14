@@ -6,13 +6,16 @@ import { Modal } from 'ant-design-vue'
 import { userStore } from '@/stores/user'
 import { handleLogout } from '@/utils'
 import ColorSetting from '../ColorSetting/index.vue'
+
 import { ThemeType } from '@/enum'
+import { Setting } from '../index'
 
 const props = defineProps<{
   handleOpenGuide: () => void
 }>()
 
 const colorSettingRef = ref<InstanceType<typeof ColorSetting> | null>(null)
+const settingRef = ref<InstanceType<typeof Setting> | null>(null)
 const router = useRouter()
 const store = userStore()
 const ref3 = ref(null)
@@ -33,6 +36,9 @@ const handleClickMenu = (a: any) => {
     })
   } else if (a?.key === 'color-setting') {
     colorSettingRef.value?.showDrawer?.()
+  } else if (a?.key === 'setting') {
+    console.log('11111', settingRef.value)
+    settingRef.value?.handleOpenModal()
   }
 }
 
@@ -117,6 +123,7 @@ defineExpose({
             <a-menu-item key="update-userinfo"> 修改信息</a-menu-item>
             <a-menu-item key="update-password"> 修改密码</a-menu-item>
             <a-menu-item key="color-setting"> 颜色配置</a-menu-item>
+            <a-menu-item key="setting"> 设置</a-menu-item>
             <a-menu-item key="logout"> 退出</a-menu-item>
           </a-menu>
         </template>
@@ -124,6 +131,7 @@ defineExpose({
     </div>
   </div>
   <ColorSetting ref="colorSettingRef" />
+  <Setting ref="settingRef" />
 </template>
 <style scoped lang="less">
 .header-wrap {
