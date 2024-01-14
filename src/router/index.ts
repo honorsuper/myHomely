@@ -11,18 +11,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'basic',
+      name: 'home',
       component: Layout,
       children: [
         {
-          path: 'home',
+          path: '',
           name: 'home',
           component: () => import('../views/Homely/index.vue'),
-        },
-        {
-          path: '/setting',
-          name: 'setting',
-          component: () => import('../views/Setting/index.vue'),
         },
       ],
     },

@@ -7,6 +7,7 @@ import { message, type TourProps } from 'ant-design-vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { userStore } from '@/stores/user'
 import useAsync from '@/hooks/useQuery'
+import router from '@/router'
 
 const ref1 = ref(null)
 const ref2 = ref(null)

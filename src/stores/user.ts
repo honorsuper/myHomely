@@ -13,7 +13,7 @@ export const userStore = defineStore({
   id: 'app-system',
   state: (): UserState => ({
     userInfo: getUserInfo(),
-    theme: ThemeType.LIGHT,
+    theme: ThemeType.PICTURE,
   }),
   actions: {
     /**设置用户名*/

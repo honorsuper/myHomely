@@ -2,7 +2,7 @@
 import { ref, createVNode } from 'vue'
 import { useRouter } from 'vue-router'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
-import { Modal } from 'ant-design-vue'
+import { Modal, message } from 'ant-design-vue'
 import { userStore } from '@/stores/user'
 import { handleLogout } from '@/utils'
 import ColorSetting from '../ColorSetting/index.vue'
@@ -26,18 +26,9 @@ const ref6 = ref(null)
 const handleClickMenu = (a: any) => {
   if (a?.key === 'logout') {
     handleLogoutConfirm()
-  } else if (a?.key === 'update-userinfo') {
-    router.push({
-      name: 'updateUser',
-    })
-  } else if (a?.key === 'update-password') {
-    router.push({
-      name: 'changePassword',
-    })
   } else if (a?.key === 'color-setting') {
     colorSettingRef.value?.showDrawer?.()
   } else if (a?.key === 'setting') {
-    console.log('11111', settingRef.value)
     settingRef.value?.handleOpenModal()
   }
 }
@@ -60,7 +51,9 @@ const handleLogoutConfirm = () => {
  * 切换主题
  */
 const handleChangeThemeType = () => {
-  if (store.theme === ThemeType.LIGHT) {
+  if (store.theme === ThemeType.PICTURE) {
+    message.warning('「图片模式」下不支持切换，请到「设置」中切换成「极简白、极夜黑模式|')
+  } else if (store.theme === ThemeType.LIGHT) {
     store.changeThemeType(ThemeType.DARK)
   } else {
     store.changeThemeType(ThemeType.LIGHT)
@@ -94,6 +87,7 @@ defineExpose({
       <div class="mode-icon-wrap dark:bg-[#f5f5f5]" ref="ref6" @click="handleToGithub">
         <img class="mode-icon" src="@/assets/icons/github.png" />
       </div>
+
       <div
         v-if="store.theme === ThemeType.LIGHT"
         class="mode-icon-wrap"
@@ -104,11 +98,19 @@ defineExpose({
       </div>
       <div
         class="mode-icon-wrap dark:bg-[#f5f5f5]"
-        v-else
+        v-if="store.theme === ThemeType.DARK"
         ref="ref5"
         @click="handleChangeThemeType"
       >
         <img class="mode-icon" src="@/assets/icons/dark.png" />
+      </div>
+      <div
+        class="mode-icon-wrap dark:bg-[#f5f5f5]"
+        v-if="store.theme === ThemeType.PICTURE"
+        ref="ref5"
+        @click="handleChangeThemeType"
+      >
+        <img class="mode-icon" src="@/assets/icons/bg.png" />
       </div>
       <div class="mode-icon-wrap" ref="ref4" @click="openGuide">
         <img class="mode-icon" src="@/assets/icons/guide.png" />
@@ -120,8 +122,6 @@ defineExpose({
         </div>
         <template #overlay>
           <a-menu mode="vertical" @click="handleClickMenu">
-            <a-menu-item key="update-userinfo"> 修改信息</a-menu-item>
-            <a-menu-item key="update-password"> 修改密码</a-menu-item>
             <a-menu-item key="color-setting"> 颜色配置</a-menu-item>
             <a-menu-item key="setting"> 设置</a-menu-item>
             <a-menu-item key="logout"> 退出</a-menu-item>

@@ -1,6 +1,7 @@
 export const enum ThemeType {
   DARK = 'dark',
   LIGHT = 'light',
+  PICTURE = 'picture',
 }
 
 export const MAX_COLUMN = 15
