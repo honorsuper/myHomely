@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { ref, provide } from 'vue'
-import { Header } from '../views/Homely/components'
+import { WaterFall } from '@/components'
+import { Header, AddCol, FeedBack } from './components'
 import { getMenuInfo, queryIsFirst, setFirst } from '@/utils/request'
 import { message, type TourProps } from 'ant-design-vue'
+import { PlusOutlined } from '@ant-design/icons-vue'
 import { userStore } from '@/stores/user'
 import useAsync from '@/hooks/useQuery'
+import router from '@/router'
 
 const ref1 = ref(null)
 const ref2 = ref(null)
 const headerRef = ref<InstanceType<typeof Header> | null>(null)
 const menuData = ref<any[]>([])
+const addColRef = ref<InstanceType<typeof AddCol> | null>(null)
+const feedBackRef = ref<InstanceType<typeof FeedBack> | null>(null)
 
 const open = ref(false)
 const store = userStore()
@@ -38,6 +43,22 @@ const { run: runSetFirst } = useAsync(setFirst, {
     store.handleGetUserInfo()
   },
 })
+
+const handleGetMenuInfo = async () => {
+  const res = await getMenuInfo()
+  if (res.status === 201 || res.status === 200) {
+    menuData.value = JSON.parse(res?.data?.data?.menuConfig)
+  } else {
+    message.error(res?.data || '系统繁忙，请稍后再试')
+  }
+}
+
+/**
+ * 打开弹窗
+ */
+const handleOpenModal = () => {
+  addColRef?.value?.handleOpenModal?.()
+}
 
 const handleOpen = async (val: boolean) => {
   open.value = val
@@ -92,13 +113,8 @@ const steps: TourProps['steps'] = [
   },
 ]
 
-const handleGetMenuInfo = async () => {
-  const res = await getMenuInfo()
-  if (res.status === 201 || res.status === 200) {
-    menuData.value = JSON.parse(res?.data?.data?.menuConfig)
-  } else {
-    message.error(res?.data || '系统繁忙，请稍后再试')
-  }
+const handleOpenFeedBackModal = () => {
+  feedBackRef?.value?.handleOpenModal?.()
 }
 
 provide('homely', {
@@ -110,41 +126,14 @@ provide('homely', {
 </script>
 
 <template>
-  <div
-    class="out-wrap flex flex-col dark:bg-[#20293a] bg-[#fafafa]"
-    :class="{
-      'bg-wrap-1': store.userInfo.bgType === '2' && store.userInfo.pictureBgType === '1',
-      'bg-wrap-2': store.userInfo.bgType === '2' && store.userInfo.pictureBgType === '2',
-    }"
-  >
-    <Header ref="headerRef" :handleOpenGuide="handleOpenGuide" />
-
-    <div class="flex flex-col relative">
-      <WaterFall :data="menuData" v-if="menuData?.length > 0" />
-      <div class="flex h-full justify-center items-center" v-else>
-        <a-empty description="暂无数据，点击右下角「加号」创建" />
-      </div>
-      <AddCol ref="addColRef" />
-      <FeedBack ref="feedBackRef" />
+  <div class="flex flex-col relative">
+    <WaterFall :data="menuData" v-if="menuData?.length > 0" />
+    <div class="flex h-full justify-center items-center" v-else>
+      <a-empty description="暂无数据，点击右下角「加号」创建" />
     </div>
-
-    <a-tour v-model:current="current" :open="open" :steps="steps" @close="handleOpen(false)" />
+    <AddCol ref="addColRef" />
+    <FeedBack ref="feedBackRef" />
   </div>
 </template>
 
-<style lang="less" scoped>
-.out-wrap {
-  height: 100vh;
-  overflow-y: auto;
-}
-.bg-wrap-1 {
-  background: url('../assets/images/bg1.jpg') no-repeat;
-  background-size: cover;
-  background-position: top;
-}
-.bg-wrap-2 {
-  background: url('../assets/images/bg2.jpg') no-repeat;
-  background-size: cover;
-  background-position: top;
-}
-</style>
+<style lang="less" scoped></style>

@@ -4,22 +4,14 @@ import Register from '../views/Register/index.vue'
 import UserInfo from '../views/UpdateInfo/index.vue'
 import ChangePassword from '../views/ChangePassword/index.vue'
 import ColorSetting from '../views/ColorSetting/index.vue'
-import Layout from '../layout/basic.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Layout,
-      children: [
-        {
-          path: '/home',
-          name: 'home',
-          component: () => import('../views/Homely/index.vue'),
-        },
-      ],
+      name: 'basic',
+      component: () => import('../views/Homely/index.vue'),
     },
     {
       path: '/login',

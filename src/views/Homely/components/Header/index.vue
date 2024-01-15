@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, createVNode } from 'vue'
-import { useRouter } from 'vue-router'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 import { Modal, message } from 'ant-design-vue'
 import { userStore } from '@/stores/user'

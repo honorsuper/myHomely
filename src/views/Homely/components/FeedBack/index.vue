@@ -63,7 +63,7 @@ defineExpose({
           v-model:value="formState.opinion"
           show-count
           :maxlength="500"
-          :autosize="{
+          :autoSize="{
             minRows: 5,
             maxRows: 8,
           }"

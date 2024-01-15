@@ -33,6 +33,7 @@ declare module 'vue' {
     ATypographyText: typeof import('ant-design-vue/lib')['TypographyText']
     ColorPicker: typeof import('./src/components/ColorPicker/index.vue')['default']
     MenuItem: typeof import('./src/components/MenuItem/index.vue')['default']
+    PlusOutlined: typeof import('@ant-design/icons-vue')['PlusOutlined']
     Rename: typeof import('./src/components/MenuItem/Rename.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
