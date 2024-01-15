@@ -9,7 +9,7 @@ export const useTheme = () => {
    * @param {*} theme 主题的标记常量
    */
   const changeTheme = (theme: string) => {
-    document.querySelector('html')!.className = theme.toLowerCase()
+    document.querySelector('html')!.className = theme?.toLowerCase?.()
   }
 
   watch(() => store.userInfo.commonBgType, changeTheme, {
