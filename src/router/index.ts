@@ -10,7 +10,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'basic',
+      name: 'home',
       component: () => import('../views/Homely/index.vue'),
     },
     {
