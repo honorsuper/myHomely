@@ -92,7 +92,11 @@ const delConfirm = (id: number | string) => {
  * @param url 跳转路径
  */
 const jumpToUrl = (url: string) => {
-  location.href = url
+  if (store.userInfo.clickType === '1') {
+    location.href = url
+  } else {
+    window.open(url)
+  }
 }
 
 const homelyInfo = inject<any>('homely')
