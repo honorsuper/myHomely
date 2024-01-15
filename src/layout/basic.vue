@@ -94,7 +94,13 @@ const steps: TourProps['steps'] = [
 </script>
 
 <template>
-  <div class="out-wrap flex flex-col dark:bg-[#20293a] bg-[#fafafa]">
+  <div
+    class="out-wrap flex flex-col dark:bg-[#20293a] bg-[#fafafa]"
+    :class="{
+      'bg-wrap-1': store.userInfo.bgType === '2' && store.userInfo.pictureBgType === '1',
+      'bg-wrap-2': store.userInfo.bgType === '2' && store.userInfo.pictureBgType === '2',
+    }"
+  >
     <Header ref="headerRef" :handleOpenGuide="handleOpenGuide" />
     <div class="flex-"><router-view /></div>
 
@@ -106,7 +112,14 @@ const steps: TourProps['steps'] = [
 .out-wrap {
   height: 100vh;
   overflow-y: auto;
+}
+.bg-wrap-1 {
   background: url('../assets/images/bg1.jpg') no-repeat;
+  background-size: cover;
+  background-position: top;
+}
+.bg-wrap-2 {
+  background: url('../assets/images/bg2.jpg') no-repeat;
   background-size: cover;
   background-position: top;
 }

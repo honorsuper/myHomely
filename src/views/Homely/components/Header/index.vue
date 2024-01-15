@@ -9,6 +9,8 @@ import ColorSetting from '../ColorSetting/index.vue'
 
 import { ThemeType } from '@/enum'
 import { Setting } from '../index'
+import useAsync from '@/hooks/useQuery'
+import { updateDarkLightMode } from '@/utils/request'
 
 const props = defineProps<{
   handleOpenGuide: () => void
@@ -16,7 +18,6 @@ const props = defineProps<{
 
 const colorSettingRef = ref<InstanceType<typeof ColorSetting> | null>(null)
 const settingRef = ref<InstanceType<typeof Setting> | null>(null)
-const router = useRouter()
 const store = userStore()
 const ref3 = ref(null)
 const ref4 = ref(null)
@@ -47,16 +48,30 @@ const handleLogoutConfirm = () => {
   })
 }
 
+const { run: runUpdateDarkLightMode } = useAsync(updateDarkLightMode, {
+  manual: true,
+  onSuccess: () => {
+    message.success('修改成功')
+    store?.handleGetUserInfo()
+  },
+})
+
 /**
  * 切换主题
  */
 const handleChangeThemeType = () => {
-  if (store.theme === ThemeType.PICTURE) {
-    message.warning('「图片模式」下不支持切换，请到「设置」中切换成「极简白、极夜黑模式|')
-  } else if (store.theme === ThemeType.LIGHT) {
-    store.changeThemeType(ThemeType.DARK)
-  } else {
-    store.changeThemeType(ThemeType.LIGHT)
+  if (store.userInfo.bgType === '2') {
+    message.warning('「图片模式」下不支持切换，请到「设置」中切换成「极简白、极夜黑模式')
+  } else if (store.userInfo.bgType === '1') {
+    if (store.userInfo.commonBgType === ThemeType.LIGHT) {
+      runUpdateDarkLightMode({
+        commonBgType: ThemeType.DARK,
+      })
+    } else {
+      runUpdateDarkLightMode({
+        commonBgType: ThemeType.LIGHT,
+      })
+    }
   }
 }
 
@@ -76,12 +91,19 @@ defineExpose({
 })
 </script>
 <template>
-  <div class="header-wrap flex items-center justify-between dark:bg-[#000000]/20">
+  <div
+    class="header-wrap flex items-center justify-between"
+    :class="{
+      'dark:bg-[#000000]/20':
+        store.userInfo.commonBgType === ThemeType.DARK && store.userInfo.bgType == '1',
+    }"
+  >
     <div class="title">
-      <img src="@/assets/images/title_light.png" v-if="store.theme === ThemeType.LIGHT" /><img
+      <img
         src="@/assets/images/title_dark.png"
-        v-else
+        v-if="store.userInfo.bgType === '1' && store.userInfo.commonBgType === ThemeType.LIGHT"
       />
+      <img src="@/assets/images/title_light.png" v-else />
     </div>
     <div class="flex items-center gap-2">
       <div class="mode-icon-wrap dark:bg-[#f5f5f5]" ref="ref6" @click="handleToGithub">
@@ -89,7 +111,7 @@ defineExpose({
       </div>
 
       <div
-        v-if="store.theme === ThemeType.LIGHT"
+        v-if="store.userInfo.commonBgType === ThemeType.LIGHT && store.userInfo.bgType === '1'"
         class="mode-icon-wrap"
         ref="ref5"
         @click="handleChangeThemeType"
@@ -98,7 +120,7 @@ defineExpose({
       </div>
       <div
         class="mode-icon-wrap dark:bg-[#f5f5f5]"
-        v-if="store.theme === ThemeType.DARK"
+        v-if="store.userInfo.commonBgType === ThemeType.DARK && store.userInfo.bgType == '1'"
         ref="ref5"
         @click="handleChangeThemeType"
       >
@@ -106,7 +128,7 @@ defineExpose({
       </div>
       <div
         class="mode-icon-wrap dark:bg-[#f5f5f5]"
-        v-if="store.theme === ThemeType.PICTURE"
+        v-if="store.userInfo.bgType === '2'"
         ref="ref5"
         @click="handleChangeThemeType"
       >

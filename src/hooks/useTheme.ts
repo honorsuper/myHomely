@@ -9,10 +9,10 @@ export const useTheme = () => {
    * @param {*} theme 主题的标记常量
    */
   const changeTheme = (theme: string) => {
-    document.querySelector('html')!.className = theme
+    document.querySelector('html')!.className = theme.toLowerCase()
   }
 
-  watch(() => store.theme, changeTheme, {
+  watch(() => store.userInfo.commonBgType, changeTheme, {
     // 初始执行一次
     immediate: true,
   })

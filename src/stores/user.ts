@@ -2,18 +2,15 @@ import { defineStore } from 'pinia'
 import { getUserInfo } from '@/stores/utils'
 import { queryUserInfo } from '@/utils/request'
 import { message } from 'ant-design-vue'
-import { ThemeType } from '@/enum'
 
 interface UserState {
   userInfo: any
-  theme: string
 }
 
 export const userStore = defineStore({
   id: 'app-system',
   state: (): UserState => ({
     userInfo: getUserInfo(),
-    theme: ThemeType.PICTURE,
   }),
   actions: {
     /**设置用户名*/

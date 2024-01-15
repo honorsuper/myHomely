@@ -16,6 +16,7 @@ declare module 'vue' {
     AFloatButtonGroup: typeof import('ant-design-vue/lib')['FloatButtonGroup']
     AForm: typeof import('ant-design-vue/lib')['Form']
     AFormItem: typeof import('ant-design-vue/lib')['FormItem']
+    AImage: typeof import('ant-design-vue/lib')['Image']
     AInput: typeof import('ant-design-vue/lib')['Input']
     AInputPassword: typeof import('ant-design-vue/lib')['InputPassword']
     AMenu: typeof import('ant-design-vue/lib')['Menu']

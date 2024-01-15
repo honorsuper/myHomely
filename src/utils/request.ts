@@ -184,3 +184,13 @@ export async function queryIsFirst(): Promise<any> {
 export async function addOpinion(data: any): Promise<any> {
   return await axiosInstance.post('/feedback/add-opinion', data)
 }
+
+// 修改基本信息
+export async function updateBasicInfo(data: any): Promise<any> {
+  return axiosInstance.post('/user/update-basic-setting', data)
+}
+
+// 切换极简白、极夜黑模式
+export async function updateDarkLightMode(data: any): Promise<any> {
+  return axiosInstance.post('/user/update-darkLight-mode', data)
+}

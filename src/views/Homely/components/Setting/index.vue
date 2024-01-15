@@ -1,25 +1,33 @@
 <script setup lang="ts">
 import { ref, defineExpose, provide } from 'vue'
-import type { FormInstance } from 'ant-design-vue'
 import UpdateInfo from './components/UpdateInfo/index.vue'
 import ChangePassword from './components/ChangePassword/index.vue'
 import BasicInfo from './components/BasicInfo/index.vue'
 
-import { DownSquar, updateeOutlined } from '@ant-design/icons-vue'
-import { cloneDeep } from 'lodash-es'
-
-import { message } from 'ant-design-vue'
-
 // 弹窗展示
 const open = ref(false)
 // 当前tab
-const activeKey = ref('1')
-// 表单
-const formRef = ref<FormInstance>()
+const activeKey = ref('999')
 
+/**
+ * 打开弹窗
+ */
 const handleOpenModal = () => {
   open.value = true
+  activeKey.value = '1'
 }
+
+/**
+ * 关闭弹窗
+ */
+const handleCloseModal = () => {
+  open.value = false
+  activeKey.value = '999'
+}
+
+provide('setting', {
+  handleCloseModal,
+})
 
 defineExpose({
   handleOpenModal,
