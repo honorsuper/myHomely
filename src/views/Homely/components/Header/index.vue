@@ -60,7 +60,7 @@ const { run: runUpdateDarkLightMode } = useAsync(updateDarkLightMode, {
  */
 const handleChangeThemeType = () => {
   if (store.userInfo.bgType === '2') {
-    message.warning('「图片模式」下不支持切换，请到「设置」中切换成「极简白、极夜黑模式')
+    message.warning('「图片模式」下不支持切换，请到「设置」中切换成「极简白、极夜黑」模式')
   } else if (store.userInfo.bgType === '1') {
     if (store.userInfo.commonBgType === ThemeType.LIGHT) {
       runUpdateDarkLightMode({

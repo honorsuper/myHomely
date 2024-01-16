@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { reactive, inject } from 'vue'
 import { message } from 'ant-design-vue'
 import { updateUserInfo, updateUserInfoCaptcha } from '@/utils/request'
 import useAsync from '@/hooks/useQuery'
@@ -18,17 +17,16 @@ const formState = reactive<FormState>({
   captcha: '',
 })
 
-const router = useRouter()
 const store = userStore()
+
+const parentInfo: any = inject('setting')
 
 const { run: runUpdateUserInfo } = useAsync(updateUserInfo, {
   manual: true,
   onSuccess: () => {
     message.success('修改成功')
-    store.handleGetUserInfo()
-    setTimeout(() => {
-      window.location.reload()
-    }, 500)
+    store?.handleGetUserInfo()
+    handleCancel()
   },
 })
 
@@ -39,6 +37,13 @@ const { run: runUpdateUserInfoCaptcha } = useAsync(updateUserInfoCaptcha, {
   },
 })
 
+const handleCancel = () => {
+  parentInfo?.handleCloseModal?.()
+  formState.captcha = ''
+  formState.email = ''
+  formState.nickName = ''
+}
+
 const onFinish = async (values: any) => {
   runUpdateUserInfo({
     ...values,
@@ -47,12 +52,6 @@ const onFinish = async (values: any) => {
 
 const sendCaptcha = async () => {
   runUpdateUserInfoCaptcha(formState.email)
-}
-
-const handleToHome = () => {
-  router.push({
-    name: 'home',
-  })
 }
 </script>
 <template>
@@ -95,7 +94,7 @@ const handleToHome = () => {
             <a-button type="primary" html-type="submit" class="h-10 rounded-full flex-1"
               >确定</a-button
             >
-            <a-button @click="handleToHome" class="h-10 rounded-full w-1/2 flex-1">取消</a-button>
+            <a-button @click="handleCancel" class="h-10 rounded-full w-1/2 flex-1">取消</a-button>
           </div>
         </a-form>
       </div>

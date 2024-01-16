@@ -122,8 +122,18 @@ export async function changePassword(data: any): Promise<any> {
 }
 
 // 修改密码验证码
-export async function ChangePasswordCaptcha(address: string): Promise<any> {
+export async function changePasswordCaptcha(address: string): Promise<any> {
   return await axiosInstance.get(`/user/update_password-captcha?address=${address}`)
+}
+
+// 忘记密码
+export async function forgetPassword(data: any): Promise<any> {
+  return await axiosInstance.post('/user/forget_password', data)
+}
+
+// 忘记密码验证码
+export async function forgetPasswordCaptcha(address: string): Promise<any> {
+  return await axiosInstance.get(`/user/forget_password-captcha?address=${address}`)
 }
 
 // 获取导航菜单

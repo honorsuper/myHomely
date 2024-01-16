@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
 import { message, type FormInstance } from 'ant-design-vue'
-import { ChangePasswordCaptcha, changePassword } from '@/utils/request'
+import { forgetPassword, forgetPasswordCaptcha } from '@/utils/request'
 import type { Rule } from 'ant-design-vue/es/form'
 import useAsync from '@/hooks/useQuery'
 import { handleLogout } from '@/utils'
@@ -25,24 +24,17 @@ const formState = reactive<FormState>({
   captcha: '',
 })
 
-const router = useRouter()
-const route = useRoute()
 const formRef = ref<FormInstance>()
 
-const { run: runChangePassword } = useAsync(changePassword, {
+const { run: runChangePassword } = useAsync(forgetPassword, {
   manual: true,
   onSuccess: () => {
     message.success('修改成功')
     handleLogout()
-    setTimeout(() => {
-      router.push({
-        name: 'login',
-      })
-    }, 500)
   },
 })
 
-const { run: runChangePasswordCaptcha } = useAsync(ChangePasswordCaptcha, {
+const { run: runForgetPasswordCaptcha } = useAsync(forgetPasswordCaptcha, {
   manual: true,
   onSuccess: () => {
     message.success('发送成功')
@@ -57,19 +49,11 @@ const onFinish = async (values: any) => {
 }
 
 const sendCaptcha = async () => {
-  runChangePasswordCaptcha(formState.email)
+  runForgetPasswordCaptcha(formState.email)
 }
 
 const handleBack = () => {
-  if (route.name === 'changePassword') {
-    router.push({
-      name: 'home',
-    })
-  } else {
-    router.push({
-      name: 'login',
-    })
-  }
+  handleLogout()
 }
 
 const validatePass = async (_rule: Rule, value: string) => {
@@ -97,7 +81,7 @@ const validatePass2 = async (_rule: Rule, value: string) => {
     class="flex justify-center items-center h-full login-wrapper flex-col bg-[#fafafa] dark:bg-[#20293a]"
   >
     <div class="content-wrapper">
-      <div class="text-xl mb-4">修改密码</div>
+      <div class="text-xl mb-4">忘记密码</div>
       <div class="form-wrap">
         <a-form :model="formState" name="basic" autocomplete="off" @finish="onFinish">
           <a-form-item

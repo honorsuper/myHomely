@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { reactive, ref, inject } from 'vue'
 import { message, type FormInstance } from 'ant-design-vue'
-import { ChangePasswordCaptcha, changePassword } from '@/utils/request'
+import { changePasswordCaptcha, changePassword } from '@/utils/request'
 import type { Rule } from 'ant-design-vue/es/form'
 import useAsync from '@/hooks/useQuery'
 import { handleLogout } from '@/utils'
@@ -25,24 +24,18 @@ const formState = reactive<FormState>({
   captcha: '',
 })
 
-const router = useRouter()
-const route = useRoute()
 const formRef = ref<FormInstance>()
+const parentInfo: any = inject('setting')
 
 const { run: runChangePassword } = useAsync(changePassword, {
   manual: true,
   onSuccess: () => {
     message.success('修改成功')
     handleLogout()
-    setTimeout(() => {
-      router.push({
-        name: 'login',
-      })
-    }, 500)
   },
 })
 
-const { run: runChangePasswordCaptcha } = useAsync(ChangePasswordCaptcha, {
+const { run: runChangePasswordCaptcha } = useAsync(changePasswordCaptcha, {
   manual: true,
   onSuccess: () => {
     message.success('发送成功')
@@ -58,18 +51,6 @@ const onFinish = async (values: any) => {
 
 const sendCaptcha = async () => {
   runChangePasswordCaptcha(formState.email)
-}
-
-const handleBack = () => {
-  if (route.name === 'changePassword') {
-    router.push({
-      name: 'home',
-    })
-  } else {
-    router.push({
-      name: 'login',
-    })
-  }
 }
 
 const validatePass = async (_rule: Rule, value: string) => {
@@ -90,6 +71,16 @@ const validatePass2 = async (_rule: Rule, value: string) => {
   } else {
     return Promise.resolve()
   }
+}
+
+const handleCancel = () => {
+  parentInfo?.handleCloseModal?.()
+  formState.captcha = ''
+  formState.email = ''
+  formState.nickName = ''
+  formState.username = ''
+  formState.password = ''
+  formState.confirmPassword = ''
 }
 </script>
 <template>
@@ -152,7 +143,7 @@ const validatePass2 = async (_rule: Rule, value: string) => {
             <a-button type="primary" html-type="submit" class="h-10 rounded-full flex-1"
               >确定</a-button
             >
-            <a-button @click="handleBack" class="h-10 rounded-full flex-1">返回</a-button>
+            <a-button @click="handleCancel" class="h-10 rounded-full flex-1">返回</a-button>
           </div>
         </a-form>
       </div>

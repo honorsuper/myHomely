@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { reactive, watch, inject, onMounted } from 'vue'
+import { reactive, inject, onMounted } from 'vue'
 import { message } from 'ant-design-vue'
 import { updateBasicInfo } from '@/utils/request'
 import useAsync from '@/hooks/useQuery'
+import bg1 from '@/assets/images/bg1.jpg'
+import bg2 from '@/assets/images/bg2.jpg'
 
 import { userStore } from '@/stores/user'
 
@@ -52,7 +54,6 @@ const parentInfo: any = inject('setting')
 
 onMounted(() => {
   const userInfo = store.userInfo
-  console.log('userInfo', userInfo)
   formState.clickType = userInfo.clickType
   formState.bgType = userInfo.bgType
   formState.pictureBgType = userInfo.pictureBgType
@@ -79,10 +80,10 @@ onMounted(() => {
           <a-form-item label="图片类型" name="pictureBgType" v-if="formState.bgType === '2'">
             <a-radio-group v-model:value="formState.pictureBgType">
               <a-radio value="1">
-                <a-image :width="150" src="src/assets/images/bg1.jpg" />
+                <a-image :width="150" :src="bg1" />
               </a-radio>
               <a-radio value="2">
-                <a-image :width="150" src="src/assets/images/bg2.jpg" />
+                <a-image :width="150" :src="bg2" />
               </a-radio>
             </a-radio-group>
           </a-form-item>
