@@ -95,7 +95,7 @@ const toForgetPassword = () => {
       </div>
     </div>
     <div class="footer">
-      <a href="https://beian.miit.gov.cn/" target="_blank">ICP备案：沪ICP备2022026655号</a>
+      <a href="https://beian.miit.gov.cn/" target="_blank">ICP备案：沪ICP备2022026655号-4</a>
     </div>
   </div>
 </template>
