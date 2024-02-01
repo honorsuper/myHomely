@@ -3,9 +3,7 @@ import { computed } from 'vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { isMobile } from './utils'
 
-const flag = computed(() => {
-  return isMobile()
-})
+const flag = computed(() => isMobile())
 </script>
 
 <template>
