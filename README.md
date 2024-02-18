@@ -41,9 +41,9 @@ yarn dev
 
 
 <p align="center">
-  <a href="https://www.jetbrains.com/?from=pkslow-samples">
+  <a href="https://jb.gg/OpenSourceSupport">
     <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/WebStorm.png" alt="WebStorm logo." width="260px">
-<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/WebStorm_icon.svg" alt="WebStorm logo.">
+    <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/WebStorm_icon.svg" alt="WebStorm logo.">
   </a>
 </p>
 
