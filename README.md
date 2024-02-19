@@ -36,16 +36,14 @@ yarn dev
 ![Home](./src/assets//images/home.jpg)
 
 
-# Thanks to JetBrains
+
+## 鸣谢
+
+> [IntelliJ IDEA](https://zh.wikipedia.org/zh-hans/IntelliJ_IDEA) 是一个在各个方面都最大程度地提高开发人员的生产力的 IDE，适用于 JVM 平台语言。
+
+特别感谢 [JetBrains](https://www.jetbrains.com/?from=campus) 为开源项目提供免费的 [IntelliJ IDEA](https://www.jetbrains.com/idea/?from=campus) 等 IDE 的授权    
+[<img src="https://gcore.jsdelivr.net/gh/oddfar/campus-imaotai/.github/jetbrains-variant.png" width="200"/>](https://www.jetbrains.com/?from=campus)
 
 
 
-<p align="center">
-  <a href="https://jb.gg/OpenSourceSupport">
-    <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/WebStorm.png" alt="WebStorm logo." width="260px">
-    <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/WebStorm_icon.svg" alt="WebStorm logo.">
-  </a>
-</p>
-
-> Thanks JetBrains to support the project providing such great IDE.
 
