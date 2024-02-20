@@ -29,6 +29,7 @@ declare module 'vue' {
     ATabPane: typeof import('ant-design-vue/lib')['TabPane']
     ATabs: typeof import('ant-design-vue/lib')['Tabs']
     ATextarea: typeof import('ant-design-vue/lib')['Textarea']
+    ATooltip: typeof import('ant-design-vue/lib')['Tooltip']
     ATour: typeof import('ant-design-vue/lib')['Tour']
     ATypographyText: typeof import('ant-design-vue/lib')['TypographyText']
     ColorPicker: typeof import('./src/components/ColorPicker/index.vue')['default']

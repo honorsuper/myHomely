@@ -105,7 +105,23 @@ const homelyInfo = inject<any>('homely')
 <template>
   <div class="waterfall-item rounded absolute" :key="info.mainTitle">
     <div class="title box-border flex justify-between items-center font-medium" ref="target">
+      <a-tooltip
+        placement="topLeft"
+        color="#F5F5F5"
+        :overlayInnerStyle="{
+          color: '#000000',
+        }"
+        v-if="info.notes"
+      >
+        <template #title>{{info.notes}}</template>
+        <a-typography-text
+          :ellipsis="{ tooltip: info.mainTitle }"
+          :style="{ width: '122px' }"
+          :content="info.mainTitle"
+        />
+      </a-tooltip>
       <a-typography-text
+        v-else
         :ellipsis="{ tooltip: info.mainTitle }"
         :style="{ width: '122px' }"
         :content="info.mainTitle"

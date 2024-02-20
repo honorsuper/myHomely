@@ -20,6 +20,7 @@ const dynamicValidateForm = reactive<{
   list: any[]
   mainTitle: string
   id: number | null
+  notes: string
 }>({
   id: null,
   list: [
@@ -34,6 +35,7 @@ const dynamicValidateForm = reactive<{
     },
   ],
   mainTitle: '',
+  notes: '',
 })
 
 const homelyInfo = inject<any>('homely')
@@ -122,6 +124,7 @@ const handleSubmit = () => {
         id: dynamicValidateForm.id,
         list: menuList,
         mainTitle: dynamicValidateForm.mainTitle,
+        notes: dynamicValidateForm.notes,
       })
     } else {
       // 新增
@@ -135,6 +138,7 @@ const handleSubmit = () => {
       runAddMenu({
         list: menuList,
         mainTitle: dynamicValidateForm.mainTitle,
+        notes: dynamicValidateForm.notes,
       })
     }
   })
@@ -158,6 +162,7 @@ const handleCancel = () => {
   ]
   dynamicValidateForm.id = null
   dynamicValidateForm.mainTitle = ''
+  dynamicValidateForm.notes=''
 }
 
 /**
@@ -167,6 +172,7 @@ const handleOpenModal = (info?: any) => {
   if (info) {
     dynamicValidateForm.id = info?.id
     dynamicValidateForm.mainTitle = info?.mainTitle
+    dynamicValidateForm.notes = info?.notes
     dynamicValidateForm.list = cloneDeep(info?.list)
   }
   if (!info) {
@@ -286,6 +292,8 @@ const convertToMenu = (index: number) => {
   }
 }
 
+const labelCol = { style: { width: '65px' } };
+
 defineExpose({
   handleOpenModal,
 })
@@ -293,13 +301,16 @@ defineExpose({
 <template>
   <a-modal v-model:open="open" title="新增" :width="750">
     <div class="inner-form">
-      <a-form ref="formRef" name="dynamic_form_nest_item" :model="dynamicValidateForm">
+      <a-form ref="formRef" name="dynamic_form_nest_item" :model="dynamicValidateForm" :label-col="labelCol">
         <a-form-item
           name="mainTitle"
           label="主标题"
           :rules="[{ required: true, message: '请输入主标题' }]"
         >
           <a-input v-model:value="dynamicValidateForm.mainTitle" />
+        </a-form-item>
+        <a-form-item name="notes" label="  备注">
+          <a-input v-model:value="dynamicValidateForm.notes" />
         </a-form-item>
         <div v-for="(user, index) in dynamicValidateForm.list" :key="user.id" class="dynamic-wrap">
           <template v-if="!user.isGroup">
@@ -365,8 +376,8 @@ defineExpose({
                       @click="handleDel(index)"
                       :disabled="dynamicValidateForm.list?.length === 1"
                     >
-                      删除</a-menu-item
-                    >
+                      删除
+                    </a-menu-item>
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -507,8 +518,8 @@ defineExpose({
                       @click="handleDel(index)"
                       :disabled="dynamicValidateForm.list?.length === 1"
                     >
-                      删除</a-menu-item
-                    >
+                      删除
+                    </a-menu-item>
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -524,14 +535,14 @@ defineExpose({
             type="primary"
             @click="handleAddLink"
             :disabled="dynamicValidateForm.list.length > ITEM_COUNT - 1"
-            >新增链接</a-button
-          >
+            >新增链接
+          </a-button>
           <a-button
             type="primary"
             @click="handleAddGroup"
             :disabled="dynamicValidateForm.list.length > ITEM_COUNT - 1"
-            >新增组</a-button
-          >
+            >新增组
+          </a-button>
         </div>
         <div>
           <a-button key="back" @click="handleCancel">取消</a-button>
