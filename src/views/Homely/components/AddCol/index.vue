@@ -299,7 +299,7 @@ defineExpose({
 })
 </script>
 <template>
-  <a-modal v-model:open="open" title="新增" :width="750">
+  <a-modal v-model:open="open" :title="dynamicValidateForm.id?'编辑':'新增'" :width="750">
     <div class="inner-form">
       <a-form ref="formRef" name="dynamic_form_nest_item" :model="dynamicValidateForm" :label-col="labelCol">
         <a-form-item

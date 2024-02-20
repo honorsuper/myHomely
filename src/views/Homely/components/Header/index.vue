@@ -5,6 +5,7 @@ import { Modal, message } from 'ant-design-vue'
 import { userStore } from '@/stores/user'
 import { handleLogout } from '@/utils'
 import ColorSetting from '../ColorSetting/index.vue'
+import {UpdateLog} from "../index";
 
 import { ThemeType } from '@/enum'
 import { Setting } from '../index'
@@ -17,6 +18,7 @@ const props = defineProps<{
 
 const colorSettingRef = ref<InstanceType<typeof ColorSetting> | null>(null)
 const settingRef = ref<InstanceType<typeof Setting> | null>(null)
+const updateLogRef=ref<InstanceType<typeof UpdateLog> | null>(null)
 const store = userStore()
 const ref3 = ref(null)
 const ref4 = ref(null)
@@ -30,6 +32,8 @@ const handleClickMenu = (a: any) => {
     colorSettingRef.value?.showDrawer?.()
   } else if (a?.key === 'setting') {
     settingRef.value?.handleOpenModal()
+  }else if(a?.key==='updateLog'){
+    updateLogRef.value?.handleOpenModal()
   }
 }
 
@@ -144,7 +148,8 @@ defineExpose({
         <template #overlay>
           <a-menu mode="vertical" @click="handleClickMenu">
             <a-menu-item key="color-setting"> 颜色配置</a-menu-item>
-            <a-menu-item key="setting"> 设置</a-menu-item>
+            <a-menu-item key="setting"> 系统设置</a-menu-item>
+            <a-menu-item key="updateLog"> 更新日志</a-menu-item>
             <a-menu-item key="logout"> 退出</a-menu-item>
           </a-menu>
         </template>
@@ -153,6 +158,7 @@ defineExpose({
   </div>
   <ColorSetting ref="colorSettingRef" />
   <Setting ref="settingRef" />
+  <UpdateLog ref="updateLogRef"/>
 </template>
 <style scoped lang="less">
 .header-wrap {
