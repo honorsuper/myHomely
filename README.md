@@ -19,6 +19,8 @@ pnpm run dev
 
 
 ## 服务端
+仓库地址：https://github.com/honorsuper/myHomely-service
+
 ```sh
 # 1. 克隆项目至本地
 git clone https://github.com/honorsuper/myHomely-service
